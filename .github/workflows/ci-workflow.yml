@@ -86,7 +86,10 @@ jobs:
       - name: Bootstrap CMake depot_tools
         run: |
           ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
-          
+
+      - name: Fix crashpad buildtools permissions
+        run: |
+          chmod +x ${{ github.workspace }}/main/extern/crashpad/crashpad/buildtools/linux64/gn
 
       - name: Build Project
         run: cd main/build && ninja
