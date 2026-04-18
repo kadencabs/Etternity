@@ -66,13 +66,6 @@ jobs:
         run: |
           VERSION=$(echo "${{ matrix.cfg.cc }}" | sed 's/clang-//')
           echo "/usr/lib/llvm-$VERSION/bin" >> $GITHUB_PATH
-          
-      - name: Bootstrap depot_tools (Crashpad fix)
-        run: |
-          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
-          cd $GITHUB_WORKSPACE/depot_tools
-          python3 update_depot_tools || true
-          echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
 
       - name: Generate CMake
         run: |
@@ -82,6 +75,13 @@ jobs:
         env:
           CC: ${{ matrix.cfg.cc }}
           CXX: ${{ matrix.cfg.cxx }}
+
+      - name: Bootstrap depot_tools (Crashpad fix)
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
+          cd $GITHUB_WORKSPACE/depot_tools
+          python3 update_depot_tools || true
+          echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
 
       - name: Bootstrap CMake depot_tools
         run: |
@@ -509,16 +509,16 @@ jobs:
         with:
           arch: ${{ matrix.cfg.arch }}
 
+      - name: Generate CMake
+        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+        env:
+          DXSDK_DIR: "${{github.workspace}}/dxsdk/"
+          
       - name: Bootstrap depot_tools (Crashpad fix)
         run: |
           cd main/build/_deps/depot_tools-src
           python bootstrap_python3.py
           
-      - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-        env:
-          DXSDK_DIR: "${{github.workspace}}/dxsdk/"
-
       - name: Build Project
         run: cd main/build && ninja
 
