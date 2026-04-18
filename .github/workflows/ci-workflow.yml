@@ -478,7 +478,7 @@ jobs:
         run: |
           if (Test-Path "main/build/_deps/depot_tools-src") {
             cd main/build/_deps/depot_tools-src
-            python bootstrap_python3.py
+            python3 bootstrap_python3.py
           }          
 
       - name: Build Project
