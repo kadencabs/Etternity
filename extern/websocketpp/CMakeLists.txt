@@ -65,8 +65,10 @@ endif ()
 set (CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo;Debug" CACHE STRING "Configurations" FORCE)
 
 # Include our cmake macros
-set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include (CMakeHelpers)
+# set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# include (CMakeHelpers)
+
+include("${CMAKE_SOURCE_DIR}/CMake/Helpers/CMakeHelpers.cmake")
 
 
 ############  Build customization
