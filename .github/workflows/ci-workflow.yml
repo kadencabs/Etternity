@@ -272,6 +272,14 @@ jobs:
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
 
+      - name: Fix crashpad buildtools permissions
+        run: |
+          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
+
+      - name: Bootstrap CMake depot_tools
+        run: |
+          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
+        
       - name: Build Project
         run: cd main/build && ninja
 
@@ -355,6 +363,14 @@ jobs:
 
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra -DWITH_CRASHPAD=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
+      
+      - name: Fix crashpad buildtools permissions
+        run: |
+          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
+
+      - name: Bootstrap CMake depot_tools
+        run: |
+          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
 
       - name: Build Project
         run: cd main/build && ninja
@@ -474,11 +490,12 @@ jobs:
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
-      - name: Bootstrap depot_tools (Crashpad fix)
+      - name: Bootstrap CMake depot_tools
         shell: cmd
         run: |
           if exist "main\build\_deps\depot_tools-src" (
-            main\build\_deps\depot_tools-src\ensure_bootstrap.bat
+            cd main\build\_deps\depot_tools-src
+            python3 update_depot_tools.py
           )
 
       - name: Build Project
