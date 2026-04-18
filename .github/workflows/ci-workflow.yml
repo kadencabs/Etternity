@@ -475,11 +475,8 @@ jobs:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
       - name: Bootstrap depot_tools (Crashpad fix)
-        run: |
-          if (Test-Path "main/build/_deps/depot_tools-src") {
-            cd main/build/_deps/depot_tools-src
-            python3 bootstrap_python3.py
-          }          
+        working-directory: main/build/_deps/depot_tools-src
+        run: python3 bootstrap_python3.py
 
       - name: Build Project
         run: cd main/build && ninja
