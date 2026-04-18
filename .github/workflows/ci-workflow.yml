@@ -72,6 +72,7 @@ jobs:
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
           cd $GITHUB_WORKSPACE/depot_tools
           python3 update_depot_tools || true
+          echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
 
       - name: Generate CMake
         run: |
@@ -81,13 +82,10 @@ jobs:
         env:
           CC: ${{ matrix.cfg.cc }}
           CXX: ${{ matrix.cfg.cxx }}
-          PATH: ${{ github.workspace }}/depot_tools:${{ env.PATH }}
 
       - name: Build Project
         run: cd main/build && ninja
-        env:
-          PATH: ${{ github.workspace }}/depot_tools:${{ env.PATH }}
-
+        
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
         run: cd main/build && cpack
