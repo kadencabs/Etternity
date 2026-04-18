@@ -5,7 +5,7 @@
 .idea
 *.kdev4
 /.kdev4
-# /[Bb]uild
+/[Bb]uild
 /out/
 
 # Ignore executables (Linux, macOS, Windows)
