@@ -1,5 +1,0 @@
-# CMake generation dependency list for this directory.
-C:/Program Files/CMake/share/cmake-4.2/Modules/FindPackageHandleStandardArgs.cmake
-C:/Program Files/CMake/share/cmake-4.2/Modules/FindPackageMessage.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/CMakeModules/FindGTestSrc.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/test/CMakeLists.txt

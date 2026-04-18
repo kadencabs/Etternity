@@ -1,9 +1,0 @@
-# CMake generation dependency list for this directory.
-C:/Program Files/CMake/share/cmake-4.2/Modules/CheckCXXSymbolExists.cmake
-C:/Program Files/CMake/share/cmake-4.2/Modules/CheckFunctionExists.cmake
-C:/Program Files/CMake/share/cmake-4.2/Modules/CheckIncludeFiles.cmake
-C:/Program Files/CMake/share/cmake-4.2/Modules/CheckSymbolExists.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/CMake/Helpers/SetupGit.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/src/Etterna/CMakeLists.txt
-C:/Users/kaden/Documents/GitHub/Etternity/src/Etterna/CMakeListsLegacy.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/src/Etterna/config.in.hpp
