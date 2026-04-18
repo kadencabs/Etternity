@@ -36,29 +36,53 @@ jobs:
           repository: etternagame/CrashpadTools
           path: tools
           fetch-depth: 0
+      - name: Add toolchain repositories
+        run: |
+          sudo apt update
+          sudo apt install -y wget gnupg software-properties-common
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 9
+          sudo ./llvm.sh 10
+          sudo ./llvm.sh 11
+          sudo ./llvm.sh 12
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt update
 
       - name: Install apt packages
         run: |
-            sudo apt update
-            sudo apt install -y \
-            ${{ matrix.cfg.apt }} \
-            nasm ninja-build \
-            libglew-dev libxrandr-dev libxtst-dev \
-            libpulse-dev libasound-dev \
-            libogg-dev libvorbis-dev \
-            xorg-dev libcurl4-openssl-dev \
-            gcc ${{ matrix.cfg.cc }} \
-            g++ ${{ matrix.cfg.cxx }}
+          sudo apt install -y \
+          nasm ninja-build \
+          libglew-dev libxrandr-dev libxtst-dev \
+          libpulse-dev libasound-dev \
+          libogg-dev libvorbis-dev \
+          xorg-dev libcurl4-openssl-dev \
+          gcc g++
 
+      - name: Select compiler
+        run: |
+          echo "CC=${{ matrix.cfg.cc }}" >> $GITHUB_ENV
+          echo "CXX=${{ matrix.cfg.cxx }}" >> $GITHUB_ENV
+
+
+      - name: Fix clang PATH
+        if: contains(matrix.cfg.cc, 'clang')
+        run: |
+          VERSION=$(echo "${{ matrix.cfg.cc }}" | sed 's/clang-//')
+          echo "/usr/lib/llvm-$VERSION/bin" >> $GITHUB_PATH
+          
       - name: Bootstrap depot_tools (Crashpad fix)
         run: |
           cd main/build/_deps/depot_tools-src
+          git pull || true
+          python3 ensure_bootstrap.py || true
           python3 bootstrap_python3.py || true
 
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
         env:
-          CXX: ${{matrix.cfg.cpp-version}}
+          CC: ${{ matrix.cfg.cc }}
+          CXX: ${{ matrix.cfg.cxx }}
 
       - name: Build Project
         run: cd main/build && ninja
