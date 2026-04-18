@@ -1,0 +1,4 @@
+# CMake generation dependency list for this directory.
+C:/Users/kaden/Documents/GitHub/Etternity/extern/jwt-cpp-0.6.0/cmake/private-find-boost-json.cmake
+C:/Users/kaden/Documents/GitHub/Etternity/extern/jwt-cpp-0.6.0/cmake/private-find-kazuho-picojson.cmake
+C:/Users/kaden/Documents/GitHub/Etternity/extern/jwt-cpp-0.6.0/example/traits/CMakeLists.txt

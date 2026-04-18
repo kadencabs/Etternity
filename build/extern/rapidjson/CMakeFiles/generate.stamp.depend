@@ -1,0 +1,6 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.2/Modules/CTest.cmake
+C:/Program Files/CMake/share/cmake-4.2/Modules/CTestUseLaunchers.cmake
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/CMakeLists.txt
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/RapidJSONConfig.cmake.in
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/RapidJSONConfigVersion.cmake.in

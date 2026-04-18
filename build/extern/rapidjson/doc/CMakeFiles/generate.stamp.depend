@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.2/Modules/FindDoxygen.cmake
+C:/Program Files/CMake/share/cmake-4.2/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-4.2/Modules/FindPackageMessage.cmake
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/doc/CMakeLists.txt
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/doc/Doxyfile.in
+C:/Users/kaden/Documents/GitHub/Etternity/extern/rapidjson/doc/Doxyfile.zh-cn.in

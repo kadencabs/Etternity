@@ -1,5 +1,5 @@
 # === boost ===
-find_package(Boost REQUIRED COMPONENTS filesystem system thread regex)
+set(BOOST_ROOT "C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp\websocketpp\boost")
 
 # === websocket++ ===
 FetchContent_Declare(websocketpp

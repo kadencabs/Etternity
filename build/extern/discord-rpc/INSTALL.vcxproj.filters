@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4c6d3329f28e01673c9e315d7c6b9095\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{583DB6CA-0E76-3EEB-A290-3E1407DD0F3C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

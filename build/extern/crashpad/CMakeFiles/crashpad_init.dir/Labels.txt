@@ -1,0 +1,15 @@
+# Target labels
+ crashpad_init
+# Source files and their labels
+C:/Users/kaden/Documents/GitHub/Etternity/build/extern/crashpad/CMakeFiles/crashpad_init
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/21e219ec9ff8d64e76a1a1d782d1c3be/crashpad_init.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/78844e72ef3eeaa63d70f0793ee4f5a6/crashpad_init-complete.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-build.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-configure.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-download.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-gn_configure.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-install.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-mkdir.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-patch.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-test.rule
+C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-update.rule

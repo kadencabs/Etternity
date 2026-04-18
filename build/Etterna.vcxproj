@@ -1,0 +1,1070 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4B6BE3E9-90EA-3FA5-8D67-89185A489B2F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>Etterna</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\kaden\Documents\GitHub\Etternity\Program\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Etterna.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Etterna</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\kaden\Documents\GitHub\Etternity\Program\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Etterna.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Etterna-RelWithDebInfo</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\kaden\Documents\GitHub\Etternity\Program\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Etterna.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Etterna-debug</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;NCREMENTAL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/OpenSSL-Win64/include" /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>8</ProcessorNumber>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\OpenSSL-Win64\lib\VC\x64\MT\libssl_static.lib;CRYPT32.lib;WS2_32.lib;GDI32.lib;ADVAPI32.lib;USER32.lib;extern\SQLiteCpp\Release\SQLiteCpp.lib;extern\SQLiteCpp\sqlite3\Release\sqlite3.lib;extern\zlib\Release\zlib.lib;extern\luajit\src\Release\luajit.lib;extern\discord-rpc\src\Release\discord-rpc.lib;extern\muFFT\Release\muFFT.lib;extern\glew-1.5.8\Release\glfw.lib;extern\newogg\Release\ogg.lib;extern\newvorbis\Release\vorbis.lib;extern\pcre\Release\pcre.lib;extern\mad-0.15.1b\Release\libmad.lib;extern\curl\lib\Release\libcurl.lib;extern\fmt\Release\fmt.lib;extern\boost\nowide\Release\nowide.lib;psapi.lib;extern\muFFT\Release\muFFT-sse.lib;extern\muFFT\Release\muFFT-sse3.lib;extern\muFFT\Release\muFFT-avx.lib;C:\OpenSSL-Win64\lib\VC\x64\MT\libcrypto_static.lib;winmm.lib;ws2_32.lib;crypt32.lib;advapi32.lib;gn_crashpad\obj\client\client.lib;gn_crashpad\obj\client\common.lib;gn_crashpad\obj\util\util.lib;gn_crashpad\obj\third_party\mini_chromium\mini_chromium\base\base.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avcodec.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avdevice.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avfilter.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avformat.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avutil.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\postproc.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swresample.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swscale.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64;C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/kaden/Documents/GitHub/Etternity/build/Release/Etterna.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/kaden/Documents/GitHub/Etternity/Program/Etterna.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Manifest>
+      <AdditionalManifestFiles>C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\Etterna.manifest;</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;NCREMENTAL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/OpenSSL-Win64/include" /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>8</ProcessorNumber>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;RELWITHDEBINFO;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;RELWITHDEBINFO;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\OpenSSL-Win64\lib\VC\x64\MT\libssl_static.lib;CRYPT32.lib;WS2_32.lib;GDI32.lib;ADVAPI32.lib;USER32.lib;extern\SQLiteCpp\RelWithDebInfo\SQLiteCpp.lib;extern\SQLiteCpp\sqlite3\RelWithDebInfo\sqlite3.lib;extern\zlib\RelWithDebInfo\zlib.lib;extern\luajit\src\RelWithDebInfo\luajit.lib;extern\discord-rpc\src\RelWithDebInfo\discord-rpc.lib;extern\muFFT\RelWithDebInfo\muFFT.lib;extern\glew-1.5.8\RelWithDebInfo\glfw.lib;extern\newogg\RelWithDebInfo\ogg.lib;extern\newvorbis\RelWithDebInfo\vorbis.lib;extern\pcre\RelWithDebInfo\pcre.lib;extern\mad-0.15.1b\RelWithDebInfo\libmad.lib;extern\curl\lib\RelWithDebInfo\libcurl.lib;extern\fmt\RelWithDebInfo\fmt.lib;extern\boost\nowide\RelWithDebInfo\nowide.lib;psapi.lib;extern\muFFT\RelWithDebInfo\muFFT-sse.lib;extern\muFFT\RelWithDebInfo\muFFT-sse3.lib;extern\muFFT\RelWithDebInfo\muFFT-avx.lib;C:\OpenSSL-Win64\lib\VC\x64\MT\libcrypto_static.lib;winmm.lib;ws2_32.lib;crypt32.lib;advapi32.lib;gn_crashpad\obj\client\client.lib;gn_crashpad\obj\client\common.lib;gn_crashpad\obj\util\util.lib;gn_crashpad\obj\third_party\mini_chromium\mini_chromium\base\base.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avcodec.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avdevice.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avfilter.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avformat.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avutil.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\postproc.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swresample.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swscale.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64;C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/kaden/Documents/GitHub/Etternity/build/RelWithDebInfo/Etterna.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/kaden/Documents/GitHub/Etternity/Program/Etterna-RelWithDebInfo.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Manifest>
+      <AdditionalManifestFiles>C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\Etterna.manifest;</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;NCREMENTAL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/OpenSSL-Win64/include" /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ProcessorNumber>8</ProcessorNumber>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_HAS_STD_BYTE=0;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;CURL_STATICLIB;FMT_LOCALE;NOWIDE_NO_LIB;_MBCS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\kaden\Documents\GitHub\Etternity\build\generated;C:\Users\kaden\Documents\GitHub\Etternity\src;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\sqlite3;C:\Users\kaden\Documents\GitHub\Etternity\extern\zlib\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib;C:\Users\kaden\Documents\GitHub\Etternity\extern\rapidjson\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\jwt-cpp-0.6.0\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\websocketpp;C:\Users\kaden\Documents\GitHub\Etternity\extern\asio\include;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\luajit\src;C:\Users\kaden\Documents\GitHub\Etternity\extern\discord-rpc\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\muFFT;C:\Users\kaden\Documents\GitHub\Etternity\extern\glew-1.5.8\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newogg\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\newvorbis\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\pcre\.;C:\Users\kaden\Documents\GitHub\Etternity\extern\mad-0.15.1b\.;C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\generated;C:\Users\kaden\Documents\GitHub\Etternity\extern\stb\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\miniz\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\curl\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\fmt\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\plog\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\boost\nowide\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\filesystem\include;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad;C:\Users\kaden\Documents\GitHub\Etternity\extern\crashpad\crashpad\third_party\mini_chromium\mini_chromium;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\include;C:\OpenSSL-Win64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\OpenSSL-Win64\lib\VC\x64\MTd\libssl_static.lib;CRYPT32.lib;WS2_32.lib;GDI32.lib;ADVAPI32.lib;USER32.lib;extern\SQLiteCpp\Debug\SQLiteCpp.lib;extern\SQLiteCpp\sqlite3\Debug\sqlite3.lib;extern\zlib\Debug\zlibd.lib;extern\luajit\src\Debug\luajit.lib;extern\discord-rpc\src\Debug\discord-rpc.lib;extern\muFFT\Debug\muFFT.lib;extern\glew-1.5.8\Debug\glfw.lib;extern\newogg\Debug\ogg.lib;extern\newvorbis\Debug\vorbis.lib;extern\pcre\Debug\pcre.lib;extern\mad-0.15.1b\Debug\libmad.lib;extern\curl\lib\Debug\libcurl-d.lib;extern\fmt\Debug\fmtd.lib;extern\boost\nowide\Debug\nowide.lib;psapi.lib;extern\muFFT\Debug\muFFT-sse.lib;extern\muFFT\Debug\muFFT-sse3.lib;extern\muFFT\Debug\muFFT-avx.lib;C:\OpenSSL-Win64\lib\VC\x64\MTd\libcrypto_static.lib;winmm.lib;ws2_32.lib;crypt32.lib;advapi32.lib;gn_crashpad\obj\client\client.lib;gn_crashpad\obj\client\common.lib;gn_crashpad\obj\util\util.lib;gn_crashpad\obj\third_party\mini_chromium\mini_chromium\base\base.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avcodec.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avdevice.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avfilter.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avformat.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\avutil.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\postproc.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swresample.lib;C:\Users\kaden\Documents\GitHub\Etternity\extern\ffmpeg\64bit\swscale.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64;C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <DataExecutionPrevention></DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/Users/kaden/Documents/GitHub/Etternity/build/Debug/Etterna.lib</ImportLibrary>
+      <LinkErrorReporting></LinkErrorReporting>
+      <ProgramDataBaseFile>C:/Users/kaden/Documents/GitHub/Etternity/Program/Etterna-debug.pdb</ProgramDataBaseFile>
+      <RandomizedBaseAddress></RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <Manifest>
+      <AdditionalManifestFiles>C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\Etterna.manifest;</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kaden\Documents\GitHub\Etternity\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/kaden/Documents/GitHub/Etternity/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/kaden/Documents/GitHub/Etternity -BC:/Users/kaden/Documents/GitHub/Etternity/build --check-stamp-file C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMCompiler.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeTestASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindOpenSSL.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-4.2\Templates\CPackConfig.cmake.in;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CMakeWindows.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CPackSetup.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\DocumentationTools.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\StaticAnalysis.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Modules\FindDirectX.cmake;C:\Users\kaden\Documents\GitHub\Etternity\Docs\Doxyfile.in;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/kaden/Documents/GitHub/Etternity/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/kaden/Documents/GitHub/Etternity -BC:/Users/kaden/Documents/GitHub/Etternity/build --check-stamp-file C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMCompiler.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeTestASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindOpenSSL.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-4.2\Templates\CPackConfig.cmake.in;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CMakeWindows.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CPackSetup.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\DocumentationTools.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\StaticAnalysis.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Modules\FindDirectX.cmake;C:\Users\kaden\Documents\GitHub\Etternity\Docs\Doxyfile.in;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/kaden/Documents/GitHub/Etternity/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/kaden/Documents/GitHub/Etternity -BC:/Users/kaden/Documents/GitHub/Etternity/build --check-stamp-file C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMCompiler.cmake.in;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CMakeTestASMCompiler.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPack.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CPackComponent.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindOpenSSL.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.2\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-4.2\Templates\CPackConfig.cmake.in;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CMakeWindows.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\CPackSetup.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\DocumentationTools.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Helpers\StaticAnalysis.cmake;C:\Users\kaden\Documents\GitHub\Etternity\CMake\Modules\FindDirectX.cmake;C:\Users\kaden\Documents\GitHub\Etternity\Docs\Doxyfile.in;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeCXXCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeRCCompiler.cmake;C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\4.2.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Actor.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorFrame.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorFrameTexture.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorMultiVertex.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorProxy.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorScroller.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorSound.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\AutoActor.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\BitmapText.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Model.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ModelManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ModelTypes.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Quad.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\RollingNumbers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Sprite.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Tween.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ArrowEffects.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Background.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Foreground.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\GhostArrowRow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\HoldJudgment.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LifeMeter.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LifeMeterBar.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LyricDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteField.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteFieldPreview.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Player.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\PlayerPractice.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\PlayerReplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ReceptorArrow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ReceptorArrowRow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\BPMDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ComboGraph.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\DifficultyList.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\DualScrollBar.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\GraphDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MenuTimer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ModIcon.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ModIconRow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MusicWheel.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MusicWheelItem.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionRow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionsCursor.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionsList.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ScrollBar.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\TextBanner.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\WheelBase.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\WheelItemBase.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\RoomInfoDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\BGAnimation.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\BGAnimationLayer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\MeterDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\StepsDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\StreamDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\Transition.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Actor.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorFrame.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorFrameTexture.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorMultiVertex.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorProxy.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorScroller.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorSound.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ActorUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\AutoActor.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\BitmapText.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Model.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ModelManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\ModelTypes.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Quad.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\RollingNumbers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Sprite.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Base\Tween.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ArrowEffects.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Background.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Foreground.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\GhostArrowRow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\HoldJudgment.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LifeMeter.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LifeMeterBar.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\LyricDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteField.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\NoteFieldPreview.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\Player.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\PlayerPractice.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\PlayerReplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ReceptorArrow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Gameplay\ReceptorArrowRow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\BPMDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ComboGraph.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\DifficultyList.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\DualScrollBar.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\GraphDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MenuTimer.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ModIcon.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ModIconRow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MusicWheel.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\MusicWheelItem.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionRow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionsCursor.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\OptionsList.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\ScrollBar.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\TextBanner.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\WheelBase.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\WheelItemBase.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\Menus\RoomInfoDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\BGAnimation.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\BGAnimationLayer.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\MeterDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\StepsDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\StreamDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Actor\GameplayAndMenus\Transition.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\CsvFile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\IniFile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\MsdFile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlFile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlToLua.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlFileUtil.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\CsvFile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\IniFile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\MsdFile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlFile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlToLua.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\FileTypes\XmlFileUtil.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\SoloCalc.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\GameLoop.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\global.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\rngthing.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\SpecialFiles.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\StepMania.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\Main.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\SoloCalc.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\GameLoop.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\global.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\OptionsBinding.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\SpecialFiles.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\rngthing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Globals\StepMania.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\CJ.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\CJDensity.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\FlamJam.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\HS.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\HSDensity.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\JS.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\Stream.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\TheThingFinder.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_PatternMods\GenericChordstream.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_Sequencers\FlamSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_Sequencers\ThingSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_Sequencers\TrillSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\HA_Sequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\IntervalInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\MetaIntervalInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Agnostic\MetaRowInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\Balance.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\Chaos.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\CJOHAnchor.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\OHJ.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\CJOHJ.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\OHT.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\VOHT.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\Minijack.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\Roll.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\RollJS.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\RunningMan.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\WideRangeAnchor.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\WideRangeBalance.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\WideRangeJumptrill.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\WideRangeJJ.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\WideRangeRoll.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\GenericBracketing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_PatternMods\GenericStream.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_Sequencers\CJOHASequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_Sequencers\GenericSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_Sequencers\OHJSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_Sequencers\RMSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_BasicSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\HD_MetaSequencing.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\IntervalHandInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\MetaHandInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\MetaIntervalHandInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Dependent\MetaIntervalGenericHandInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\MinaCalc.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\MinaCalc.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\MinaCalcHelpers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\CalcWindow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\PatternModHelpers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\SequencedBaseDiffCalc.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\SequencingHelpers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\Ulbu.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\UlbuAcolytes.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\UlbuBase.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\UlbuSixKey.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\MinaCalc\UlbuSevenKey.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\Font.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\FontCharAliases.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\FontCharmaps.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaBinding.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaExpressionTransform.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaReference.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\HighScore.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\Replay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\ReplayConstantsAndTypes.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteData.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteDataUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteDataWithScoring.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoader.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderBMS.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderDWI.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderKSF.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSM.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSMA.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSSC.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderETT.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderOSU.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterDWI.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterSM.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterSSC.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterETT.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\ScoreKeepers\ScoreKeeper.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\ScoreKeepers\ScoreKeeperNormal.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\Song.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongCacheIndex.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongPosition.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\Steps.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\StepsUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\Style.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\StyleUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\AdjustSync.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\AutoKeysounds.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\BackgroundUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ImageCache.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CodeDetector.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CodeSet.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CubicSpline.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Command.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CommonMetrics.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ControllerStateDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DateTime.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Difficulty.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DisplaySpec.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\EnumHelper.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Game.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameCommand.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameConstantsAndTypes.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameInput.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameplayAssist.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GamePreferences.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Grade.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\LocalizedString.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\LyricsLoader.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ModsGroup.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\NoteTypes.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\OptionRowHandler.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerInfo.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerNumber.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerStageStats.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerState.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Preference.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Profile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\XMLProfile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DBProfile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RadarValues.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RandomSample.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\SampleHistory.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ScreenDimensions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\SoundEffectControl.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\StageStats.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TimingData.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TimingSegments.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TitleSubstitution.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RoomWheel.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\Font.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\FontCharAliases.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Fonts\FontCharmaps.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaBinding.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaExpressionTransform.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Lua\LuaReference.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\HighScore.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\Replay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\HighScore\ReplayConstantsAndTypes.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteData.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteDataStructures.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteDataUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteData\NoteDataWithScoring.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoader.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderBMS.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderDWI.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderKSF.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSM.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSMA.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderSSC.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderETT.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteLoaders\NotesLoaderOSU.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterDWI.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterSM.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterSSC.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\NoteWriters\NotesWriterETT.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\ScoreKeepers\ScoreKeeper.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\ScoreKeepers\ScoreKeeperNormal.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\Song.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongCacheIndex.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongPosition.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Songs\SongUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\Steps.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\StepsUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\Style.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\StepsAndStyles\StyleUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\AdjustSync.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\AutoKeysounds.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\BackgroundUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ImageCache.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CodeDetector.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CodeSet.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Command.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CommonMetrics.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ControllerStateDisplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\CubicSpline.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DateTime.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DisplaySpec.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Difficulty.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\EnumHelper.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Foreach.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Game.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameCommand.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameConstantsAndTypes.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameInput.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GameplayAssist.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\GamePreferences.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Grade.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\InputEventPlus.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\LocalizedString.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\LyricsLoader.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ModsGroup.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\NoteTypes.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\OptionRowHandler.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerNumber.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerStageStats.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\PlayerState.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Preference.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\Profile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\XMLProfile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\DBProfile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RadarValues.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RandomSample.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\SampleHistory.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ScreenDimensions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\SoundEffectControl.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\SubscriptionManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\StageStats.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\ThemeMetric.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TimingData.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TimingSegments.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\TitleSubstitution.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Models\Misc\RoomWheel.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayNormal.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplaySyncMachine.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayReplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayPractice.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsEditProfile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsManageProfiles.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsMaster.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsMasterPrefs.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetEvaluation.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetRoom.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetSelectBase.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetSelectMusic.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetworkOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenSMOnlineLogin.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\Screen.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenDebugOverlay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenEvaluation.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenExit.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenInstallOverlay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMapControllers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMessage.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMiniMenu.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenPlayerOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenProfileLoad.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenProfileSave.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenPrompt.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSaveSync.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelect.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectLanguage.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectMaster.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectMusic.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectProfile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenServiceAction.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSongOptions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSplash.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenStatsOverlay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSyncOverlay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSystemLayer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTestInput.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTestSound.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTextEntry.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTitleMenu.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenWithMenuElements.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayNormal.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplaySyncMachine.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayReplay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Gameplay\ScreenGameplayPractice.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsEditProfile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsManageProfiles.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsMaster.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Options\ScreenOptionsMasterPrefs.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetEvaluation.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetRoom.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetSelectBase.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetSelectMusic.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenNetworkOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Network\ScreenSMOnlineLogin.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\Screen.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenDebugOverlay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenEvaluation.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenExit.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenInstallOverlay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMapControllers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMessage.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenMiniMenu.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenPlayerOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenProfileLoad.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenProfileSave.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenPrompt.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSaveSync.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelect.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectLanguage.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectMaster.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectMusic.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSelectProfile.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenServiceAction.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSongOptions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSplash.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenStatsOverlay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSyncOverlay.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenSystemLayer.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTestInput.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTestSound.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTextEntry.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenTitleMenu.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Screen\Others\ScreenWithMenuElements.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\AnnouncerManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\CommandLineActions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\CryptManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\FilterManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\FontManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameSoundManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameState.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputFilter.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputMapper.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputQueue.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\LuaManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\MessageManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\NetworkSyncManager.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\NoteSkinManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\PrefsManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ProfileManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ScoreManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ScreenManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\SongManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\StatsManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ThemeManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\DownloadManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ReplayManager.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\AnnouncerManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\CommandLineActions.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\CryptManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\FilterManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\FontManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameSoundManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\GameState.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputFilter.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputMapper.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\InputQueue.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\LuaManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\MessageManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\NetworkSyncManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\NoteSkinManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\PrefsManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ProfileManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ScoreManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ScreenManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\SongManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\StatsManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ThemeManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\DownloadManager.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Etterna\Singletons\ReplayManager.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\RageDriver.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\Dialog.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\DialogDriver.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\DialogDriver_Win32.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_MonkeyKeyboard.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_DirectInput.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_DirectInputHelper.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_MIDI.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_Para.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_Pump.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LoadingWindow\LoadingWindow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LoadingWindow\LoadingWindow_Win32.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LowLevelWindow\LowLevelWindow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LowLevelWindow\LowLevelWindow_Win32.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_Generic.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_Null.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_FFMpeg.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_Generic_Software.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_Null.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\DSoundHelpers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_DSound_Software.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_WaveOut.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_WDMKS.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Threads\Threads_Win32.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\arch_default.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\RageDriver.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\Dialog.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\DialogDriver.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Dialog\DialogDriver_Win32.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_MonkeyKeyboard.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_DirectInput.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_DirectInputHelper.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_MIDI.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_Para.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\InputHandler\InputHandler_Win32_Pump.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LoadingWindow\LoadingWindow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LoadingWindow\LoadingWindow_Win32.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LowLevelWindow\LowLevelWindow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\LowLevelWindow\LowLevelWindow_Win32.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_Generic.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_Null.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\MovieTexture\MovieTexture_FFMpeg.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_Null.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\DSoundHelpers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_DSound_Software.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_WaveOut.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Sound\RageSoundDriver_WDMKS.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Threads\Threads.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\arch\Threads\Threads_Win32.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\AppInstance.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\arch_setup.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\arch_time.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\CommandLine.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\DialogUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\DirectXHelpers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\ErrorStrings.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\GetFileInformation.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\GraphicsWindow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\MessageWindow.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\RegistryAccess.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\USB.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\VideoDriverInfo.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowIcon.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowsDialogBox.cpp" />
+    <ResourceCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowsResources.rc" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\AppInstance.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\arch_setup.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\CommandLine.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\DialogUtil.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\DirectXHelpers.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\ErrorStrings.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\GetFileInformation.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\GraphicsWindow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\MessageWindow.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\RegistryAccess.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\USB.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\VideoDriverInfo.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowIcon.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowsDialogBox.h" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\archutils\Win32\WindowsResources.h" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileBasic.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriver.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverDeflate.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverDirect.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverDirectHelpers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverMemory.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverReadAhead.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverSlice.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverTimeout.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileDriverZip.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\File\RageFileManager_ReadAhead.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageBitmapTexture.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageDisplay.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageDisplay_Null.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageDisplay_OGL.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageDisplay_OGL_Helpers.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageModelGeometry.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface_Load.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface_Load_XPM.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface_Save_BMP.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface_Save_JPEG.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurface_Save_PNG.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurfaceUtils.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurfaceUtils_Dither.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurfaceUtils_Palettize.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageSurfaceUtils_Zoom.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageTexture.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageTextureID.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageTextureManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageTextureRenderTarget.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Graphics\RageDisplay_D3D.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageException.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageInput.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageInputDevice.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageMath.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageTypes.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageThreads.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageTimer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Misc\RageUnicode.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSound.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundManager.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundMixBuffer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundPosMap.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Chain.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_ChannelSplit.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Extend.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_FileReader.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Merge.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Pan.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_PitchChange.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_PostBuffering.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Preload.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Resample_Good.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_SpeedChange.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_SpeedChange_Good.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_ThreadedBuffer.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_WAV.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_Vorbisfile.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Sound\RageSoundReader_MP3.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Utils\RageUtil.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Utils\RageUtil_CachedObject.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Utils\RageUtil_CharConversions.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Utils\RageUtil_FileDB.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\RageUtil\Utils\RageUtil_WorkerThread.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\build\generated\AppInfo.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Platform\Platform.hpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Platform\Platform.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Platform\PlatformWin.cpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Crash\CrashpadHandler.hpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Misc\PlogLogger.hpp" />
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Services\Locator.hpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Services\Locator.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Misc\PlogLogger.cpp" />
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\src\Core\Crash\CrashpadHandler.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\ZERO_CHECK.vcxproj">
+      <Project>{C9AF1986-780E-35FA-AC57-4893E310333E}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\SQLiteCpp\SQLiteCpp.vcxproj">
+      <Project>{204F8028-269B-3F8F-A226-D7FDA9EE567A}</Project>
+      <Name>SQLiteCpp</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\crashpad\crashpad_init.vcxproj">
+      <Project>{0BA730BD-9FF9-3B6B-95F9-B793317D21B0}</Project>
+      <Name>crashpad_init</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\discord-rpc\src\discord-rpc.vcxproj">
+      <Project>{D486A0F1-8EF4-3C93-A4CA-DE84D19F231E}</Project>
+      <Name>discord-rpc</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\fmt\fmt.vcxproj">
+      <Project>{4022E9F2-1017-3713-815E-6A53939A9B8F}</Project>
+      <Name>fmt</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\glew-1.5.8\glfw.vcxproj">
+      <Project>{8E080F53-DD99-36BB-BCCA-8A3F671953BE}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\curl\lib\libcurl.vcxproj">
+      <Project>{1B343978-F08D-376E-BB38-F1608693F409}</Project>
+      <Name>libcurl</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\luajit\src\libluajit.vcxproj">
+      <Project>{4245F6B5-5B08-34E3-9634-8054214C786C}</Project>
+      <Name>libluajit</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\mad-0.15.1b\libmad.vcxproj">
+      <Project>{50D1C435-C9E8-3ECC-BFA8-F40C0AE06251}</Project>
+      <Name>libmad</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\muFFT\muFFT.vcxproj">
+      <Project>{9A41DDD2-9C88-3D88-921A-385867CEAD10}</Project>
+      <Name>muFFT</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\muFFT\muFFT-avx.vcxproj">
+      <Project>{C1E35B7B-E6BC-3ED6-B2BF-A1C4C299E99D}</Project>
+      <Name>muFFT-avx</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\muFFT\muFFT-sse.vcxproj">
+      <Project>{FDA401F9-7A09-39C4-B3B0-2C14C19B3516}</Project>
+      <Name>muFFT-sse</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\muFFT\muFFT-sse3.vcxproj">
+      <Project>{1F4F17C9-4B0D-3CFE-99C5-1F116E809F1D}</Project>
+      <Name>muFFT-sse3</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\boost\nowide\nowide.vcxproj">
+      <Project>{F9F69F96-020D-36F3-ACE3-FAE451E334B9}</Project>
+      <Name>nowide</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\newogg\ogg.vcxproj">
+      <Project>{5091D479-E555-3AB8-A481-F474E5241382}</Project>
+      <Name>ogg</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\pcre\pcre.vcxproj">
+      <Project>{F1C5B926-C9D3-3731-9E12-DBD31AC70E14}</Project>
+      <Name>pcre</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\SQLiteCpp\sqlite3\sqlite3.vcxproj">
+      <Project>{6BD6D7F8-D1D1-3703-A12D-EB0BEC3C553B}</Project>
+      <Name>sqlite3</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\newvorbis\vorbis.vcxproj">
+      <Project>{EE3135FF-A34E-3FAF-A3B7-C33A66BBED76}</Project>
+      <Name>vorbis</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\kaden\Documents\GitHub\Etternity\build\extern\zlib\zlib.vcxproj">
+      <Project>{8C61F660-63FD-34A1-A59E-372A9687FC4B}</Project>
+      <Name>zlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

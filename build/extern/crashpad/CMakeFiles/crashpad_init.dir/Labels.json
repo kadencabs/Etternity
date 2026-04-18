@@ -1,0 +1,49 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/extern/crashpad/CMakeFiles/crashpad_init"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/21e219ec9ff8d64e76a1a1d782d1c3be/crashpad_init.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/78844e72ef3eeaa63d70f0793ee4f5a6/crashpad_init-complete.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-build.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-configure.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-download.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-gn_configure.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-install.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-patch.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-test.rule"
+		},
+		{
+			"file" : "C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/e3de98c995a256615085bbf65be4bec8/crashpad_init-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"crashpad_init"
+		],
+		"name" : "crashpad_init"
+	}
+}

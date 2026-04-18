@@ -1,0 +1,15 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=git
+command=C:/Program Files/CMake/bin/cmake.exe;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;C:/Users/kaden/Documents/GitHub/Etternity/build/CMakeFiles/fc-tmp/depot_tools/depot_tools-gitclone.cmake
+source_dir=C:/Users/kaden/Documents/GitHub/Etternity/build/_deps/depot_tools-src
+work_dir=C:/Users/kaden/Documents/GitHub/Etternity/build/_deps
+repository=https://chromium.googlesource.com/chromium/tools/depot_tools.git
+remote=origin
+init_submodules=TRUE
+recurse_submodules=--recursive
+submodules=
+CMP0097=NEW
+      

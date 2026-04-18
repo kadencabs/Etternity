@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\919a4d0e6a4076d7af53459978392f6b\doxygen.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\kaden\Documents\GitHub\Etternity\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\build\CMakeFiles\doxygen" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{583DB6CA-0E76-3EEB-A290-3E1407DD0F3C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

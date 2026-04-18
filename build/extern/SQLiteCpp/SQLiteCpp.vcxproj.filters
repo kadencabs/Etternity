@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Backup.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Column.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Database.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Exception.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Statement.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\src\Transaction.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\SQLiteCpp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Assertion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Backup.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Column.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Database.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Exception.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Statement.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\Transaction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\VariadicBind.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\include\SQLiteCpp\ExecuteMany.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in">
+      <Filter>scripts</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\README.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\LICENSE.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\CHANGELOG.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\TODO.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.editorconfig">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.gitbugtraq">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.github\workflows\build.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.github\workflows\subdir_example.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.gitignore">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\.travis.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\appveyor.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\build.bat">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\build.sh">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\cpplint.py">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\Doxyfile">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\cmake\FindSQLiteCpp.cmake">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="C:\Users\kaden\Documents\GitHub\Etternity\extern\SQLiteCpp\cmake\FindSQLite3.cmake">
+      <Filter>scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="doc">
+      <UniqueIdentifier>{709DBF73-1EBE-3889-B230-5F4CCBA1EBB3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{25DB9E96-E377-33A2-AF52-F9BE790A2745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{BE99C1B8-FD34-31D8-85D6-B92DC192DC70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{1A424BD8-37D6-3D50-9AB8-8D186B62A2B3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
