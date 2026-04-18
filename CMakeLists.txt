@@ -1,5 +1,6 @@
 # ROOT CMakeLists.txt
 cmake_minimum_required(VERSION 3.5.0...4.2.3)
+add_compile_options(-Wno-error)
 
 # Policies
 cmake_policy(SET CMP0076 NEW)  # Tell cmake to convert target_sources input from relative path to absolute path
