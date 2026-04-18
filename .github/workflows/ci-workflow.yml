@@ -67,18 +67,18 @@ jobs:
           VERSION=$(echo "${{ matrix.cfg.cc }}" | sed 's/clang-//')
           echo "/usr/lib/llvm-$VERSION/bin" >> $GITHUB_PATH
           
-      - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-        env:
-          CC: ${{ matrix.cfg.cc }}
-          CXX: ${{ matrix.cfg.cxx }}
-
       - name: Bootstrap depot_tools (Crashpad fix)
         run: |
           cd main/build/_deps/depot_tools-src
           git pull || true
           python3 ensure_bootstrap.py || true
           python3 bootstrap_python3.py || true
+          
+      - name: Generate CMake
+        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+        env:
+          CC: ${{ matrix.cfg.cc }}
+          CXX: ${{ matrix.cfg.cxx }}
 
       - name: Build Project
         run: cd main/build && ninja
