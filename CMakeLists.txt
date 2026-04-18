@@ -1,6 +1,8 @@
 # ROOT CMakeLists.txt
 cmake_minimum_required(VERSION 3.5.0...4.2.3)
 
+list(APPEND CMAKE_MODULE_PATH "CMake/Helpers")
+
 # Policies
 cmake_policy(SET CMP0076 NEW)  # Tell cmake to convert target_sources input from relative path to absolute path
 cmake_policy(SET CMP0077 NEW)  # Tell cmake to allow variables set through "set" and "option" to be compatible with each other
