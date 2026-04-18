@@ -83,9 +83,14 @@ jobs:
           CC: ${{ matrix.cfg.cc }}
           CXX: ${{ matrix.cfg.cxx }}
 
+      - name: Bootstrap CMake depot_tools
+        run: |
+          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
+          
+
       - name: Build Project
         run: cd main/build && ninja
-        
+
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
         run: cd main/build && cpack
