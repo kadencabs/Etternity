@@ -262,7 +262,7 @@ jobs:
       - name: Setup Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: '3.11'
       
       - name: Update CPack Environment
         if: ${{matrix.cfg.dist}}
@@ -495,7 +495,7 @@ jobs:
         run: |
           if exist "main\build\_deps\depot_tools-src" (
             cd main\build\_deps\depot_tools-src
-            python3 update_depot_tools.py
+            call update_depot_tools.bat
           )
 
       - name: Build Project
