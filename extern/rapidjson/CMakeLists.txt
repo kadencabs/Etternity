@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0...4.2.3)
 if(POLICY CMP0025)
   # detect Apple's Clang
   cmake_policy(SET CMP0025 NEW)
@@ -164,7 +164,7 @@ if(RAPIDJSON_BUILD_DOC)
 endif()
 
 add_custom_target(travis_doc)
-add_custom_command(TARGET travis_doc
+add_custom_command(TARGET travis_doc POST_BUILD
     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/travis-doxygen.sh)
 
 if(RAPIDJSON_BUILD_EXAMPLES)
