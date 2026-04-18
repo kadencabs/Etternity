@@ -1,0 +1,15 @@
+Etterna has a few compile flags that are helpful to know, as well as one
+inherited from sm-ssc that should be nuked.
+
+================================================================================
+Etterna:
+================================================================================
+WITHOUT_NETWORKING
+Disables all networking stuff (e.g. Etterna Online).
+--------------------------------------------------------------------------------
+
+================================================================================
+sm-ssc:
+================================================================================
+SSC_FUTURES
+A highly deprecated thing. Anything related to this flag should be removed.
