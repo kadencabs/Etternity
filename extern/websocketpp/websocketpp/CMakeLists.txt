@@ -1,3 +1,5 @@
+include(FetchContent)
+
 # === boost ===
 set(BOOST_ROOT "C:/Users/kaden/Documents/GitHub/Etternity/extern/websocketpp/websocketpp/boost")
 
