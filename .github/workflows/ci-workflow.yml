@@ -461,7 +461,7 @@ jobs:
           
       - name: Setup Python 2.7
         uses: MatteoH2O1999/setup-python@v1.4.1
-       with:
+        with:
           python-version: '2.7'
 
       - name: Install chocolatey packages (i386)
