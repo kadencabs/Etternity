@@ -459,10 +459,10 @@ jobs:
         with:
           python-version: '3.8'
           
-#      - name: Setup Python 2.7
-#        uses: MatteoH2O1999/setup-python@v1.4.1
-#       with:
-#          python-version: '2.7'
+      - name: Setup Python 2.7
+        uses: MatteoH2O1999/setup-python@v1.4.1
+       with:
+          python-version: '2.7'
 
       - name: Install chocolatey packages (i386)
         if: ${{ matrix.cfg.arch == 'x86' }}
