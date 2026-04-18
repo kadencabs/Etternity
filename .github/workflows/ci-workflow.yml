@@ -254,10 +254,10 @@ jobs:
       - name: Install homebrew packages
         run: brew install cmake nasm ninja openssl
 
-      - name: Setup Python 2.7
-        uses: MatteoH2O1999/setup-python@v1.4.1
-        with:
-          python-version: '2.7'
+#      - name: Setup Python 2.7
+#        uses: MatteoH2O1999/setup-python@v1.4.1
+#        with:
+#          python-version: '2.7'
 
       - name: Setup Python 3
         uses: actions/setup-python@v4
@@ -443,10 +443,10 @@ jobs:
         with:
           python-version: '3.8'
           
-      - name: Setup Python 2.7
-        uses: MatteoH2O1999/setup-python@v1.4.1
-        with:
-          python-version: '2.7'
+#      - name: Setup Python 2.7
+#        uses: MatteoH2O1999/setup-python@v1.4.1
+#       with:
+#          python-version: '2.7'
 
       - name: Install chocolatey packages (i386)
         if: ${{ matrix.cfg.arch == 'x86' }}
@@ -475,8 +475,11 @@ jobs:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
       - name: Bootstrap depot_tools (Crashpad fix)
-        working-directory: main/build/_deps/depot_tools-src
-        run: python3 bootstrap_python3.py
+        shell: cmd
+        run: |
+          if exist "main\build\_deps\depot_tools-src" (
+            main\build\_deps\depot_tools-src\ensure_bootstrap.bat
+          )
 
       - name: Build Project
         run: cd main/build && ninja
