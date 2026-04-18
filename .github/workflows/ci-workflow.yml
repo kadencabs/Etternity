@@ -252,7 +252,7 @@ jobs:
       matrix:
         cfg:
           #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-13,     name: "Ventura", dist: true}
+          - { os: macos-15-intel,     name: "Sequoia", dist: true}
           #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
           #- { os: macos-11,     name: "Big Sur",  dist: true} # rendered useless by GHA
 
@@ -356,7 +356,7 @@ jobs:
       matrix:
         cfg:
           #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-13,     name: "Ventura", dist: true}
+          - { os: macos-15-intel,     name: "Sequoia", dist: true}
           #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
           #- { os: macos-11,     name: "Big Sur",  dist: true}
 
