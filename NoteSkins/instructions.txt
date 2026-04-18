@@ -1,0 +1,23 @@
+How to Install Noteskins:
+
+1) Determine how the noteskins are packaged.
+
+path in archive         | extract to
+------------------------|-----------------------
+NoteSkins\dance\MyDance | Etterna root folder
+dance\MyDance           | NoteSkins folder
+MyDance                 | Whichever gametype folder (see Step 2)
+
+2) Figure out the game type if necessary.
+
+Valid gametypes:
+
+Name    | Description
+--------|------------
+dance   | Dance Dance Revolution + Solo (3, 4, 6 and 8(Double) Panels)
+pump    | Pump It Up (5, 3(Double), 10(Double))
+kb7     | DJMax 7 Keys/O2Jam (6 Keys + 1 Center)
+beat    | Beatmania (5, 7, 10(Double) and 14(double) Keys + Scratch)
+popn    | Pop'n Music (5 and 9 Keys)
+
+3) extract based on steps 1 and 2.
