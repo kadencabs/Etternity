@@ -54,6 +54,7 @@ jobs:
             xorg-dev libcurl4-openssl-dev \
             gcc-13 g++-13 \
             clang-16
+            clang-tools-16
 
       - name: Select compiler
         run: |
@@ -78,7 +79,7 @@ jobs:
         run: |
           mkdir -p main/build
           cd main/build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_SCAN_FOR_MODULES=OFF ..
         env:
           CC: ${{ matrix.cfg.cc }}
           CXX: ${{ matrix.cfg.cxx }}
