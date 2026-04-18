@@ -9,8 +9,20 @@ if(WIN32)
     string(APPEND CRASHPAD_HANDLER_EXE .exe)
 endif()
 
+# execute_process(
+#         COMMAND git describe --tags --dirty --long
+#         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#         OUTPUT_VARIABLE PROJECT_GIT_HASH
+#         OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(
-        COMMAND git describe --tags --dirty --long
+        COMMAND git describe --tags --dirty --always --long
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         OUTPUT_VARIABLE PROJECT_GIT_HASH
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        RESULT_VARIABLE GIT_RET
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+)
+
+if(NOT PROJECT_GIT_HASH)
+    set(PROJECT_GIT_HASH "unknown")
+endif()

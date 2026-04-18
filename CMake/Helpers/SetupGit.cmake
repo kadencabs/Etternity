@@ -1,7 +1,19 @@
 # Git Hash Info
-execute_process(COMMAND git describe --tags
+# execute_process(COMMAND git describe --tags
+#   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+#   OUTPUT_VARIABLE PRODUCT_GIT_HASH
+#   RESULT_VARIABLE ret
+#   OUTPUT_STRIP_TRAILING_WHITESPACE
+# )
+execute_process(
+  COMMAND git describe --tags --always
   WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
   OUTPUT_VARIABLE PRODUCT_GIT_HASH
   RESULT_VARIABLE ret
   OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_QUIET
 )
+
+if(NOT PRODUCT_GIT_HASH)
+  set(PRODUCT_GIT_HASH "unknown")
+endif()
