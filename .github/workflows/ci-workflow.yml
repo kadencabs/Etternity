@@ -38,10 +38,18 @@ jobs:
           fetch-depth: 0
 
       - name: Install apt packages
-        run: sudo apt update && sudo apt install ${{ matrix.cfg.cpp-version }} nasm ninja-build libglew-dev libxrandr-dev libxtst-dev libpulse-dev libasound-dev libogg-dev libvorbis-dev xorg-dev libcurl4-openssl-dev
+        run: |
+            sudo apt update
+            sudo apt install -y \
+            ${{ matrix.cfg.apt }} \
+            nasm ninja-build \
+            libglew-dev libxrandr-dev libxtst-dev \
+            libpulse-dev libasound-dev \
+            libogg-dev libvorbis-dev \
+            xorg-dev libcurl4-openssl-dev \
+            gcc ${{ matrix.cfg.cc }} \
+            g++ ${{ matrix.cfg.cxx }}
 
-      - name: Install apt packages
-        run: sudo apt update && sudo apt install ...
       - name: Bootstrap depot_tools (Crashpad fix)
         run: |
           cd main/build/_deps/depot_tools-src
