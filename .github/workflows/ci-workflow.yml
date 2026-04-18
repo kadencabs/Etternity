@@ -447,7 +447,7 @@ jobs:
       fail-fast: false # Don't cancel other matrix jobs if one fails
       matrix:
         cfg:
-        - { name: i386, arch: x86,  ssl-dir: 'C:\Program Files (x86)\OpenSSL-Win32' }
+#        - { name: i386, arch: x86,  ssl-dir: 'C:\Program Files (x86)\OpenSSL-Win32' }
         - { name: x64,  arch: x64,  ssl-dir: 'C:\Program Files\OpenSSL-Win64'}
 
     name: "Windows ${{matrix.cfg.name}}"
@@ -508,16 +508,18 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.cfg.arch }}
-
-      - name: Bootstrap depot_tools (Crashpad fix)
-        run: |
-          cd main/build/_deps/depot_tools-src
-          python bootstrap_python3.py
           
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
+
+      - name: Bootstrap depot_tools (Crashpad fix)
+        run: |
+          if (Test-Path "main/build/_deps/depot_tools-src") {
+            cd main/build/_deps/depot_tools-src
+            python bootstrap_python3.py
+          }          
 
       - name: Build Project
         run: cd main/build && ninja
