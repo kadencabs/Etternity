@@ -1,7 +1,0 @@
-# CMake generation dependency list for this directory.
-C:/Program Files/CMake/share/cmake-4.2/Modules/BasicConfigVersion-ExactVersion.cmake.in
-C:/Program Files/CMake/share/cmake-4.2/Modules/CMakePackageConfigHelpers.cmake
-C:/Program Files/CMake/share/cmake-4.2/Modules/WriteBasicConfigVersionFile.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/extern/websocketpp/CMakeHelpers.cmake
-C:/Users/kaden/Documents/GitHub/Etternity/extern/websocketpp/CMakeLists.txt
-C:/Users/kaden/Documents/GitHub/Etternity/extern/websocketpp/websocketpp-config.cmake.in
