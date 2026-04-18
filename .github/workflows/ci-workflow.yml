@@ -87,7 +87,7 @@ jobs:
         run: cd main/build && ninja
         env:
           PATH: ${{ github.workspace }}/depot_tools:${{ env.PATH }}
-          
+
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
         run: cd main/build && cpack
