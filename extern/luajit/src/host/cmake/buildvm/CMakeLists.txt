@@ -28,12 +28,20 @@ endif()
 
 find_library(LIBM_LIBRARIES NAMES m)
 
+# add_executable(buildvm
+#   ../../buildvm.c
+#   ../../buildvm_asm.c
+#   ../../buildvm_fold.c
+#   ../../buildvm_lib.c
+#   ../../buildvm_peobj.c)
+
 add_executable(buildvm
-  ../../buildvm.c
-  ../../buildvm_asm.c
-  ../../buildvm_fold.c
-  ../../buildvm_lib.c
-  ../../buildvm_peobj.c)
+  ${CMAKE_CURRENT_LIST_DIR}/../../buildvm.c
+  ${CMAKE_CURRENT_LIST_DIR}/../../buildvm_asm.c
+  ${CMAKE_CURRENT_LIST_DIR}/../../buildvm_fold.c
+  ${CMAKE_CURRENT_LIST_DIR}/../../buildvm_lib.c
+  ${CMAKE_CURRENT_LIST_DIR}/../../buildvm_peobj.c
+)
 
 target_compile_options(buildvm PRIVATE
   ${EXTRA_COMPILER_FLAGS} ${CXX_ARCH_FLAGS})
