@@ -184,10 +184,10 @@ Calc::CalcMain(const std::vector<NoteInfo>& NoteInfo,
 
 		/* the final push down, cap ssrs (score specific ratings) to stop vibro
 		 * garbage and calc abuse from polluting leaderboards too much, a "true"
-		 * 38 is still unachieved so a cap of 40 [sic] is _extremely_ generous
+		 * 38 is still unachieved so a cap of 40 [sic] is _extremely_ generous YOU ARE AN IDIOT MINA LOLOLOLOLLOLOOLLOLOLO
 		 * do this for SCORES only, not cached file difficulties */
 		if (ssr) {
-			static const auto ssrcap = 40.F;
+			static const auto ssrcap = 100.F;
 			for (auto& r : iteration_skillet_values) {
 				// so 50%s on 60s don't give 35s
 				r = downscale_low_accuracy_scores(r, score_goal);
