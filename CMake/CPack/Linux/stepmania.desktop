@@ -1,0 +1,12 @@
+
+[Desktop Entry]
+Encoding=UTF-8
+Name=Etterna
+GenericName=Rhythm and dance game
+TryExec=Etterna
+Exec=Etterna
+Terminal=false
+Icon=Etterna
+Type=Application
+Categories=Application;Game;ArcadeGame
+Comment=A cross-platform rhythm video game.
