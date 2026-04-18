@@ -13,14 +13,14 @@ jobs:
       fail-fast: false
       matrix:
         cfg:
-#          - { os: ubuntu-22.04, apt: g++-8,    cxx: g++-8,      cc: gcc-8,    dist: false}
-#          - { os: ubuntu-22.04, apt: g++-9,    cxx: g++-9,      cc: gcc-9,    dist: false}
-#          - { os: ubuntu-22.04, apt: g++-10,   cxx: g++-10,     cc: gcc-10,   dist: false}
+          - { os: ubuntu-22.04, apt: g++-8,    cxx: g++-8,      cc: gcc-8,    dist: false}
+          - { os: ubuntu-22.04, apt: g++-9,    cxx: g++-9,      cc: gcc-9,    dist: false}
+          - { os: ubuntu-22.04, apt: g++-10,   cxx: g++-10,     cc: gcc-10,   dist: false}
           - { os: ubuntu-22.04, apt: g++-13,   cxx: g++-13,     cc: gcc-13,   dist: false}
-#          - { os: ubuntu-22.04, apt: clang-9,  cxx: clang++-9,  cc: clang-9,  dist: false}
-#          - { os: ubuntu-22.04, apt: clang-10, cxx: clang++-10, cc: clang-10, dist: false}
-#          - { os: ubuntu-22.04, apt: clang-11, cxx: clang++-11, cc: clang-11, dist: false}
-#          - { os: ubuntu-22.04, apt: clang-12, cxx: clang++-12, cc: clang-12, dist: true}
+          - { os: ubuntu-22.04, apt: clang-9,  cxx: clang++-9,  cc: clang-9,  dist: false}
+          - { os: ubuntu-22.04, apt: clang-10, cxx: clang++-10, cc: clang-10, dist: false}
+          - { os: ubuntu-22.04, apt: clang-11, cxx: clang++-11, cc: clang-11, dist: false}
+          - { os: ubuntu-22.04, apt: clang-12, cxx: clang++-12, cc: clang-12, dist: true}
           - { os: ubuntu-22.04, apt: clang-16, cxx: clang++-16, cc: clang-16, dist: false}
 
     steps:
@@ -28,68 +28,20 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-          fetch-depth: 0
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
         with:
           repository: etternagame/CrashpadTools
           path: tools
-          fetch-depth: 0
 
-      - name: Install dependencies + toolchains
-        run: |
-          sudo apt update
-          sudo apt install -y wget gnupg lsb-release software-properties-common
-          wget https://apt.llvm.org/llvm.sh
-          chmod +x llvm.sh
-          sudo ./llvm.sh 16
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo apt update
-          sudo apt install -y \
-            nasm ninja-build \
-            libglew-dev libxrandr-dev libxtst-dev \
-            libpulse-dev libasound-dev \
-            libogg-dev libvorbis-dev \
-            xorg-dev libcurl4-openssl-dev \
-            gcc-13 g++-13 \
-            clang-16
-
-      - name: Select compiler
-        run: |
-          echo "CC=${{ matrix.cfg.cc }}" >> $GITHUB_ENV
-          echo "CXX=${{ matrix.cfg.cxx }}" >> $GITHUB_ENV
-
-
-      - name: Fix clang PATH
-        if: contains(matrix.cfg.cc, 'clang')
-        run: |
-          VERSION=$(echo "${{ matrix.cfg.cc }}" | sed 's/clang-//')
-          echo "/usr/lib/llvm-$VERSION/bin" >> $GITHUB_PATH
+      - name: Install apt packages
+        run: sudo apt update && sudo apt install ${{ matrix.cfg.cpp-version }} nasm ninja-build libglew-dev libxrandr-dev libxtst-dev libpulse-dev libasound-dev libogg-dev libvorbis-dev xorg-dev libcurl4-openssl-dev
 
       - name: Generate CMake
-        run: |
-          mkdir -p main/build
-          cd main/build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_SCAN_FOR_MODULES=OFF ..
+        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
         env:
-          CC: ${{ matrix.cfg.cc }}
-          CXX: ${{ matrix.cfg.cxx }}
-
-      - name: Bootstrap depot_tools (Crashpad fix)
-        run: |
-          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
-          cd $GITHUB_WORKSPACE/depot_tools
-          python3 update_depot_tools || true
-          echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
-
-      - name: Bootstrap CMake depot_tools
-        run: |
-          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
-
-      - name: Fix crashpad buildtools permissions
-        run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/linux64/gn
+          CXX: ${{matrix.cfg.cpp-version}}
 
       - name: Build Project
         run: cd main/build && ninja
@@ -131,6 +83,16 @@ jobs:
           name: Etterna Symbols Linux x64 - ${{github.sha}}
           path: '${{github.workspace}}/sym/EtternaSymbolsUploadDir'
 
+      - name: Get version for CrashServer Upload
+        id: get_version
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      
+      - name: Upload Symbols to Crash Server
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: symupload ${{github.workspace}}/sym/Etterna.sym "https://crash.etterna.dev/api/symbol/upload?api_key=${{secrets.CRASHSERVER_API_KEY}}&version=${{steps.get_version.outputs.VERSION}}"
+
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
         if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
@@ -152,14 +114,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-          fetch-depth: 0
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
         with:
           repository: etternagame/CrashpadTools
           path: tools
-          fetch-depth: 0
 
       - name: Install homebrew packages
         run: brew install cmake nasm ninja openssl
@@ -218,6 +178,16 @@ jobs:
           name: Etterna Symbols Mac aarch64 - ${{github.sha}}
           path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
 
+      - name: Get version for CrashServer Upload
+        id: get_version
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Upload Symbols to Crash Server
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: symupload ${{github.workspace}}/main/Etterna.sym "https://crash.etterna.dev/api/symbol/upload?api_key=${{secrets.CRASHSERVER_API_KEY}}&version=${{ steps.get_version.outputs.VERSION }}"
+
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
         if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
@@ -232,7 +202,7 @@ jobs:
       matrix:
         cfg:
           #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-15-intel,     name: "Sequoia", dist: true}
+          - { os: macos-13,     name: "Ventura", dist: true}
           #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
           #- { os: macos-11,     name: "Big Sur",  dist: true} # rendered useless by GHA
 
@@ -242,22 +212,20 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-          fetch-depth: 0
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
         with:
           repository: etternagame/CrashpadTools
           path: tools
-          fetch-depth: 0
 
       - name: Install homebrew packages
         run: brew install cmake nasm ninja openssl
 
-#      - name: Setup Python 2.7
-#        uses: MatteoH2O1999/setup-python@v1.4.1
-#        with:
-#          python-version: '2.7'
+      - name: Setup Python 2.7
+        uses: MatteoH2O1999/setup-python@v1.4.1
+        with:
+          python-version: '2.7'
 
       - name: Setup Python 3
         uses: actions/setup-python@v4
@@ -272,14 +240,6 @@ jobs:
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
 
-      - name: Fix crashpad buildtools permissions
-        run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
-
-      - name: Bootstrap CMake depot_tools
-        run: |
-          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
-        
       - name: Build Project
         run: cd main/build && ninja
 
@@ -321,6 +281,16 @@ jobs:
           name: Etterna Symbols Mac x64 - ${{github.sha}}
           path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
 
+      - name: Get version for CrashServer Upload
+        id: get_version
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Upload Symbols to Crash Server
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: symupload ${{github.workspace}}/main/Etterna.sym "https://crash.etterna.dev/api/symbol/upload?api_key=${{secrets.CRASHSERVER_API_KEY}}&version=${{ steps.get_version.outputs.VERSION }}"
+
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
         if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
@@ -334,7 +304,7 @@ jobs:
       matrix:
         cfg:
           #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-15-intel,     name: "Sequoia", dist: true}
+          - { os: macos-13,     name: "Ventura", dist: true}
           #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
           #- { os: macos-11,     name: "Big Sur",  dist: true}
 
@@ -344,14 +314,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: main
-          fetch-depth: 0
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
         with:
           repository: etternagame/CrashpadTools
           path: tools
-          fetch-depth: 0
 
       - name: Install homebrew packages
         run: brew install cmake nasm ninja && brew tap etternagame/etterna && brew update && HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
@@ -363,14 +331,6 @@ jobs:
 
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra -DWITH_CRASHPAD=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
-      
-      - name: Fix crashpad buildtools permissions
-        run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
-
-      - name: Bootstrap CMake depot_tools
-        run: |
-          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
 
       - name: Build Project
         run: cd main/build && ninja
@@ -413,6 +373,16 @@ jobs:
           name: Etterna Symbols Mac HighSierra - ${{github.sha}}
           path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
 
+      - name: Get version for CrashServer Upload
+        id: get_version
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Upload Symbols to Crash Server
+        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+        run: symupload ${{github.workspace}}/main/Etterna.sym "https://crash.etterna.dev/api/symbol/upload?api_key=${{secrets.CRASHSERVER_API_KEY}}&version=${{ steps.get_version.outputs.VERSION }}"
+
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
         if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
@@ -427,27 +397,24 @@ jobs:
         - { name: x64,  arch: x64,  ssl-dir: 'C:\Program Files\OpenSSL-Win64'}
 
     name: "Windows ${{matrix.cfg.name}}"
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: Checkout Etterna
         uses: actions/checkout@v3
         with:
           path: main
-          fetch-depth: 0
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
         with:
           repository: etternagame/CrashpadTools
           path: tools
-          fetch-depth: 0
 
       - name: Checkout DirectX SDK
         uses: actions/checkout@v3
         with:
           repository: nico-abram/dxsdk
           path: dxsdk
-          fetch-depth: 0
 
       - name: Update Environment Variables
         run: |
@@ -459,14 +426,14 @@ jobs:
         with:
           python-version: '3.8'
           
-#      - name: Setup Python 2.7
-#        uses: MatteoH2O1999/setup-python@v1.4.1
-#       with:
-#          python-version: '2.7'
+      - name: Setup Python 2.7
+        uses: MatteoH2O1999/setup-python@v1.4.1
+        with:
+          python-version: '2.7'
 
       - name: Install chocolatey packages (i386)
         if: ${{ matrix.cfg.arch == 'x86' }}
-        run: choco install ninja nsis -y --x86
+        run: choco install ninja nsis curl -y --x86
       
       - name: Install openSSL (i386)
         if: ${{ matrix.cfg.arch == 'x86' }}
@@ -484,19 +451,11 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.cfg.arch }}
-          
+
       - name: Generate CMake
         run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
-
-      - name: Bootstrap CMake depot_tools
-        shell: cmd
-        run: |
-          if exist "main\build\_deps\depot_tools-src" (
-            cd main\build\_deps\depot_tools-src
-            python3 update_depot_tools.py
-          )
 
       - name: Build Project
         run: cd main/build && ninja
@@ -528,6 +487,15 @@ jobs:
         with:
           name: Etterna Symbols win${{matrix.cfg.name}} - ${{github.sha}}
           path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+
+      - name: Get version for CrashServer Upload
+        id: get_version
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: $tag="${{ github.ref }}".Split('/')[-1]; echo "::set-output name=VERSION::$tag"
+
+      - name: Upload Symbols to Crash Server
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: curl --request POST -F symbol_file=@${{github.workspace}}/main/Etterna.sym "https://crash.etterna.dev/api/symbol/upload?api_key=${{ secrets.CRASHSERVER_API_KEY }}&version=${{ steps.get_version.outputs.VERSION }}"
 
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
