@@ -93,5 +93,22 @@ list(APPEND EXT_TARGETS
 list(APPEND LUA_TARGETS luajit libluajit minilua buildvm)
 
 ## Sort all extern libraries to a IDE folder/filter
+## set_property(TARGET ${EXT_TARGETS} PROPERTY FOLDER "External Libraries")
+## set_property(TARGET ${LUA_TARGETS} PROPERTY FOLDER "External Libraries/Lua 5.1")
+
+list(APPEND LUA_TARGETS luajit libluajit minilua buildvm)
+
+## Sort all extern libraries to a IDE folder/filter
 set_property(TARGET ${EXT_TARGETS} PROPERTY FOLDER "External Libraries")
-set_property(TARGET ${LUA_TARGETS} PROPERTY FOLDER "External Libraries/Lua 5.1")
+
+set(EXISTING_LUA_TARGETS)
+
+foreach(t ${LUA_TARGETS})
+    if(TARGET ${t})
+        list(APPEND EXISTING_LUA_TARGETS ${t})
+    endif()
+endforeach()
+
+set_property(TARGET ${EXISTING_LUA_TARGETS}
+    PROPERTY FOLDER "External Libraries/Lua 5.1"
+)
