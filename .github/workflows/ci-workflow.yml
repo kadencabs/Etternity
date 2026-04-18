@@ -89,7 +89,7 @@ jobs:
 
       - name: Fix crashpad buildtools permissions
         run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/crashpad/buildtools/linux64/gn
+          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/linux64/gn
 
       - name: Build Project
         run: cd main/build && ninja
