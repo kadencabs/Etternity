@@ -54,7 +54,6 @@ jobs:
             xorg-dev libcurl4-openssl-dev \
             gcc-13 g++-13 \
             clang-16
-            clang-tools-16
 
       - name: Select compiler
         run: |
