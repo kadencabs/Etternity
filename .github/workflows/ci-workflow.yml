@@ -211,7 +211,9 @@ jobs:
 
       - name: Prepare symbols for upload artifacts
         if: ${{matrix.cfg.dist}}
-        run: cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
+        run: |
+          chmod +x main/.ci/prepare_symbols.py
+          cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
 
       - name: Upload Symbols to action artifacts
         if: ${{matrix.cfg.dist}}
@@ -245,6 +247,10 @@ jobs:
         with:
           path: main
           fetch-depth: 0
+
+      - name: Patch ffmpeg to not require nasm
+        run: |
+          find main -name "*.cmake" -exec grep -l "ffmpeg" {} \; | xargs sed -i '' 's/--enable-sse/--disable-yasm --enable-sse/g'
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
@@ -369,7 +375,7 @@ jobs:
           brew unlink openssl@3 || true
           brew unlink openssl@1.1 || true
           brew tap etternagame/etterna
-          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
+          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra || true
 
       - name: Add nasm to PATH
         run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
@@ -380,7 +386,7 @@ jobs:
           echo "ETT_MAC_SYS_NAME=High-Sierra" >> $GITHUB_ENV
 
       - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra -DWITH_CRASHPAD=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
+        run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_CRASHPAD=OFF -G Ninja ..
       
       - name: Fix crashpad buildtools permissions
         run: |
