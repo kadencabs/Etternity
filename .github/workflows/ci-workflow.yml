@@ -1,4 +1,4 @@
-name: Etterna CI
+name: Etternity CI
 on:
   push:
   pull_request:
@@ -24,7 +24,7 @@ jobs:
           - { os: ubuntu-22.04, apt: clang-16, cxx: clang++-16, cc: clang-16, dist: false}
 
     steps:
-      - name: Checkout Etterna
+      - name: Checkout Etternity
         uses: actions/checkout@v3
         with:
           path: main
@@ -102,7 +102,7 @@ jobs:
         if: ${{matrix.cfg.dist}}
         uses: actions/upload-artifact@v4
         with:
-          name: "Etterna - Linux x64"
+          name: "Etternity - Linux x64"
           path: '${{github.workspace}}/main/build/*.tar.gz'
 
       - name: Update Environment Variables
@@ -114,11 +114,11 @@ jobs:
         run: |
           echo "Running objcopy..."
           mkdir ${{github.workspace}}/sym
-          objcopy --only-keep-debug ${{github.workspace}}/main/Etterna ${{github.workspace}}/sym/Etterna
+          objcopy --only-keep-debug ${{github.workspace}}/main/Etternity ${{github.workspace}}/sym/Etternity
           echo "Dumping Symbols..."
-          dump_syms ${{github.workspace}}/sym/Etterna ${{github.workspace}}/main/Etterna > ${{github.workspace}}/sym/Etterna.sym
+          dump_syms ${{github.workspace}}/sym/Etternity ${{github.workspace}}/main/Etternity > ${{github.workspace}}/sym/Etternity.sym
           echo "Stripping debug symbols from binary..."
-          strip ${{github.workspace}}/main/Etterna
+          strip ${{github.workspace}}/main/Etternity
       
       - name: Prepare symbols for upload artifacts
         if: ${{matrix.cfg.dist}}
@@ -128,8 +128,8 @@ jobs:
         if: ${{matrix.cfg.dist}}
         uses: actions/upload-artifact@v4
         with:
-          name: Etterna Symbols Linux x64 - ${{github.sha}}
-          path: '${{github.workspace}}/sym/EtternaSymbolsUploadDir'
+          name: Etternity Symbols Linux x64 - ${{github.sha}}
+          path: '${{github.workspace}}/sym/EtternitySymbolsUploadDir'
 
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
@@ -148,7 +148,7 @@ jobs:
 
     steps:
 
-      - name: Checkout Etterna
+      - name: Checkout Etternity
         uses: actions/checkout@v3
         with:
           path: main
@@ -190,24 +190,24 @@ jobs:
         if: ${{matrix.cfg.dist}}
         uses: actions/upload-artifact@v4
         with:
-          name: "Etterna - macOS aarch64"
+          name: "Etternity - macOS aarch64"
           path: '${{github.workspace}}/main/build/*.dmg'
 
       - name: Update Environment Variables
         if: ${{matrix.cfg.dist}}
         run: |
           echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-          echo "ETTERNA_ARCH=aarch64" >> $GITHUB_ENV
+          echo "Etternity_ARCH=aarch64" >> $GITHUB_ENV
 
       - name: Generate Symbols
         if: ${{matrix.cfg.dist}}
         run: |
           echo "Running dsymutil..."
-          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
+          dsymutil -o ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > /dev/null
           echo "Dumping Symbols..."
-          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
+          dump_syms ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > ${{github.workspace}}/main/Etternity.sym
           echo "Stripping debug symbols from binary..."
-          strip main/Etterna.app/Contents/MacOS/Etterna
+          strip main/Etternity.app/Contents/MacOS/Etternity
 
       - name: Prepare symbols for upload artifacts
         if: ${{matrix.cfg.dist}}
@@ -219,8 +219,8 @@ jobs:
         if: ${{matrix.cfg.dist}}
         uses: actions/upload-artifact@v4
         with:
-          name: Etterna Symbols Mac aarch64 - ${{github.sha}}
-          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+          name: Etternity Symbols Mac aarch64 - ${{github.sha}}
+          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
 
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1
@@ -242,7 +242,7 @@ jobs:
 #
 #    steps:
 #
-#      - name: Checkout Etterna
+#      - name: Checkout Etternity
 #        uses: actions/checkout@v3
 #        with:
 #          path: main
@@ -334,24 +334,24 @@ jobs:
 #        if: ${{matrix.cfg.dist}}
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: "Etterna - macOS x64"
+#          name: "Etternity - macOS x64"
 #          path: '${{github.workspace}}/main/build/*.dmg'
 #
 #      - name: Update Environment Variables
 #        if: ${{matrix.cfg.dist}}
 #        run: |
 #          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-#          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
+#          echo "Etternity_ARCH=x64" >> $GITHUB_ENV
 #
 #      - name: Generate Symbols
 #        if: ${{matrix.cfg.dist}}
 #        run: |
 #          echo "Running dsymutil..."
-#          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
+#          dsymutil -o ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > /dev/null
 #          echo "Dumping Symbols..."
-#          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
+#          dump_syms ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > ${{github.workspace}}/main/Etternity.sym
 #          echo "Stripping debug symbols from binary..."
-#          strip main/Etterna.app/Contents/MacOS/Etterna
+#          strip main/Etternity.app/Contents/MacOS/Etternity
 #
 #      - name: Prepare symbols for upload artifacts
 #        if: ${{matrix.cfg.dist}}
@@ -361,8 +361,8 @@ jobs:
 #        if: ${{matrix.cfg.dist}}
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: Etterna Symbols Mac x64 - ${{github.sha}}
-#          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+#          name: Etternity Symbols Mac x64 - ${{github.sha}}
+#          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
 #
 #      - name: Upload files to Release
 #        uses: softprops/action-gh-release@v1
@@ -383,7 +383,7 @@ jobs:
 #
 #    steps:
 #
-#      - name: Checkout Etterna
+#      - name: Checkout Etternity
 #        uses: actions/checkout@v3
 #        with:
 #          path: main
@@ -402,8 +402,8 @@ jobs:
 #          brew link --force nasm
 #          brew unlink openssl@3 || true
 #          brew unlink openssl@1.1 || true
-#          brew tap etternagame/etterna
-#          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra || true
+#          brew tap etternagame/Etternity
+#          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/Etternity/openssl@1.1_osx_high_sierra || true
 #
 #      - name: Add nasm to PATH
 #        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
@@ -453,24 +453,24 @@ jobs:
 #        if: ${{matrix.cfg.dist}}
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: "Etterna - OSX High Sierra (Legacy)"
+#          name: "Etternity - OSX High Sierra (Legacy)"
 #          path: '${{github.workspace}}/main/build/*.dmg'
 #
 #      - name: Update Environment Variables
 #        if: ${{matrix.cfg.dist}}
 #        run: |
 #          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-#          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
+#          echo "Etternity_ARCH=x64" >> $GITHUB_ENV
 #
 #      - name: Generate Symbols
 #        if: ${{matrix.cfg.dist}}
 #        run: |
 #          echo "Running dsymutil..."
-#          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
+#          dsymutil -o ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > /dev/null
 #          echo "Dumping Symbols..."
-#          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
+#          dump_syms ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > ${{github.workspace}}/main/Etternity.sym
 #          echo "Stripping debug symbols from binary..."
-#          strip main/Etterna.app/Contents/MacOS/Etterna
+#          strip main/Etternity.app/Contents/MacOS/Etternity
 #
 #      - name: Prepare symbols for upload artifacts
 #        if: ${{matrix.cfg.dist}}
@@ -480,8 +480,8 @@ jobs:
 #        if: ${{matrix.cfg.dist}}
 #        uses: actions/upload-artifact@v4
 #        with:
-#          name: Etterna Symbols Mac HighSierra - ${{github.sha}}
-#          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+#          name: Etternity Symbols Mac HighSierra - ${{github.sha}}
+#          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
 #
 #      - name: Upload files to Release
 #        uses: softprops/action-gh-release@v1
@@ -499,7 +499,7 @@ jobs:
     name: "Windows ${{matrix.cfg.name}}"
     runs-on: windows-latest
     steps:
-      - name: Checkout Etterna
+      - name: Checkout Etternity
         uses: actions/checkout@v3
         with:
           path: main
@@ -534,7 +534,7 @@ jobs:
       - name: Update Environment Variables
         run: |
           echo "${{github.workspace}}/tools/win/" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "ETTERNA_ARCH=${{matrix.cfg.name}}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "Etternity_ARCH=${{matrix.cfg.name}}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Setup Python 3
         uses: actions/setup-python@v4
@@ -597,13 +597,13 @@ jobs:
       - name: Upload Binary
         uses: actions/upload-artifact@v4
         with:
-          name: "Etterna - Windows ${{matrix.cfg.name}}"
+          name: "Etternity - Windows ${{matrix.cfg.name}}"
           path: '${{github.workspace}}/main/build/*.exe'
 
       - name: Generate Symbols
         run: |
           echo "Dumping Symbols..."
-          dump_syms.exe main/Program/Etterna.pdb > ${{github.workspace}}/main/Etterna.sym
+          dump_syms.exe main/Program/Etternity.pdb > ${{github.workspace}}/main/Etternity.sym
 
       - name: Setup Python 3
         uses: actions/setup-python@v4
@@ -616,8 +616,8 @@ jobs:
       - name: Upload Symbols to action artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Etterna Symbols win${{matrix.cfg.name}} - ${{github.sha}}
-          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+          name: Etternity Symbols win${{matrix.cfg.name}} - ${{github.sha}}
+          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
 
       - name: Upload files to Release
         uses: softprops/action-gh-release@v1

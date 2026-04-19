@@ -2,7 +2,7 @@
 #import "LoadingWindow_MacOSX.h"
 #import "RageUtil/Utils/RageUtil.h"
 #import "RageUtil/File/RageFile.h"
-#import "Etterna/Singletons/ThemeManager.h"
+#import "Etternity/Singletons/ThemeManager.h"
 #import "Core/Misc/AppInfo.hpp"
 
 @interface LoadingWindowHelper : NSObject
