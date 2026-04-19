@@ -307,18 +307,19 @@ jobs:
 
       - name: Bootstrap CMake depot_tools
         run: |
-          if [ -f "${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap" ]; then
-            bash "${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap"
+          BOOT="${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap"
+          if [ -f "$BOOT" ]; then
+            bash "$BOOT"
           else
             echo "depot_tools not present, skipping bootstrap"
           fi
               
-            - name: Build Project
-              run: |
-                export PATH="$(brew --prefix nasm)/bin:$PATH"
-                which nasm
-                nasm -v
-                cd main/build && ninja
+      - name: Build Project
+        run: |
+          export PATH="$(brew --prefix nasm)/bin:$PATH"
+          which nasm
+          nasm -v
+          cd main/build && ninja
 
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
