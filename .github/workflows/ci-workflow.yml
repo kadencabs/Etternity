@@ -254,6 +254,9 @@ jobs:
       - name: Install homebrew packages
         run: brew install cmake nasm ninja openssl
 
+      - name: Add nasm to PATH
+        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH        
+
 #      - name: Setup Python 2.7
 #        uses: MatteoH2O1999/setup-python@v1.4.1
 #        with:
@@ -356,6 +359,9 @@ jobs:
       - name: Install homebrew packages
         run: brew install cmake nasm ninja && brew tap etternagame/etterna && brew update && HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
 
+      - name: Add nasm to PATH
+        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
+
       - name: Update CPack Environment
         if: ${{matrix.cfg.dist}}
         run: |
@@ -434,6 +440,12 @@ jobs:
         with:
           path: main
           fetch-depth: 0
+
+      - name: Fix crashpad Python 2 syntax
+        shell: powershell
+        run: |
+          $file = "main/extern/crashpad/crashpad/third_party/mini_chromium/mini_chromium/build/win_helper.py"
+          (Get-Content $file) | ForEach-Object { $_ -replace '^(\s*)print (.+)$', '$1print($2)' } | Set-Content $file          
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
