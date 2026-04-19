@@ -9,15 +9,16 @@
 /out/
 
 # Ignore executables (Linux, macOS, Windows)
-/Etterna
-/Etterna-debug
-/Etterna-MinSizeRelease
-/Etterna-RelWithDebInfo
+/Etternity
+/Etternity-debug
+/Etternity-MinSizeRelease
+/Etternity-RelWithDebInfo
 /*.app
 /*.exe
 
-# Etterna Related Ignore
+# Etternity Related Ignore
 /Cache/
+/Compiled/
 /Logs/
 /Program/
 /Save/
