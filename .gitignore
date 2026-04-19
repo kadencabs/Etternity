@@ -22,7 +22,7 @@
 /Program/
 /Save/
 /Screenshots/
-/Songs/
+#/Songs/
 
 # Misc Ignores
 /CrashData

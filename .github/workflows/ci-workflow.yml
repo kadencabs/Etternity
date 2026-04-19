@@ -429,7 +429,7 @@ jobs:
       fail-fast: false # Don't cancel other matrix jobs if one fails
       matrix:
         cfg:
-        - { name: i386, arch: x86,  ssl-dir: 'C:\Program Files (x86)\OpenSSL-Win32' }
+        - { name: i386, arch: x86,  ssl-dir: 'C:\OpenSSL-x86' }
         - { name: x64,  arch: x64,  ssl-dir: 'C:\Program Files\OpenSSL'}
 
     name: "Windows ${{matrix.cfg.name}}"
@@ -486,9 +486,13 @@ jobs:
         if: ${{ matrix.cfg.arch == 'x86' }}
         run: choco install ninja nsis -y --x86
       
-#      - name: Install openSSL (i386)
-#        if: ${{ matrix.cfg.arch == 'x86' }}
-#        run: choco install openssl --version=1.1.1.2100 -y --x86
+      - name: Install openSSL (i386)
+        if: ${{ matrix.cfg.arch == 'x86' }}
+        shell: powershell
+        run: |
+          $url = "https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w-x86.exe"
+          Invoke-WebRequest -Uri $url -OutFile "openssl-x86.exe"
+          Start-Process -FilePath "openssl-x86.exe" -ArgumentList "/SILENT /DIR=C:\OpenSSL-x86" -Wait
 
       - name: Install chocolatey packages (x64)
         if: ${{ matrix.cfg.arch == 'x64' }}
@@ -508,7 +512,7 @@ jobs:
         run: |
           mkdir main/build
           cd main/build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR="${{matrix.cfg.ssl-dir}}" ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
