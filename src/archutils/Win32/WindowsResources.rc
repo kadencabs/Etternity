@@ -167,7 +167,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON                ICON                    "Etterna.ICO"
+IDI_ICON                ICON                    "Etternity.ICO"
 
 IDI_ICON1               ICON                    "smzip.ico"
 
@@ -194,14 +194,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "Etterna Team \n http://etternaonline.com/"
-            VALUE "FileDescription", "Etterna"
-            VALUE "FileVersion", "0, 0, 6, 0"
-            VALUE "InternalName", "Etterna"
-            VALUE "LegalCopyright", "Copyright ? 2016-2018"
-            VALUE "OriginalFilename", "Etterna.exe"
-            VALUE "ProductName", "Etterna"
-            VALUE "ProductVersion", "0, 0, 6, 0"
+            VALUE "CompanyName", "Etternity Team"
+            VALUE "FileDescription", "Etternity"
+            VALUE "FileVersion", "0, 0, 1, 0"
+            VALUE "InternalName", "Etternity"
+            VALUE "LegalCopyright", "Copyright ? 2016-2026"
+            VALUE "OriginalFilename", "Etternity.exe"
+            VALUE "ProductName", "Etternity"
+            VALUE "ProductVersion", "0, 0, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
