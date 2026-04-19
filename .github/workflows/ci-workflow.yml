@@ -266,7 +266,6 @@ jobs:
       - name: Install homebrew packages
         run: |
           brew install cmake nasm ninja openssl
-          brew link --force nasm
 
       - name: Add nasm to PATH
         run: |
@@ -287,8 +286,20 @@ jobs:
         run: |
           echo "ETT_MAC_SYS_NAME=Darwin-x64" >> $GITHUB_ENV
 
+      - name: Force NASM availability for CMake/FFmpeg
+        run: |
+          echo "PATH=$(brew --prefix nasm)/bin:$PATH" >> $GITHUB_ENV
+          echo "NASM=$(which nasm)" >> $GITHUB_ENV
+
       - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DCMAKE_BUILD_TYPE=RelWithDebInfo -G Ninja ..
+        run: |
+          mkdir main/build && cd main/build
+          export PATH="$(brew --prefix nasm)/bin:$PATH"
+          export NASM="$(which nasm)"
+          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DWITH_CRASHPAD=OFF \
+            -G Ninja ..
 
       - name: Fix crashpad buildtools permissions
         run: |
@@ -406,10 +417,12 @@ jobs:
 #          fi
 
       - name: Build Project
-        run: export PATH="$(brew --prefix nasm)/bin:$PATH"
-             which nasm
-             nasm -v
-             cd main/build && ninja
+        run: |
+          export PATH="$(brew --prefix nasm)/bin:$PATH"
+          which nasm
+          nasm -v
+          cd main/build
+          ninja
              
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
