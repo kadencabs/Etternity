@@ -182,7 +182,9 @@ jobs:
 
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
-        run: cd main/build && sudo cpack
+        run: |
+          chmod +x main/CMake/Helpers/hdiutil_repeat.sh
+          cd main/build && cpack
 
       - name: Upload Binary
         if: ${{matrix.cfg.dist}}
@@ -252,7 +254,9 @@ jobs:
           fetch-depth: 0
 
       - name: Install homebrew packages
-        run: brew install cmake nasm ninja openssl
+        run: |
+          brew install cmake nasm ninja openssl
+          brew link --force nasm
 
       - name: Add nasm to PATH
         run: |
@@ -361,10 +365,11 @@ jobs:
       - name: Install homebrew packages
         run: |
           brew install cmake nasm ninja
+          brew link --force nasm
           brew unlink openssl@3 || true
+          brew unlink openssl@1.1 || true
           brew tap etternagame/etterna
           HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
-          brew link --overwrite openssl@1.1_osx_high_sierra || true
 
       - name: Add nasm to PATH
         run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
