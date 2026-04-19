@@ -477,10 +477,10 @@ jobs:
         with:
           python-version: '3.11'
           
-      - name: Setup Python 2.7
+      - name: Setup Python 2.7.18
         uses: MatteoH2O1999/setup-python@v1.4.1
         with:
-          python-version: '2.7'
+          python-version: '2.7.18'
 
       - name: Install chocolatey packages (i386)
         if: ${{ matrix.cfg.arch == 'x86' }}
@@ -504,7 +504,7 @@ jobs:
           arch: ${{ matrix.cfg.arch }}
           
       - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR="${{matrix.cfg.ssl-dir}}" ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
