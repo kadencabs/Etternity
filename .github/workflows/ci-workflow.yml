@@ -441,6 +441,12 @@ jobs:
           path: main
           fetch-depth: 0
 
+      - name: Fix GCC-only compiler flags for MSVC
+        shell: powershell
+        run: |
+          $file = "main/CMakeLists.txt"
+          (Get-Content $file) -replace '-Wno-error', '' | Set-Content $file
+
       - name: Fix crashpad Python 2 syntax
         shell: powershell
         run: |
@@ -469,7 +475,7 @@ jobs:
       - name: Setup Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: '3.11'
           
       - name: Setup Python 2.7
         uses: MatteoH2O1999/setup-python@v1.4.1
