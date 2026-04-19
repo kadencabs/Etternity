@@ -12,7 +12,7 @@ set(ASSET_DIR "${INSTALL_DIR}" CACHE STRING "Output directory for game assets")
 if(UNIX)
     set(CPACK_GENERATOR TGZ)
     set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
-    set(CPACK_PACKAGE_CONTACT https://github.com/etternitygame/etternity)
+    set(CPACK_PACKAGE_CONTACT https://github.com/etternagame/etternity)
 
     install(TARGETS Etternity COMPONENT Etternity DESTINATION ${INSTALL_DIR})
     if(WITH_CRASHPAD AND TARGET crashpad)
