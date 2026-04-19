@@ -254,7 +254,7 @@ jobs:
 
       - name: Patch ffmpeg to not require nasm
         run: |
-          find main -name "*.cmake" -exec grep -l "ffmpeg" {} \; | xargs sed -i '' 's/--enable-sse/--disable-yasm" "--enable-sse/g'
+          echo "FFMPEG_EXTRA_OPTS=--disable-yasm" >> $GITHUB_ENV
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
@@ -270,8 +270,7 @@ jobs:
 
       - name: Add nasm to PATH
         run: |
-          echo "/usr/local/bin" >> $GITHUB_PATH
-          ln -sf /usr/local/Cellar/nasm/3.01/bin/nasm /usr/local/bin/nasm || true       
+          echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH   
 
 #      - name: Setup Python 2.7
 #        uses: MatteoH2O1999/setup-python@v1.4.1
@@ -300,7 +299,11 @@ jobs:
           ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
         
       - name: Build Project
-        run: cd main/build && ninja
+        run: |
+          export PATH="$(brew --prefix nasm)/bin:$PATH"
+          which nasm
+          nasm -v
+          cd main/build && ninja
 
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
@@ -403,8 +406,11 @@ jobs:
 #          fi
 
       - name: Build Project
-        run: cd main/build && ninja
-
+        run: export PATH="$(brew --prefix nasm)/bin:$PATH"
+             which nasm
+             nasm -v
+             cd main/build && ninja
+             
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
         run: cd main/build && cpack
