@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Symbol Prepare
-Takes the Etterna.sym file, and creates a google breakpad directory structure.
+Takes the Etternity.sym file, and creates a google breakpad directory structure.
 Creates to simplify use when uploading to action artifacts.
 """
 import os
@@ -19,10 +19,10 @@ def get_metadata(filename: str):
 
 
 def make_breakpad_directory():
-    build_uuid, module_id = get_metadata('Etterna.sym')
-    path = Path("EtternaSymbolsUploadDir", "EtternaSymbols", module_id, build_uuid)
+    build_uuid, module_id = get_metadata('Etternity.sym')
+    path = Path("EtternitySymbolsUploadDir", "EtternitySymbols", module_id, build_uuid)
     os.makedirs(path, exist_ok=True)
-    shutil.copyfile('Etterna.sym', path / 'Etterna.sym')
+    shutil.copyfile('Etternity.sym', path / 'Etternity.sym')
 
 
 make_breakpad_directory()

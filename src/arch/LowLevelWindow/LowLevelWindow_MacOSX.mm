@@ -1,11 +1,11 @@
-#import "Etterna/Globals/global.h"
+#import "Etternity/Globals/global.h"
 #import "arch/LowLevelWindow/LowLevelWindow_MacOSX.h"
-#import "Etterna/Models/Misc/DisplaySpec.h"
+#import "Etternity/Models/Misc/DisplaySpec.h"
 #import "RageUtil/Utils/RageUtil.h"
 #import "RageUtil/Misc/RageThreads.h"
 #import "RageUtil/Graphics/RageDisplay_OGL_Helpers.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Globals/GameLoop.h"
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/OpenGL.h>

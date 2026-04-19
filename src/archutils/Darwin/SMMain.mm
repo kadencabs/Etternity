@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Misc/RageThreads.h"
-#include "Etterna/Singletons/CommandLineActions.h"
+#include "Etternity/Singletons/CommandLineActions.h"
 
 #include <Cocoa/Cocoa.h>
 #include "archutils/Darwin/MouseDevice.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Misc/AppInfo.hpp"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Globals/GameLoop.h"
 
 CGFloat scrolled;
 

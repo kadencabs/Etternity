@@ -23,9 +23,9 @@ static std::string getSysctlName(const char* name) {
 
 // Apple API Translocation variables
 // Apple introduced app translocation in macOS Sierra v10.12, which prevents apps from accessing files outside
-// their own .app directory (via a relative reference). This is a problem for Etterna since all files are accessed with
+// their own .app directory (via a relative reference). This is a problem for Etternity since all files are accessed with
 // relative references to where the .app directory is located. Apple moves the app to a secure location, then
-// attempts to run the program. Etterna fails right away as it requires those local files. The code in init()
+// attempts to run the program. Etternity fails right away as it requires those local files. The code in init()
 // will load Apple's private security API, load the functions, and call on them to untranslocate by removing
 // the quarantine restriction on the original binary location. Apple will not accept the app into their app store
 // unless this code is removed.
@@ -182,7 +182,7 @@ namespace Core::Platform {
 	}
 
     bool isOtherInstanceRunning(int argc, char** argv){
-		FILE* fd = popen("pgrep Etterna", "r");
+		FILE* fd = popen("pgrep Etternity", "r");
 		char buf[128]; //Random value. No-one is going to have a PID size > 128
 		bool found_other_process = false;
 		if(fgets(buf, sizeof(buf), fd)!=nullptr){

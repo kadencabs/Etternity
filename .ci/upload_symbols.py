@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Etterna Symbol Uploader
-Takes the Etterna.sym file, and uploads it to the S3 at the correct
+Etternity Symbol Uploader
+Takes the Etternity.sym file, and uploads it to the S3 at the correct
 google breakpad directory location.
 
 Google Breakpad Directory Structure is as follows: symbols/<module_id>/<build_uuid>/<module_id>.sym
-Directory Structure for Etterna: symbols/Platform.Arch/Etterna/<build_uuid>/Etterna.sym
+Directory Structure for Etternity: symbols/Platform.Arch/Etternity/<build_uuid>/Etternity.sym
 "symbols/Platform.Arch" will be the directory when passing into minidump_stackwalk
 """
 import os
@@ -20,24 +20,24 @@ if 'AWS_ACCESS_KEY_ID' not in os.environ or 'AWS_SECRET_ACCESS_KEY' not in os.en
     sys.exit(1)
 
 # Program Variables
-SYMBOL_FILE = "Etterna.sym"
-AWS_BUCKET_NAME = "etterna"
+SYMBOL_FILE = "Etternity.sym"
+AWS_BUCKET_NAME = "Etternity"
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-ETTERNA_ARCH = os.environ['ETTERNA_ARCH']
+Etternity_ARCH = os.environ['Etternity_ARCH']
 
 
 def get_s3_upload_directory():
     """
     Get the correct directory on AWS for symbol upload.
     Current possible symbol directories include:
-        - symbols/Windows.i386/Etterna
-        - symbols/Windows.x64/Etterna
-        - symbols/Darwin.x64/Etterna
+        - symbols/Windows.i386/Etternity
+        - symbols/Windows.x64/Etternity
+        - symbols/Darwin.x64/Etternity
     :return: The correct base directory
     """
     base_dir = platform.system()
-    return "{}.{}/Etterna/".format(base_dir, ETTERNA_ARCH)
+    return "{}.{}/Etternity/".format(base_dir, Etternity_ARCH)
 
 
 def get_metadata(filename: str):
