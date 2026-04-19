@@ -486,11 +486,11 @@ jobs:
         if: ${{ matrix.cfg.arch == 'x86' }}
         run: choco install ninja nsis -y --x86
       
-      - name: Install openSSL (i386)
+      - name: Install OpenSSL x86 (i386 only)
         if: ${{ matrix.cfg.arch == 'x86' }}
         shell: powershell
         run: |
-          $url = "https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w-x86.exe"
+          $url = "https://slproweb.com/download/Win32OpenSSL-1_1_1w.exe"
           Invoke-WebRequest -Uri $url -OutFile "openssl-x86.exe"
           Start-Process -FilePath "openssl-x86.exe" -ArgumentList "/SILENT /DIR=C:\OpenSSL-x86" -Wait
 
