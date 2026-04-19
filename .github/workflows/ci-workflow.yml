@@ -498,13 +498,25 @@ jobs:
         if: ${{ matrix.cfg.arch == 'x64' }}
         run: choco install openssl --version=1.1.1.2100 -y
 
+      - name: Find OpenSSL path
+        shell: powershell
+        run: |
+          $path = (Get-Command openssl.exe -ErrorAction SilentlyContinue).Source
+          if ($path) {
+            $root = Split-Path (Split-Path $path)
+            echo "OPENSSL_ROOT_DIR=$root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            echo "Found OpenSSL at: $root"
+          } else {
+            echo "openssl.exe not found in PATH"
+          }       
+
       - name: Configure MSBuild
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.cfg.arch }}
           
       - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR="${{matrix.cfg.ssl-dir}}" ..
+        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR="$env:OPENSSL_ROOT_DIR" ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
