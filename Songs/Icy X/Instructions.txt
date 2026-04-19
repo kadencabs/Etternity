@@ -1,0 +1,7 @@
+I didn't take into account that SM5 might run into errors that 3.9/3.95 would not encounter. Some SM5 users are finding that half the graphics aren't loading! So this patch is to fix that for you.
+
+1 Copy all the folders here into your Icy X pack and hit yes to replace all files.
+2 Reload within the stepmania client all songs/courses in the operator menu
+
+optional
+If it takes a long time to reload through the client it may be faster to rename your songs folder to Songs 2, and put only Icy X in Songs then reload just that.
