@@ -250,7 +250,7 @@ jobs:
 
       - name: Patch ffmpeg to not require nasm
         run: |
-          find main -name "*.cmake" -exec grep -l "ffmpeg" {} \; | xargs sed -i '' 's/--enable-sse/--disable-yasm --enable-sse/g'
+          find main -name "*.cmake" -exec grep -l "ffmpeg" {} \; | xargs sed -i '' 's/--enable-sse/--disable-yasm" "--enable-sse/g'
 
       - name: Checkout CrashpadTools
         uses: actions/checkout@v3
@@ -394,7 +394,9 @@ jobs:
 
       - name: Bootstrap CMake depot_tools
         run: |
-          ${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap
+          if [ -f "${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools" ]; then
+            ${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools || true
+          fi
 
       - name: Build Project
         run: cd main/build && ninja
