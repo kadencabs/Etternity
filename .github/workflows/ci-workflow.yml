@@ -228,266 +228,266 @@ jobs:
         with:
           files: ${{github.workspace}}/main/build/*.dmg
 
-  macos:
-    name: macOS x64 ${{matrix.cfg.name}}
-    runs-on: ${{matrix.cfg.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        cfg:
-          #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-15-intel,     name: "Sequoia", dist: true}
-          #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
-          #- { os: macos-11,     name: "Big Sur",  dist: true} # rendered useless by GHA
-
-    steps:
-
-      - name: Checkout Etterna
-        uses: actions/checkout@v3
-        with:
-          path: main
-          fetch-depth: 0
-
-      - name: Patch boost nowide for newer clang
-        run: |
-          find main/extern/boost/nowide -name "CMakeLists.txt" | xargs sed -i '' 's/-Wextra/-Wextra -Wno-missing-template-arg-list-after-template-kw/g'
-
-      - name: Patch ffmpeg to not require nasm
-        run: |
-          echo "FFMPEG_EXTRA_OPTS=--disable-yasm" >> $GITHUB_ENV
-
-      - name: Checkout CrashpadTools
-        uses: actions/checkout@v3
-        with:
-          repository: etternagame/CrashpadTools
-          path: tools
-          fetch-depth: 0
-
-      - name: Install homebrew packages
-        run: |
-          brew install cmake nasm ninja openssl
-
-      - name: Add nasm to PATH
-        run: |
-          echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH   
-
+#  macos:
+#    name: macOS x64 ${{matrix.cfg.name}}
+#    runs-on: ${{matrix.cfg.os}}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        cfg:
+#          #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
+#          - { os: macos-15-intel,     name: "Sequoia", dist: true}
+#          #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
+#          #- { os: macos-11,     name: "Big Sur",  dist: true} # rendered useless by GHA
+#
+#    steps:
+#
+#      - name: Checkout Etterna
+#        uses: actions/checkout@v3
+#        with:
+#          path: main
+#          fetch-depth: 0
+#
+#      - name: Patch boost nowide for newer clang
+#        run: |
+#          find main/extern/boost/nowide -name "CMakeLists.txt" | xargs sed -i '' 's/-Wextra/-Wextra -Wno-missing-template-arg-list-after-template-kw/g'
+#
+#      - name: Patch ffmpeg to not require nasm
+#        run: |
+#          echo "FFMPEG_EXTRA_OPTS=--disable-yasm" >> $GITHUB_ENV
+#
+#      - name: Checkout CrashpadTools
+#        uses: actions/checkout@v3
+#        with:
+#          repository: etternagame/CrashpadTools
+#          path: tools
+#          fetch-depth: 0
+#
+#      - name: Install homebrew packages
+#        run: |
+#          brew install cmake nasm ninja openssl
+#
+#      - name: Add nasm to PATH
+#        run: |
+#          echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH   
+#
 #      - name: Setup Python 2.7
 #        uses: MatteoH2O1999/setup-python@v1.4.1
 #        with:
 #          python-version: '2.7'
-
-      - name: Setup Python 3
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Update CPack Environment
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "ETT_MAC_SYS_NAME=Darwin-x64" >> $GITHUB_ENV
-
-      - name: Force NASM availability for CMake/FFmpeg
-        run: |
-          echo "PATH=$(brew --prefix nasm)/bin:$PATH" >> $GITHUB_ENV
-          echo "NASM=$(which nasm)" >> $GITHUB_ENV
-
-      - name: Generate CMake
-        run: |
-          mkdir main/build
-          cd main/build
-
-          export PATH="$(brew --prefix nasm)/bin:$PATH"
-          export NASM="$(which nasm)"
-          export FFMPEG_EXTRA_OPTS="--disable-yasm"
-
-          cmake \
-            -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-            -DWITH_CRASHPAD=OFF \
-            -G Ninja ..
-
-      - name: Fix crashpad buildtools permissions
-        run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
-
-      - name: Bootstrap CMake depot_tools
-        run: |
-          BOOT="${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap"
-          if [ -f "$BOOT" ]; then
-            bash "$BOOT"
-          else
-            echo "depot_tools not present, skipping bootstrap"
-          fi
-              
-      - name: Build Project
-        run: |
-          export PATH="$(brew --prefix nasm)/bin:$PATH"
-          which nasm
-          nasm -v
-          cd main/build && ninja
-
-      - name: Generate binary
-        if: ${{matrix.cfg.dist}}
-        run: cd main/build && cpack
-
-      - name: Upload Binary
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: "Etterna - macOS x64"
-          path: '${{github.workspace}}/main/build/*.dmg'
-
-      - name: Update Environment Variables
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
-
-      - name: Generate Symbols
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "Running dsymutil..."
-          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
-          echo "Dumping Symbols..."
-          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
-          echo "Stripping debug symbols from binary..."
-          strip main/Etterna.app/Contents/MacOS/Etterna
-
-      - name: Prepare symbols for upload artifacts
-        if: ${{matrix.cfg.dist}}
-        run: cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
-
-      - name: Upload Symbols to action artifacts
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: Etterna Symbols Mac x64 - ${{github.sha}}
-          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
-
-      - name: Upload files to Release
-        uses: softprops/action-gh-release@v1
-        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
-        with:
-          files: ${{github.workspace}}/main/build/*.dmg
-  macos_high_sierra:
-    name: macOS High Sierra (Legacy) ${{matrix.cfg.name}}
-    runs-on: ${{matrix.cfg.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        cfg:
-          #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
-          - { os: macos-15-intel,     name: "Sequoia", dist: true}
-          #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
-          #- { os: macos-11,     name: "Big Sur",  dist: true}
-
-    steps:
-
-      - name: Checkout Etterna
-        uses: actions/checkout@v3
-        with:
-          path: main
-          fetch-depth: 0
-
-      - name: Checkout CrashpadTools
-        uses: actions/checkout@v3
-        with:
-          repository: etternagame/CrashpadTools
-          path: tools
-          fetch-depth: 0
-
-      - name: Install homebrew packages
-        run: |
-          brew install cmake nasm ninja
-          brew link --force nasm
-          brew unlink openssl@3 || true
-          brew unlink openssl@1.1 || true
-          brew tap etternagame/etterna
-          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra || true
-
-      - name: Add nasm to PATH
-        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
-
-      - name: Update CPack Environment
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "ETT_MAC_SYS_NAME=High-Sierra" >> $GITHUB_ENV
-      - name: Force toolchain environment
-        run: |
-          echo "PATH=$(brew --prefix nasm)/bin:$PATH" >> $GITHUB_ENV
-          echo "NASM=$(which nasm)" >> $GITHUB_ENV
-
-      - name: Generate CMake
-        run: |
-          mkdir main/build && cd main/build
-          export PATH="$(brew --prefix nasm)/bin:$PATH"
-          export NASM="$(which nasm)"
-          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-            -DWITH_CRASHPAD=OFF \
-            -G Ninja ..
-      
-      - name: Fix crashpad buildtools permissions
-        run: |
-          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
-
+#
+#      - name: Setup Python 3
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.11'
+#      
+#      - name: Update CPack Environment
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "ETT_MAC_SYS_NAME=Darwin-x64" >> $GITHUB_ENV
+#
+#      - name: Force NASM availability for CMake/FFmpeg
+#        run: |
+#          echo "PATH=$(brew --prefix nasm)/bin:$PATH" >> $GITHUB_ENV
+#          echo "NASM=$(which nasm)" >> $GITHUB_ENV
+#
+#      - name: Generate CMake
+#        run: |
+#          mkdir main/build
+#          cd main/build
+#
+#          export PATH="$(brew --prefix nasm)/bin:$PATH"
+#          export NASM="$(which nasm)"
+#          export FFMPEG_EXTRA_OPTS="--disable-yasm"
+#
+#          cmake \
+#            -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra \
+#            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+#            -DWITH_CRASHPAD=OFF \
+#            -G Ninja ..
+#
+#      - name: Fix crashpad buildtools permissions
+#        run: |
+#          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
+#
+#      - name: Bootstrap CMake depot_tools
+#        run: |
+#          BOOT="${{ github.workspace }}/main/build/_deps/depot_tools-src/ensure_bootstrap"
+#          if [ -f "$BOOT" ]; then
+#            bash "$BOOT"
+#          else
+#            echo "depot_tools not present, skipping bootstrap"
+#          fi
+#              
+#      - name: Build Project
+#        run: |
+#          export PATH="$(brew --prefix nasm)/bin:$PATH"
+#          which nasm
+#          nasm -v
+#          cd main/build && ninja
+#
+#      - name: Generate binary
+#        if: ${{matrix.cfg.dist}}
+#        run: cd main/build && cpack
+#
+#      - name: Upload Binary
+#        if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: "Etterna - macOS x64"
+#          path: '${{github.workspace}}/main/build/*.dmg'
+#
+#      - name: Update Environment Variables
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
+#          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
+#
+#      - name: Generate Symbols
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "Running dsymutil..."
+#          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
+#          echo "Dumping Symbols..."
+#          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
+#          echo "Stripping debug symbols from binary..."
+#          strip main/Etterna.app/Contents/MacOS/Etterna
+#
+#      - name: Prepare symbols for upload artifacts
+#        if: ${{matrix.cfg.dist}}
+#        run: cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
+#
+#      - name: Upload Symbols to action artifacts
+#        if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Etterna Symbols Mac x64 - ${{github.sha}}
+#          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+#
+#      - name: Upload files to Release
+#        uses: softprops/action-gh-release@v1
+#        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+#        with:
+#          files: ${{github.workspace}}/main/build/*.dmg
+#  macos_high_sierra:
+#    name: macOS High Sierra (Legacy) ${{matrix.cfg.name}}
+#    runs-on: ${{matrix.cfg.os}}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        cfg:
+#          #- { os: macos-10.15,  name: "Catalina", dist: false} # rendered useless by GHA
+#          - { os: macos-15-intel,     name: "Sequoia", dist: true}
+#          #- { os: macos-12,     name: "Monterey", dist: true} # rendered useless by GHA
+#          #- { os: macos-11,     name: "Big Sur",  dist: true}
+#
+#    steps:
+#
+#      - name: Checkout Etterna
+#        uses: actions/checkout@v3
+#        with:
+#          path: main
+#          fetch-depth: 0
+#
+#      - name: Checkout CrashpadTools
+#        uses: actions/checkout@v3
+#        with:
+#          repository: etternagame/CrashpadTools
+#          path: tools
+#          fetch-depth: 0
+#
+#      - name: Install homebrew packages
+#        run: |
+#          brew install cmake nasm ninja
+#          brew link --force nasm
+#          brew unlink openssl@3 || true
+#          brew unlink openssl@1.1 || true
+#          brew tap etternagame/etterna
+#          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra || true
+#
+#      - name: Add nasm to PATH
+#        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
+#
+#      - name: Update CPack Environment
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "ETT_MAC_SYS_NAME=High-Sierra" >> $GITHUB_ENV
+#      - name: Force toolchain environment
+#        run: |
+#          echo "PATH=$(brew --prefix nasm)/bin:$PATH" >> $GITHUB_ENV
+#          echo "NASM=$(which nasm)" >> $GITHUB_ENV
+#
+#      - name: Generate CMake
+#        run: |
+#          mkdir main/build && cd main/build
+#          export PATH="$(brew --prefix nasm)/bin:$PATH"
+#          export NASM="$(which nasm)"
+#          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra \
+#            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+#            -DWITH_CRASHPAD=OFF \
+#            -G Ninja ..
+#      
+#      - name: Fix crashpad buildtools permissions
+#        run: |
+#          chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
+#
 #      - name: Bootstrap CMake depot_tools
 #        run: |
 #          if [ -f "${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools" ]; then
 #            ${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools || true
 #          fi
-
-      - name: Build Project
-        run: |
-          export PATH="$(brew --prefix nasm)/bin:$PATH"
-          which nasm
-          nasm -v
-          cd main/build
-          ninja
-             
-      - name: Generate binary
-        if: ${{matrix.cfg.dist}}
-        run: cd main/build && cpack
-
-      - name: Upload Binary
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: "Etterna - OSX High Sierra (Legacy)"
-          path: '${{github.workspace}}/main/build/*.dmg'
-
-      - name: Update Environment Variables
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
-
-      - name: Generate Symbols
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "Running dsymutil..."
-          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
-          echo "Dumping Symbols..."
-          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
-          echo "Stripping debug symbols from binary..."
-          strip main/Etterna.app/Contents/MacOS/Etterna
-
-      - name: Prepare symbols for upload artifacts
-        if: ${{matrix.cfg.dist}}
-        run: cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
-
-      - name: Upload Symbols to action artifacts
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: Etterna Symbols Mac HighSierra - ${{github.sha}}
-          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
-
-      - name: Upload files to Release
-        uses: softprops/action-gh-release@v1
-        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
-        with:
-          files: ${{github.workspace}}/main/build/*.dmg
+#
+#      - name: Build Project
+#        run: |
+#          export PATH="$(brew --prefix nasm)/bin:$PATH"
+#          which nasm
+#          nasm -v
+#          cd main/build
+#          ninja
+#             
+#      - name: Generate binary
+#        if: ${{matrix.cfg.dist}}
+#        run: cd main/build && cpack
+#
+#      - name: Upload Binary
+#        if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: "Etterna - OSX High Sierra (Legacy)"
+#          path: '${{github.workspace}}/main/build/*.dmg'
+#
+#      - name: Update Environment Variables
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
+#          echo "ETTERNA_ARCH=x64" >> $GITHUB_ENV
+#
+#      - name: Generate Symbols
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "Running dsymutil..."
+#          dsymutil -o ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > /dev/null
+#          echo "Dumping Symbols..."
+#          dump_syms ${{github.workspace}}/main/Etterna.dsym main/Etterna.app/Contents/MacOS/Etterna > ${{github.workspace}}/main/Etterna.sym
+#          echo "Stripping debug symbols from binary..."
+#          strip main/Etterna.app/Contents/MacOS/Etterna
+#
+#      - name: Prepare symbols for upload artifacts
+#        if: ${{matrix.cfg.dist}}
+#        run: cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
+#
+#      - name: Upload Symbols to action artifacts
+#        if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Etterna Symbols Mac HighSierra - ${{github.sha}}
+#          path: '${{github.workspace}}/main/EtternaSymbolsUploadDir'
+#
+#      - name: Upload files to Release
+#        uses: softprops/action-gh-release@v1
+#        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+#        with:
+#          files: ${{github.workspace}}/main/build/*.dmg
   windows: # Windows x64 and x86 build matrix
     strategy:
       fail-fast: false # Don't cancel other matrix jobs if one fails
