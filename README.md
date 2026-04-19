@@ -208,3 +208,4 @@ This macOS binary is not signed, so before it can be installed it must be de-qua
 
 - All original SM devs/contributors
 - All original Etterna devs/contributors
+- Icycle
