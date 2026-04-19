@@ -515,8 +515,23 @@ jobs:
         with:
           arch: ${{ matrix.cfg.arch }}
           
+      - name: Remove system OpenSSL from PATH
+        shell: powershell
+        run: |
+          $newPath = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'OpenSSL\\bin' }) -join ';'
+          echo "PATH=$newPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPENSSL_ROOT_DIR="$env:OPENSSL_ROOT_DIR" ..
+        shell: powershell
+        run: |
+          mkdir main/build
+          cd main/build
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+            -DOPENSSL_ROOT_DIR="${{matrix.cfg.ssl-dir}}" `
+            -DOPENSSL_INCLUDE_DIR="${{matrix.cfg.ssl-dir}}/include" `
+            -DOPENSSL_CRYPTO_LIBRARY="${{matrix.cfg.ssl-dir}}/lib/libcrypto.lib" `
+            -DOPENSSL_SSL_LIBRARY="${{matrix.cfg.ssl-dir}}/lib/libssl.lib" `
+            ..
         env:
           DXSDK_DIR: "${{github.workspace}}/dxsdk/"
 
