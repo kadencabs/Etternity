@@ -1,0 +1,48 @@
+local gc = Var("GameCommand");
+
+local string_name = gc:GetText();
+local string_expl = THEME:GetString("StyleType", gc:GetStyle():GetStyleType());
+local icon_color = color("#FFCB05");
+local icon_color2 = color("#F0BA00");
+
+local t = Def.ActorFrame {};
+t[#t+1] = Def.ActorFrame { 
+	GainFocusCommand=THEME:GetMetric(Var "LoadingScreen","IconGainFocusCommand");
+	LoseFocusCommand=THEME:GetMetric(Var "LoadingScreen","IconLoseFocusCommand");
+
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_background base"))..{
+		InitCommand=function(self)
+			self:diffuse(icon_color):diffusebottomedge(icon_color2)
+		end;
+	};
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_background effect"));
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_gloss"));
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_stroke"));
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_cutout"));
+
+	LoadFont("Common Large")..{
+		Text=string.upper(string_name);
+		InitCommand=function(self)
+			self:y(-12):maxwidth(232)
+		end;
+		OnCommand=function(self)
+			self:diffuse(Color.Black):shadowlength(1):shadowcolor(color("#ffffff77")):skewx(-0.125)
+		end;
+	};
+	LoadFont("Common Normal")..{
+		Text=string.upper(string_expl);
+		InitCommand=function(self)
+			self:y(27.5):maxwidth(232)
+		end;
+	};
+
+	LoadActor(THEME:GetPathG("ScreenSelectPlayMode", "icon/_background base"))..{
+		DisabledCommand=function(self)
+			self:diffuse(color("0,0,0,0.5"))
+		end;
+		EnabledCommand=function(self)
+			self:diffuse(color("1,1,1,0"))
+		end;
+	};
+};
+return t
