@@ -182,7 +182,7 @@ jobs:
 
       - name: Generate binary
         if: ${{matrix.cfg.dist}}
-        run: cd main/build && cpack
+        run: cd main/build && sudo cpack
 
       - name: Upload Binary
         if: ${{matrix.cfg.dist}}
@@ -255,7 +255,9 @@ jobs:
         run: brew install cmake nasm ninja openssl
 
       - name: Add nasm to PATH
-        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH        
+        run: |
+          echo "/usr/local/bin" >> $GITHUB_PATH
+          ln -sf /usr/local/Cellar/nasm/3.01/bin/nasm /usr/local/bin/nasm || true       
 
 #      - name: Setup Python 2.7
 #        uses: MatteoH2O1999/setup-python@v1.4.1
@@ -357,7 +359,12 @@ jobs:
           fetch-depth: 0
 
       - name: Install homebrew packages
-        run: brew install cmake nasm ninja && brew tap etternagame/etterna && brew update && HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
+        run: |
+          brew install cmake nasm ninja
+          brew unlink openssl@3 || true
+          brew tap etternagame/etterna
+          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra
+          brew link --overwrite openssl@1.1_osx_high_sierra || true
 
       - name: Add nasm to PATH
         run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH
