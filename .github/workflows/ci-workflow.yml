@@ -248,6 +248,10 @@ jobs:
           path: main
           fetch-depth: 0
 
+      - name: Patch boost nowide for newer clang
+        run: |
+          find main/extern/boost/nowide -name "CMakeLists.txt" | xargs sed -i '' 's/-Wextra/-Wextra -Wno-missing-template-arg-list-after-template-kw/g'
+
       - name: Patch ffmpeg to not require nasm
         run: |
           find main -name "*.cmake" -exec grep -l "ffmpeg" {} \; | xargs sed -i '' 's/--enable-sse/--disable-yasm" "--enable-sse/g'
