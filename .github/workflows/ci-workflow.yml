@@ -392,11 +392,11 @@ jobs:
         run: |
           chmod +x ${{ github.workspace }}/main/extern/crashpad/buildtools/mac/gn
 
-      - name: Bootstrap CMake depot_tools
-        run: |
-          if [ -f "${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools" ]; then
-            ${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools || true
-          fi
+#      - name: Bootstrap CMake depot_tools
+#        run: |
+#          if [ -f "${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools" ]; then
+#            ${{ github.workspace }}/main/build/_deps/depot_tools-src/update_depot_tools || true
+#          fi
 
       - name: Build Project
         run: cd main/build && ninja
