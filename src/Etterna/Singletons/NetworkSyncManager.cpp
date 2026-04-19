@@ -1,21 +1,21 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "NetworkSyncManager.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/MessageManager.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Singletons/StatsManager.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/HighScore/HighScore.h"
-#include "Etterna/Screen/Network/ScreenNetSelectMusic.h"
-#include "Etterna/Screen/Network/ScreenNetRoom.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/MessageManager.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/StatsManager.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/HighScore/HighScore.h"
+#include "Etternity/Screen/Network/ScreenNetSelectMusic.h"
+#include "Etternity/Screen/Network/ScreenNetRoom.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
 #include "Core/Services/Locator.hpp"
 #include "arch/LoadingWindow/LoadingWindow.h"
 
@@ -817,7 +817,7 @@ ETTProtocol::Update(NetworkSyncManager* n, float fDeltaTime)
 						writer.Key("version");
 						writer.Int(ETTPCVERSION);
 						writer.Key("client");
-						writer.String(GAMESTATE->GetEtternaVersion().c_str());
+						writer.String(GAMESTATE->GetEtternityVersion().c_str());
 						writer.Key("packs");
 						writer.StartArray();
 						auto& packs = SONGMAN->GetSongGroupNames();
@@ -844,7 +844,7 @@ ETTProtocol::Update(NetworkSyncManager* n, float fDeltaTime)
 											 score["ssr_norm"].IsNumber()
 										   ? score["ssr_norm"].GetFloat()
 										   : 0);
-					hs.SetEtternaValid(score.HasMember("valid") &&
+					hs.SetEtternityValid(score.HasMember("valid") &&
 										   score["valid"].IsInt()
 										 ? score["valid"].GetInt() != 0
 										 : true);
@@ -1597,7 +1597,7 @@ ETTProtocol::ReportHighScore(HighScore* hs, PlayerStageStats& pss)
 	writer.Key("max_combo");
 	writer.Int(hs->GetMaxCombo());
 	writer.Key("valid");
-	writer.Int(hs->GetEtternaValid());
+	writer.Int(hs->GetEtternityValid());
 	writer.Key("mods");
 	writer.String(hs->GetModifiers().c_str());
 	writer.Key("miss");
@@ -2087,7 +2087,7 @@ LuaFunction(IsSMOnlineLoggedIn, NSMAN->loggedIn)
 		  LuaFunction(CloseConnection, CloseNetworkConnection())
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 			class LunaNetworkSyncManager : public Luna<NetworkSyncManager>
 {

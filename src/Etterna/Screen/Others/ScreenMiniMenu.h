@@ -5,8 +5,8 @@
 
 #include <utility>
 
-#include "Etterna/Screen/Options/ScreenOptions.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Screen/Options/ScreenOptions.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 using MenuRowUpdateEnabled = bool (*)();
 

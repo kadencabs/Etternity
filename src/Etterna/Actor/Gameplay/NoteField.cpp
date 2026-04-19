@@ -1,24 +1,24 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Gameplay/ArrowEffects.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Gameplay/ArrowEffects.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "NoteField.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Misc/RageTimer.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #include <algorithm>
 
-#include "Etterna/Models/Misc/CommonMetrics.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
 
 void
 FindDisplayedBeats(const PlayerState* pPlayerState,
@@ -1039,7 +1039,7 @@ NoteField::HandleMessage(const Message& msg)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Notefield. */
 class LunaNoteField : public Luna<NoteField>

@@ -19,7 +19,7 @@
  * }
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 #include "RageTimer.h"
 #include "RageUtil/Utils/RageUtil.h"
@@ -92,5 +92,5 @@ RageTimer::Difference(const RageTimer& lhs, const RageTimer& rhs)
 	return diff.count();
 }
 
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 LuaFunction(GetTimeSinceStart, GetTimeSinceStart64())

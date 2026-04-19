@@ -1,8 +1,8 @@
 #ifndef NetworkSyncManager_H
 #define NetworkSyncManager_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/HighScore/HighScore.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/HighScore/HighScore.h"
 #include <queue>
 #include "rapidjson/fwd.h"
 #define ASIO_STANDALONE

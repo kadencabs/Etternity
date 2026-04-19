@@ -4,7 +4,7 @@ How to Install Noteskins:
 
 path in archive         | extract to
 ------------------------|-----------------------
-NoteSkins\dance\MyDance | Etterna root folder
+NoteSkins\dance\MyDance | Etternity root folder
 dance\MyDance           | NoteSkins folder
 MyDance                 | Whichever gametype folder (see Step 2)
 

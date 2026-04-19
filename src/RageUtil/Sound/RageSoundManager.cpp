@@ -8,10 +8,10 @@
  *  - sound detaching ("play and delete when done playing")
  */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/Preference.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/Preference.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageSound.h"
 #include "RageSoundManager.h"

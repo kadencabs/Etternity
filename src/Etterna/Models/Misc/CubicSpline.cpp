@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CubicSpline.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include <list>
@@ -848,7 +848,7 @@ CubicSplineN::get_dirty() const
 	return m_dirty;
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 struct LunaCubicSplineN : Luna<CubicSplineN>
 {

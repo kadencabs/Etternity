@@ -9,7 +9,7 @@
  * http://www.sonicspot.com/guide/wavefiles.html
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/File/RageFileBasic.h"
 #include "Core/Services/Locator.hpp"
 #include "RageSoundReader_WAV.h"

@@ -474,7 +474,7 @@ local function makeScoreDisplay(i)
 			end,
 			DisplayCommand = function(self)
 				self:settext(hs:GetDisplayName())
-				if not hs:GetEtternaValid() then
+				if not hs:GetEtternityValid() then
 					self:diffuse(color("#F0EEA6"))
 				else
 					self:diffuse(getMainColor("positive"))
@@ -501,7 +501,7 @@ local function makeScoreDisplay(i)
 			end,
 			DisplayCommand = function(self)
 				self:settext(hs:GetJudgmentString())
-				if not hs:GetEtternaValid() then
+				if not hs:GetEtternityValid() then
 					self:diffuse(color("#F0EEA6"))
 				else
 					self:diffuse(getMainColor("positive"))

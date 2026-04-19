@@ -2,7 +2,7 @@
  */
 #include "PthreadHelpers.h"
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Misc/RageThreads.h"
 #ifdef __unix__

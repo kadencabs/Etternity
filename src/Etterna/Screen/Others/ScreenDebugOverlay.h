@@ -4,8 +4,8 @@
 #ifndef ScreenDebugOverlay_H
 #define ScreenDebugOverlay_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Actor/Base/Quad.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/Quad.h"
 #include "Screen.h"
 
 void

@@ -5,7 +5,7 @@
 #define GAME_CONSTANTS_AND_TYPES_H
 
 #include "EnumHelper.h"
-#include "Etterna/Models/NoteData/NoteDataStructures.h"
+#include "Etternity/Models/NoteData/NoteDataStructures.h"
 #include <cfloat> // need the max for default.
 
 // Note definitions

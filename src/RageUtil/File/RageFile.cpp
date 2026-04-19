@@ -5,7 +5,7 @@
  * a few extra sanity checks are made to check file modes.
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageFile.h"
 #include "RageFileBasic.h"
 #include "RageFileDriver.h"
@@ -347,7 +347,7 @@ FileReading::read_32_le(RageFileBasic& f, std::string& sError)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the RageFile. */
 class LunaRageFile : public Luna<RageFile>

@@ -27,7 +27,7 @@ namespace plog {
 }
 #endif
 
-class EtternaFormatter {
+class EtternityFormatter {
 public:
     // This method returns a header for a new file.
     static plog::util::nstring header() {
@@ -50,9 +50,9 @@ public:
 PlogLogger::PlogLogger() {
     // Console Appender. One for windows, and another for other operating systems.
     #ifdef _WIN32
-        static plog::WindowsAppender<EtternaFormatter> consoleAppender;
+        static plog::WindowsAppender<EtternityFormatter> consoleAppender;
     #else
-        static plog::ColorConsoleAppender<EtternaFormatter> consoleAppender;
+        static plog::ColorConsoleAppender<EtternityFormatter> consoleAppender;
     #endif
     plog::init(plog::Severity::info, &consoleAppender);
 
@@ -78,7 +78,7 @@ PlogLogger::PlogLogger() {
     auto logFilePath = logDirectory / fmt::format(FMT_STRING("{}.log"), timeString);
 
     // File Appender
-	static plog::RollingFileAppender<EtternaFormatter, plog::UTF8Converter>
+	static plog::RollingFileAppender<EtternityFormatter, plog::UTF8Converter>
 	  rollingFileAppender{ logFilePath.c_str(), 67108864, 1 };
 	currentLogFile = absolute(logFilePath);
     plog::init(plog::Severity::info, &rollingFileAppender);

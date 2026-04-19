@@ -1,19 +1,19 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "ArrowEffects.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "GhostArrowRow.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "NoteDisplay.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Graphics/RageTexture.h"
-#include "Etterna/Actor/Base/Sprite.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Actor/Base/Sprite.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 
 #include <utility>
@@ -2070,7 +2070,7 @@ NoteColumnRenderer::NCR_TweenState::MakeWeightedAverage(
 #undef WEIGHT_FOR_ME
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 struct LunaNCSplineHandler : Luna<NCSplineHandler>
 {

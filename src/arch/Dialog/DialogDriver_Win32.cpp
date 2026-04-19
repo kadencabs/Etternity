@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "DialogDriver_Win32.h"
 #include "RageUtil/Utils/RageUtil.h"
 #if !defined(SMPACKAGE)
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 #endif
 #include "Core/Platform/Platform.hpp"
 #include "Core/Misc/AppInfo.hpp"

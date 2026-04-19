@@ -1,7 +1,7 @@
 #ifndef SCREENPLAYEROPTIONS_H
 #define SCREENPLAYEROPTIONS_H
 
-#include "Etterna/Screen/Options/ScreenOptionsMaster.h"
+#include "Etternity/Screen/Options/ScreenOptionsMaster.h"
 
 struct lua_State;
 

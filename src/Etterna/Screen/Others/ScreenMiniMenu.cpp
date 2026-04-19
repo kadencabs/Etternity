@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/OptionRowHandler.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/OptionRowHandler.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenMiniMenu.h"
 
 #include <utility>
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 void
 PrepareToLoadScreen(const std::string& sScreenName);

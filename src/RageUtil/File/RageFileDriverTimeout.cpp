@@ -42,7 +42,7 @@
  * multiple threads simultaneously.
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageFile.h"
 #include "RageFileDriverTimeout.h"
 #include "Core/Services/Locator.hpp"

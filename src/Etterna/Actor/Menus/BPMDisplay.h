@@ -1,8 +1,8 @@
 #ifndef BPM_DISPLAY_H
 #define BPM_DISPLAY_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 class Song;
 class Steps;
 struct DisplayBpms;

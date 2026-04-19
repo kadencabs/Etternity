@@ -1,7 +1,7 @@
 #ifndef TWEEN_H
 #define TWEEN_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 
 struct lua_State;
 using Lua = lua_State;

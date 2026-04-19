@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenSelectProfile.h"
 
 REGISTER_SCREEN_CLASS(ScreenSelectProfile);
@@ -203,7 +203,7 @@ ScreenSelectProfile::HandleScreenMessage(const ScreenMessage& SM)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenSelectProfile. */
 class LunaScreenSelectProfile : public Luna<ScreenSelectProfile>

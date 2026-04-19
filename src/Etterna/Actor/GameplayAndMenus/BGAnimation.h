@@ -1,7 +1,7 @@
 #ifndef BGANIMATION_H
 #define BGANIMATION_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
 
 class XNode;
 

@@ -1,7 +1,7 @@
 #ifndef SCREEN_OPTIONS_MASTER_PREFS_H
 #define SCREEN_OPTIONS_MASTER_PREFS_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 
 static const int MAX_OPTIONS = 16;
 enum OptEffect

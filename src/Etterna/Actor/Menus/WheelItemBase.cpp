@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "WheelItemBase.h"
 
 static const char* WheelItemDataTypeNames[] = {
@@ -86,7 +86,7 @@ WheelItemBase::DrawPrimitives()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the WheelItemBase. */
 class LunaWheelItemBase : public Luna<WheelItemBase>

@@ -2,7 +2,7 @@
 #include <mach/thread_act.h>
 #include <mach/mach_init.h>
 #include <mach/mach_error.h>
-#include <Etterna/Globals/global.h>
+#include <Etternity/Globals/global.h>
 
 #include <cmath>
 

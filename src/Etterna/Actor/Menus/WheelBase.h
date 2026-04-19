@@ -1,13 +1,13 @@
 #ifndef WHEELBASE_H
 #define WHEELBASE_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Models/Lua/LuaExpressionTransform.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Models/Lua/LuaExpressionTransform.h"
 #include "RageUtil/Sound/RageSound.h"
 #include "RageUtil/Misc/RageTimer.h"
 #include "ScrollBar.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 #include "WheelItemBase.h"
 
 #define NUM_WHEEL_ITEMS (static_cast<int>(ceil(NUM_WHEEL_ITEMS_TO_DRAW + 2)))

@@ -44,7 +44,7 @@ if(WIN32)
 		"Win32/WindowIcon.cpp"
 		"Win32/WindowsDialogBox.cpp"
 		"Win32/WindowsResources.rc"
-		"Win32/Etterna.manifest")
+		"Win32/Etternity.manifest")
 
 	list(APPEND OS_HPP
 		"Win32/AppInstance.h"
@@ -95,4 +95,4 @@ if(UNIX) # Includes Apple
 	list(APPEND OS_HPP ${OS_UNIX_CRASH_HPP})
 endif()
 
-target_sources(Etterna PUBLIC ${OS_SRC} ${OS_HPP})
+target_sources(Etternity PUBLIC ${OS_SRC} ${OS_HPP})

@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenProfileSave.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Singletons/StatsManager.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/StatsManager.h"
 
 REGISTER_SCREEN_CLASS(ScreenProfileSave);
 
@@ -31,7 +31,7 @@ ScreenProfileSave::Continue()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenProfileSave. */
 class LunaScreenProfileSave : public Luna<ScreenProfileSave>

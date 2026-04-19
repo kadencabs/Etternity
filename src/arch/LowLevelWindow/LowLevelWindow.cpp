@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "LowLevelWindow.h"
 #include "arch/arch_default.h"
 

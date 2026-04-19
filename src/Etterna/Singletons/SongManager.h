@@ -1,12 +1,12 @@
 #ifndef SONGMANAGER_H
 #define SONGMANAGER_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/ImageCache.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/ImageCache.h"
 #include "RageUtil/Misc/RageTypes.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 #include <unordered_map>
 

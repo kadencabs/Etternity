@@ -4,4 +4,4 @@ list(APPEND HD_SEQUENCERS
     "OHJSequencing.h"
     "RMSequencing.h")
 
-target_sources(Etterna PUBLIC ${HD_SEQUENCERS})
+target_sources(Etternity PUBLIC ${HD_SEQUENCERS})

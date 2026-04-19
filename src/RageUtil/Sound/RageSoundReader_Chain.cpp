@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Foreach.h"
 #include "Core/Services/Locator.hpp"
 #include "RageSoundMixBuffer.h"
 #include "RageSoundReader_Chain.h"

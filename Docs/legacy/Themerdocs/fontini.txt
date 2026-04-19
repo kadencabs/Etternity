@@ -1,4 +1,4 @@
-Etterna Font .ini values
+Etternity Font .ini values
 
 [common]
 CapitalsOnly			- If set to 1, lowercase letters are drawn with uppercase letters instead.

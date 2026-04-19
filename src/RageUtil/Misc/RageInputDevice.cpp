@@ -1,8 +1,8 @@
 /* Define all of the input devices we know about. This is the public interface
  * for describing input devices. */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 #include "RageInputDevice.h"
 #include "RageUtil/Utils/RageUtil.h"
 

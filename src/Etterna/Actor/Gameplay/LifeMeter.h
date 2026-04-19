@@ -1,9 +1,9 @@
 #ifndef LIFE_METER_H
 #define LIFE_METER_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
 
 class PlayerState;
 class PlayerStageStats;

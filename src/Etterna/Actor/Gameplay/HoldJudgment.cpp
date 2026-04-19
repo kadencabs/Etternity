@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "HoldJudgment.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 REGISTER_ACTOR_CLASS(HoldJudgment);
 
@@ -105,7 +105,7 @@ HoldJudgment::HandleMessage(const Message& msg)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the HoldJudgment. */
 class LunaHoldJudgment : public Luna<HoldJudgment>

@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Models/Misc/Preference.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Models/Misc/Preference.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageInput.h"
 #include "Core/Services/Locator.hpp"
 #include "arch/InputHandler/InputHandler.h"
@@ -205,7 +205,7 @@ RageInput::GetDisplayDevicesString() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to RageInput. */
 class LunaRageInput : public Luna<RageInput>

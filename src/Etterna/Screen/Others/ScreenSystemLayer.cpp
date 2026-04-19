@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenSystemLayer.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 namespace {
 LocalizedString CREDITS_LOAD_FAILED("ScreenSystemLayer", "CreditsLoadFailed");
@@ -45,7 +45,7 @@ GetCreditsMessage(PlayerNumber pn)
 };
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 namespace {
 int

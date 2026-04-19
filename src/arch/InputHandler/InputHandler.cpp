@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/InputFilter.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/InputFilter.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "InputHandler.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 #include "arch/arch_default.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 void
 InputHandler::UpdateTimer()

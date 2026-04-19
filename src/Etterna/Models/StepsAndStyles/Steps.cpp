@@ -12,33 +12,33 @@
  * Data can be on disk (always compressed), compressed in memory, and
  * uncompressed in memory. */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/MinaCalc/MinaCalc.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataUtil.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderBMS.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderDWI.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderKSF.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderOSU.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderSM.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderSMA.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderSSC.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/MinaCalc/MinaCalc.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataUtil.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderBMS.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderDWI.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderKSF.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderOSU.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderSM.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderSMA.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderSSC.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Singletons/FilterManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Singletons/FilterManager.h"
 
-#include "Etterna/Models/NoteData/NoteDataStructures.h"
+#include "Etternity/Models/NoteData/NoteDataStructures.h"
 
 /* register DisplayBPM with StringConversion */
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 
 // For hashing wife chart keys - Mina
-#include "Etterna/Singletons/CryptManager.h"
+#include "Etternity/Singletons/CryptManager.h"
 
 #include <algorithm>
 #include <thread>
@@ -421,7 +421,7 @@ Steps::SortSkillsetsAtRate(float rate, bool includeoverall)
 }
 
 void
-Steps::CalcEtternaMetadata(Calc* calc)
+Steps::CalcEtternityMetadata(Calc* calc)
 {
 	// keep nerv, it's needed for chartkey generation, etaner isn't
 	const auto& cereal =
@@ -839,7 +839,7 @@ Steps::GetCNPSVector(const NoteData& nd,
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 /** @brief Allow Lua to have access to the Steps. */
 class LunaSteps : public Luna<Steps>
 {

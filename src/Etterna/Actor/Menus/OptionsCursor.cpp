@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "OptionsCursor.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 OptionsCursor::OptionsCursor()
 {

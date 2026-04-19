@@ -1,4 +1,4 @@
-# This is where everything related to Etterna's build is defined
+# This is where everything related to Etternity's build is defined
 
 # Project-Wide Settings
 ## Configuration file

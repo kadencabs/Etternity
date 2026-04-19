@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "LoadingWindow.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "arch/arch_default.h"
 

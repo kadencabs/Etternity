@@ -1,7 +1,7 @@
 #ifndef NOTES_WRITER_SSC_H
 #define NOTES_WRITER_SSC_H
 
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 class Song;
 class Steps;

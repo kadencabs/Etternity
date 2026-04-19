@@ -3,9 +3,9 @@
 #ifndef ModIconRow_H
 #define ModIconRow_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
 #include "ModIcon.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 class PlayerOptions;
 struct lua_State;
 

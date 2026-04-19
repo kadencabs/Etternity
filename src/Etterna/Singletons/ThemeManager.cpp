@@ -1,22 +1,22 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Fonts/FontCharAliases.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Fonts/FontCharAliases.h"
+#include "Etternity/FileTypes/IniFile.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "arch/Dialog/Dialog.h"
 #if !defined(SMPACKAGE)
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "ProfileManager.h"
 #include "ScreenManager.h"
 #endif
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Globals/GameLoop.h" // For ChangeTheme
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Globals/GameLoop.h" // For ChangeTheme
+#include "Etternity/Models/Misc/LocalizedString.h"
 #include "LuaManager.h"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
-#include "Etterna/Globals/SpecialFiles.h"
-#include "Etterna/Models/Misc/SubscriptionManager.h"
-#include "Etterna/FileTypes/XmlFileUtil.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Globals/SpecialFiles.h"
+#include "Etternity/Models/Misc/SubscriptionManager.h"
+#include "Etternity/FileTypes/XmlFileUtil.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
 
@@ -1428,7 +1428,7 @@ ThemeManager::GetBlankGraphicPath()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ThemeManager. */
 class LunaThemeManager : public Luna<ThemeManager>

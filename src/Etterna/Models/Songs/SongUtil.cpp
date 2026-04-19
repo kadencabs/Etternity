@@ -1,22 +1,22 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Models/Misc/Profile.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Misc/Profile.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/Models/StepsAndStyles/StepsUtil.h"
-#include "Etterna/Singletons/FilterManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/Models/StepsAndStyles/StepsUtil.h"
+#include "Etternity/Singletons/FilterManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 
 #include <functional>
 #include <algorithm>
@@ -1261,7 +1261,7 @@ SongID::IsValid() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 namespace {
 int

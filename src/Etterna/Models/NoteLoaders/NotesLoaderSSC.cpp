@@ -1,15 +1,15 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/BackgroundUtil.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/FileTypes/MsdFile.h" // No JSON here.
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/FileTypes/MsdFile.h" // No JSON here.
+#include "Etternity/Models/Misc/NoteTypes.h"
 #include "NotesLoaderSM.h" // For programming shortcuts.
 #include "NotesLoaderSSC.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 // Everything from this line to the creation of parser_helper exists to
 // speed up parsing by allowing the use of std::map.  All these functions

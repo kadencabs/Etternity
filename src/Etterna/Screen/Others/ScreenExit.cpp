@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameSoundManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameSoundManager.h"
 #include "RageUtil/Sound/RageSound.h"
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ScreenExit.h"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Globals/GameLoop.h"
 
 /* This screen used to wait for sounds to stop. However, implementing
  * GetPlayingSounds() is annoying, because sounds might be deleted at any time;

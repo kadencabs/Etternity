@@ -3,8 +3,8 @@
 #ifndef ROOM_WHEEL_H
 #define ROOM_WHEEL_H
 
-#include "Etterna/Actor/Menus/WheelBase.h"
-#include "Etterna/Actor/Menus/WheelItemBase.h"
+#include "Etternity/Actor/Menus/WheelBase.h"
+#include "Etternity/Actor/Menus/WheelItemBase.h"
 
 class RoomData
 {

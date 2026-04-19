@@ -1,9 +1,9 @@
 #ifndef ScreenSelectMaster_H
 #define ScreenSelectMaster_H
 
-#include "Etterna/Actor/Base/ActorScroller.h"
+#include "Etternity/Actor/Base/ActorScroller.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Models/Misc/RandomSample.h"
+#include "Etternity/Models/Misc/RandomSample.h"
 #include "ScreenSelect.h"
 
 enum MenuDir

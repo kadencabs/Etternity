@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenPrompt.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 PromptAnswer ScreenPrompt::s_LastAnswer = ANSWER_YES;
 bool ScreenPrompt::s_bCancelledLast = false;

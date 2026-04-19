@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "MovieTexture.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/File/RageFile.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/Foreach.h"
 #include "arch/arch_default.h"
 
 void

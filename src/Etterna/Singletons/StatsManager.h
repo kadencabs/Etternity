@@ -1,7 +1,7 @@
 #ifndef StatsManager_H
 #define StatsManager_H
 
-#include "Etterna/Models/Misc/StageStats.h"
+#include "Etternity/Models/Misc/StageStats.h"
 
 /** @brief Managed non-persisted statistics. */
 class StatsManager

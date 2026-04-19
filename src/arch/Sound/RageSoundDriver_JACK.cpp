@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_JACK.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Misc/AppInfo.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 REGISTER_SOUND_DRIVER_CLASS(JACK);
 

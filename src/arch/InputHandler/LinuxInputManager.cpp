@@ -5,7 +5,7 @@
 
 #include "RageUtil/Misc/RageInput.h" // g_sInputDrivers
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 #include <string> // std::string::npos
 

@@ -9,4 +9,4 @@ list(APPEND HD_GENERAL_SRC
     "MetaIntervalHandInfo.h"
     "MetaIntervalGenericHandInfo.h")
 
-target_sources(Etterna PUBLIC ${HD_GENERAL_SRC})
+target_sources(Etternity PUBLIC ${HD_GENERAL_SRC})

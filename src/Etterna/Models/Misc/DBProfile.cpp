@@ -1,16 +1,16 @@
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Profile.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "DBProfile.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Singletons/SongManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Singletons/SongManager.h"
 #include "sqlite3.h"
 #include <SQLiteCpp/SQLiteCpp.h>
 
@@ -274,7 +274,7 @@ DBProfile::LoadPlayerScores(SQLite::Database* db)
 	  "scoresatrates.rate, "
 	  "scorekeys.scorekey, scores.calcversion, "
 	  "scores.grade, scores.wifescore, scores.ssrnormpercent, "
-	  "scores.judgescale, scores.nochordcohesion, scores.etternavalid, "
+	  "scores.judgescale, scores.nochordcohesion, scores.etternityvalid, "
 	  "scores.playedseconds, scores.maxcombo, scores.modifiers, "
 	  "scores.datetime, "
 	  "scores.hitmine, scores.avoidmine, scores.miss, scores.w5, scores.w4, "
@@ -325,7 +325,7 @@ DBProfile::LoadPlayerScores(SQLite::Database* db)
 		hs.SetJudgeScale(
 		  static_cast<float>(static_cast<double>(query.getColumn(10))));
 		hs.SetChordCohesion(static_cast<int>(query.getColumn(11)) != 0);
-		hs.SetEtternaValid(static_cast<int>(query.getColumn(12)) != 0);
+		hs.SetEtternityValid(static_cast<int>(query.getColumn(12)) != 0);
 		hs.SetChartKey(key);
 		hs.SetScoreKey(ScoreKey);
 		hs.SetPlayedSeconds(
@@ -796,7 +796,7 @@ DBProfile::SavePlayerScores(SQLite::Database* db,
 		  "scorekeyid INTEGER, calcversion INT, grade INTEGER, wifescore "
 		  "FLOAT, "
 		  "ssrnormpercent FLOAT, judgescale FLOAT, nochordcohesion INTEGER, "
-		  "etternavalid INTEGER, surviveseconds FLOAT, maxcombo INTEGER, "
+		  "etternityvalid INTEGER, surviveseconds FLOAT, maxcombo INTEGER, "
 		  "modifiers TEXT, datetime DATE, "
 		  "hitmine INTEGER, avoidmine INTEGER, miss INTEGER, w5 INTEGER, w4 "
 		  "INTEGER, "
@@ -824,7 +824,7 @@ DBProfile::SavePlayerScores(SQLite::Database* db,
 		  "chartid INTEGER, "
 		  "scorekey TEXT, calcversion INT, grade INTEGER, wifescore FLOAT, "
 		  "ssrnormpercent FLOAT, judgescale FLOAT, nochordcohesion INTEGER, "
-		  "etternavalid INTEGER, surviveseconds FLOAT, maxcombo INTEGER, "
+		  "etternityvalid INTEGER, surviveseconds FLOAT, maxcombo INTEGER, "
 		  "modifiers TEXT, datetime DATE, "
 		  "hitmine INTEGER, avoidmine INTEGER, miss INTEGER, w5 INTEGER, w4 "
 		  "INTEGER, "
@@ -939,7 +939,7 @@ DBProfile::SavePlayerScores(SQLite::Database* db,
 						insertScore->bind(6, hs->GetSSRNormPercent());
 						insertScore->bind(7, hs->GetJudgeScale());
 						insertScore->bind(8, static_cast<int>(hs->GetChordCohesion()));
-						insertScore->bind(9, static_cast<int>(hs->GetEtternaValid()));
+						insertScore->bind(9, static_cast<int>(hs->GetEtternityValid()));
 						insertScore->bind(10, hs->GetPlayedSeconds());
 						insertScore->bind(11, hs->GetMaxCombo());
 						insertScore->bind(12, hs->GetModifiers());

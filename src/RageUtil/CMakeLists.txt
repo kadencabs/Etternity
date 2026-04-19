@@ -204,4 +204,4 @@ list(APPEND SMDATA_ALL_RAGE_HPP
   ${SMDATA_RAGE_UTILS_HPP}
 )
 
-target_sources(Etterna PUBLIC ${SMDATA_ALL_RAGE_SRC})
+target_sources(Etternity PUBLIC ${SMDATA_ALL_RAGE_SRC})

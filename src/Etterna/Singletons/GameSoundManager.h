@@ -2,7 +2,7 @@
 #define RAGE_SOUNDS_H
 
 #include <functional>
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 #include "MessageManager.h"
 
 struct RageSoundParams;

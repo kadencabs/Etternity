@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Dialog.h"
 #include "DialogDriver.h"
 #if !defined(SMPACKAGE)
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #endif
 #include "RageUtil/Utils/RageUtil.h"
 #include "Core/Services/Locator.hpp"

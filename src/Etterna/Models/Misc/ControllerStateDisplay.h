@@ -3,8 +3,8 @@
 #ifndef ControllerStateDisplay_H
 #define ControllerStateDisplay_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
 #include "GameInput.h"
 #include "PlayerNumber.h"
 #include "RageUtil/Misc/RageInput.h"

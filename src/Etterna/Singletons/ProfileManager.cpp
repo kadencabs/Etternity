@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "GameState.h"
 #include "PrefsManager.h"
-#include "Etterna/Models/Misc/Profile.h"
+#include "Etternity/Models/Misc/Profile.h"
 #include "ProfileManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/File/RageFileManager.h"
@@ -566,7 +566,7 @@ ProfileManager::SetStatsPrefix(std::string const& prefix)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ProfileManager. */
 class LunaProfileManager : public Luna<ProfileManager>

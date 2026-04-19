@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/File/RageFile.h"
 #include "RageUtil/File/RageFileDriverMemory.h"
 #include "RageUtil/Utils/RageUtil.h"
@@ -556,7 +556,7 @@ XmlFileUtil::SaveToFile(const XNode* pNode,
 	return SaveToFile(pNode, f, sStylesheet, bWriteTabs);
 }
 
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 class XNodeLuaValue : public XNodeValue
 {
   public:

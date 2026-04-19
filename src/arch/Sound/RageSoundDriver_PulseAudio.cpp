@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_PulseAudio.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Sound/RageSound.h"
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include <pulse/error.h>
 #include <sys/time.h>
 #include <sys/resource.h>

@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Misc/RageInput.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenTestInput.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 class DeviceList : public BitmapText
 {

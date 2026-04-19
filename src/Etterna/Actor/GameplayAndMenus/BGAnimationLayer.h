@@ -1,8 +1,8 @@
 #ifndef BGANIMATIONLAYER_H
 #define BGANIMATIONLAYER_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 
 class XNode;
 

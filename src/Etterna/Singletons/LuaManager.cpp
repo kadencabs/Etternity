@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Command.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Command.h"
 #include "LuaManager.h"
-#include "Etterna/Models/Lua/LuaReference.h"
-#include "Etterna/Singletons/MessageManager.h"
+#include "Etternity/Models/Lua/LuaReference.h"
+#include "Etternity/Singletons/MessageManager.h"
 #include "RageUtil/File/RageFile.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Misc/RageThreads.h"
 #include "RageUtil/Misc/RageTypes.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 #include "arch/Dialog/Dialog.h"
 #include "Core/Misc/AppInfo.hpp"
 
@@ -1539,7 +1539,7 @@ LuaFunction(scale, SCALE(FArg(1), FArg(2), FArg(3), FArg(4), FArg(5)));
 
 LuaFunction(clamp, std::clamp(FArg(1), FArg(2), FArg(3)));
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 namespace {
 static int
 Trace(lua_State* L)

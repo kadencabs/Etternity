@@ -1,7 +1,7 @@
 #ifndef NOTES_LOADER_SMA_H
 #define NOTES_LOADER_SMA_H
 
-#include "Etterna/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
 #include "NotesLoaderSM.h"
 
 class MsdFile;

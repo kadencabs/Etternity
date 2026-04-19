@@ -44,9 +44,9 @@ namespace Core::Platform {
 
 // Lua Link
 // TODO: Isolate all Lua code to it's own section of the codebase
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Globals/GameLoop.h"
 
 int isGameFocused(lua_State* L) {
     lua_pushboolean(L, GameLoop::isGameFocused());

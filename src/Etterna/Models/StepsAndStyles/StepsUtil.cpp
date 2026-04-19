@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Models/Songs/SongUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Models/Songs/SongUtil.h"
 #include "Steps.h"
 #include "StepsUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <map>
 #include <algorithm>

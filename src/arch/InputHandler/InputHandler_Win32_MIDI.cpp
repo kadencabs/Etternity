@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "InputHandler_Win32_MIDI.h"
 #include "Core/Services/Locator.hpp"

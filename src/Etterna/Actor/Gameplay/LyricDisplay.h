@@ -1,8 +1,8 @@
 ﻿#ifndef LYRIC_DISPLAY_H
 #define LYRIC_DISPLAY_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/BitmapText.h"
 /** @brief Displays lyrics along with the song on Gameplay. */
 class LyricDisplay : public ActorFrame
 {

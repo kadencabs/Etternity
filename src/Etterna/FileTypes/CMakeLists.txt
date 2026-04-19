@@ -14,4 +14,4 @@ list(APPEND FILE_TYPES_HPP
 	"XmlToLua.h"
 	"XmlFileUtil.h")
 
-target_sources(Etterna PUBLIC ${FILE_TYPES_SRC} ${FILE_TYPES_HPP})
+target_sources(Etternity PUBLIC ${FILE_TYPES_SRC} ${FILE_TYPES_HPP})

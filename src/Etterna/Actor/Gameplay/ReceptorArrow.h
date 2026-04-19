@@ -1,9 +1,9 @@
 #ifndef RECEPTOR_ARROW_H
 #define RECEPTOR_ARROW_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 
 class PlayerState;
 /** @brief A gray arrow that "receives" the note arrows. */

@@ -1,7 +1,7 @@
 # Prep options that are needed for each platform.
 
 # This option quiets warnings that are a part of external projects.
-option(WITH_EXTERNAL_WARNINGS "Build with warnings for all components, not just Etterna." OFF)
+option(WITH_EXTERNAL_WARNINGS "Build with warnings for all components, not just Etternity." OFF)
 
 # This option is not yet working, but will likely default to ON in the future.
 option(WITH_LTO "Build with Link Time Optimization (LTO)/Whole Program Optimization." OFF)
@@ -24,7 +24,7 @@ else()
   # Turn this option on to enable using the Texture Font Generator.
   option(WITH_TEXTURE_GENERATOR "Build with the Texture Font Generator. Ensure the MFC library is installed." OFF)
   # Turn this option off to use dynamic linking instead of static linking.
-  option(WITH_STATIC_LINKING "Build Etterna with static linking." ON)
+  option(WITH_STATIC_LINKING "Build Etternity with static linking." ON)
 endif()
 
 if(LINUX)

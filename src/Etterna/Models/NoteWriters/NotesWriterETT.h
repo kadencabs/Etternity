@@ -1,7 +1,7 @@
 #ifndef NOTES_WRITER_ETT_H
 #define NOTES_WRITER_ETT_H
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 class Song;
 class Steps;

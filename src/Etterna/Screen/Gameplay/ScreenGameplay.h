@@ -1,17 +1,17 @@
 #ifndef SCREEN_GAMEPLAY_H
 #define SCREEN_GAMEPLAY_H
 
-#include "Etterna/Models/Misc/AutoKeysounds.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/GameplayAssist.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Actor/Gameplay/LyricDisplay.h"
+#include "Etternity/Models/Misc/AutoKeysounds.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/GameplayAssist.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Actor/Gameplay/LyricDisplay.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Screen/Others/ScreenWithMenuElements.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/Actor/GameplayAndMenus/Transition.h"
-#include "Etterna/Models/Misc/PlayerInfo.h"
+#include "Etternity/Screen/Others/ScreenWithMenuElements.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/GameplayAndMenus/Transition.h"
+#include "Etternity/Models/Misc/PlayerInfo.h"
 
 class LifeMeter;
 class Background;

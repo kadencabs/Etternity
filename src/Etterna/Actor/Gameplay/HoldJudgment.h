@@ -1,10 +1,10 @@
 #ifndef HOLD_JUDGMENT_H
 #define HOLD_JUDGMENT_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 class HoldJudgment : public ActorFrame
 {

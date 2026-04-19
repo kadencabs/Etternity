@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenTestSound.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 REGISTER_SCREEN_CLASS(ScreenTestSound);
 

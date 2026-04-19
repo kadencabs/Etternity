@@ -2,7 +2,7 @@
 #define SONGPOSITION_H
 
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Models/Misc/TimingData.h"
+#include "Etternity/Models/Misc/TimingData.h"
 // XXX: where does this come from? might need another include
 struct lua_State;
 

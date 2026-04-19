@@ -1,10 +1,10 @@
 #ifndef MUSIC_WHEEL_ITEM_H
 #define MUSIC_WHEEL_ITEM_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/GameCommand.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/GameCommand.h"
 #include "TextBanner.h"
 #include "WheelItemBase.h"
 

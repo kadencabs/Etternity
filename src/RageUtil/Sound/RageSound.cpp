@@ -19,14 +19,14 @@
  * Seeking past the end of the file will throw a warning and rewind.
  */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageSound.h"
 #include "RageSoundManager.h"
-#include "Etterna/Screen/Others/Screen.h"
+#include "Etternity/Screen/Others/Screen.h"
 #include "RageSoundUtil.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageSoundReader_Extend.h"
@@ -899,7 +899,7 @@ RageSound::SetPlayBackCallback(const std::shared_ptr<LuaReference>& f,
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the RageSound. */
 class LunaRageSound : public Luna<RageSound>

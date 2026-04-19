@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "BGAnimation.h"
 #include "BGAnimationLayer.h"
-#include "Etterna/FileTypes/IniFile.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/FileTypes/IniFile.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 

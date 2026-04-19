@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "InputMapper.h"
 #include "InputQueue.h"
 #include "Core/Services/Locator.hpp"

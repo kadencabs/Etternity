@@ -3,8 +3,8 @@
 #ifndef SCREEN_NET_SELECT_MUSIC_H
 #define SCREEN_NET_SELECT_MUSIC_H
 
-#include "Etterna/Actor/Menus/MusicWheel.h"
-#include "Etterna/Screen/Others/ScreenSelectMusic.h"
+#include "Etternity/Actor/Menus/MusicWheel.h"
+#include "Etternity/Screen/Others/ScreenSelectMusic.h"
 
 class ScreenNetSelectMusic : public ScreenSelectMusic
 {

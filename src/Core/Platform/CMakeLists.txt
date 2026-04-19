@@ -11,4 +11,4 @@ else()
     message(FATAL_ERROR " What operating system is this? There is no platform source file defined.")
 endif()
 
-target_sources(Etterna PRIVATE ${CORE_PLATFORM_HPP} ${CORE_PLATFORM_CPP})
+target_sources(Etternity PRIVATE ${CORE_PLATFORM_HPP} ${CORE_PLATFORM_CPP})

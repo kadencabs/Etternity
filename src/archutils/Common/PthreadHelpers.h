@@ -4,7 +4,7 @@
 #if defined(HAVE_STDINT_H)
 #include <stdint.h>
 #endif
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 std::string
 ThreadsVersion();

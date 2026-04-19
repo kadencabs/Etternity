@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "AnnouncerManager.h"
 #include "GameSoundManager.h"
 #include "GameState.h"
 #include "LuaManager.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderSM.h"
-#include "Etterna/Models/NoteLoaders/NotesLoaderSSC.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderSM.h"
+#include "Etternity/Models/NoteLoaders/NotesLoaderSSC.h"
 #include "PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
@@ -13,11 +13,11 @@
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/TimingData.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/TimingData.h"
 #include "ScreenManager.h"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Globals/rngthing.h"
 class SongOptions;
 
 #include "arch/Sound/RageSoundDriver.h"
@@ -876,7 +876,7 @@ GameSoundManager::HandleMessage(const Message& msg)
 	}
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the GameSoundManager. */
 class LunaGameSoundManager : public Luna<GameSoundManager>

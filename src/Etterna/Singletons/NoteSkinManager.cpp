@@ -1,19 +1,19 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/GameInput.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/GameInput.h"
 #include "GameState.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/FileTypes/IniFile.h"
 #include "NoteSkinManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Globals/SpecialFiles.h"
+#include "Etternity/Globals/SpecialFiles.h"
 #include "ThemeManager.h"
-#include "Etterna/Actor/Base/Sprite.h"
-#include "Etterna/FileTypes/XmlFileUtil.h"
+#include "Etternity/Actor/Base/Sprite.h"
+#include "Etternity/FileTypes/XmlFileUtil.h"
 #include "arch/Dialog/Dialog.h"
 
 #include <map>
@@ -659,7 +659,7 @@ NoteSkinManager::GetPathFromDirAndFile(const std::string& sDir,
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the NoteSkinManager. */
 class LunaNoteSkinManager : public Luna<NoteSkinManager>

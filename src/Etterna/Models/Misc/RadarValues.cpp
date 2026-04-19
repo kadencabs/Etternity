@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RadarValues.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <algorithm>
 
@@ -76,7 +76,7 @@ RadarValues::FromString(const std::string& sRadarValues)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the RadarValues. */
 class LunaRadarValues : public Luna<RadarValues>

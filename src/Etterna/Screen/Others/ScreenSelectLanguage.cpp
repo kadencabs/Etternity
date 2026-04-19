@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "ScreenSelectLanguage.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 REGISTER_SCREEN_CLASS(ScreenSelectLanguage);
 

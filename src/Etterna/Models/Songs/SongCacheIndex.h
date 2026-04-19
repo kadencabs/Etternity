@@ -1,8 +1,8 @@
 #ifndef SONG_CACHE_INDEX_H
 #define SONG_CACHE_INDEX_H
 
-#include "Etterna/FileTypes/IniFile.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/FileTypes/IniFile.h"
+#include "Etternity/Models/Songs/Song.h"
 #include "arch/LoadingWindow/LoadingWindow.h"
 
 #include <SQLiteCpp/SQLiteCpp.h>

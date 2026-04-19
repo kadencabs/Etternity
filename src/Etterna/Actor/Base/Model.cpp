@@ -1,16 +1,16 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorUtil.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 #include "Model.h"
 #include "ModelManager.h"
 #include "ModelTypes.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/File/RageFile.h"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <cstring>
 #include <algorithm>
@@ -837,7 +837,7 @@ Model::MaterialsNeedNormals() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Model. */
 class LunaModel : public Luna<Model>

@@ -2,11 +2,11 @@
 #ifndef StreamDisplay_H
 #define StreamDisplay_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Lua/LuaExpressionTransform.h"
-#include "Etterna/Actor/Base/Quad.h"
-#include "Etterna/Actor/Base/Sprite.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Lua/LuaExpressionTransform.h"
+#include "Etternity/Actor/Base/Quad.h"
+#include "Etternity/Actor/Base/Sprite.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 enum StreamType
 {

@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 #include "StepsDisplay.h"
 
 #include <algorithm>
@@ -238,7 +238,7 @@ StepsDisplay::SetInternal(const SetParams& params)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the StepsDisplay. */
 class LunaStepsDisplay : public Luna<StepsDisplay>

@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "LowLevelWindow_X11.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Misc/RageException.h"
 #include "archutils/Unix/X11Helper.h"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Globals/GameLoop.h"
 #include "RageUtil/Graphics/RageDisplay.h" // VideoModeParams
-#include "Etterna/Models/Misc/DisplaySpec.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 
 #include "RageUtil/Graphics/RageDisplay_OGL_Helpers.h"
 using namespace RageDisplay_Legacy_Helpers;

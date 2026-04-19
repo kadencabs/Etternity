@@ -1,9 +1,9 @@
-#include "Etterna/Models/Misc/AdjustSync.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/AdjustSync.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "ScreenSaveSync.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/Song.h"
 
 static LocalizedString CHANGED_TIMING_OF("ScreenSaveSync",
 										 "You have changed the timing of");

@@ -19,18 +19,18 @@
  * DEFAULT overrides.
  */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageBitmapTexture.h"
 #include "RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Screen/Others/Screen.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Screen/Others/Screen.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "arch/MovieTexture/MovieTexture.h"
-#include "Etterna/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
 
 #include <map>
 #include <algorithm>

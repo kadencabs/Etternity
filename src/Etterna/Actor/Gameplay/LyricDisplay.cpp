@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/GameState.h"
 #include "LyricDisplay.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 
 #include <algorithm>
 

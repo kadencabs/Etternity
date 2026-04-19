@@ -1,10 +1,10 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "RageUtil/Misc/RageTypes.h"
-#include "Etterna/Singletons/MessageManager.h"
+#include "Etternity/Singletons/MessageManager.h"
 #include "Tween.h"
 
 #include <map>

@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Sound/RageSound.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RandomSample.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Globals/rngthing.h"
 
 #include <algorithm>
 

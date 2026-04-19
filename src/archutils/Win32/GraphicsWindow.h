@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_WINDOW_H
 #define GRAPHICS_WINDOW_H
 
-#include "Etterna/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
 #include <windows.h>
 
 class VideoModeParams;

@@ -6,9 +6,9 @@ list(APPEND cdefs _XOPEN_SOURCE GL_SILENCE_DEPRECATION)
 if(NOT CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
   list(APPEND cdefs CPU_X86_64)
  endif()
-set_target_properties(Etterna PROPERTIES COMPILE_DEFINITIONS "${cdefs}")
+set_target_properties(Etternity PROPERTIES COMPILE_DEFINITIONS "${cdefs}")
 
-set_target_properties(Etterna PROPERTIES MACOSX_BUNDLE TRUE)
+set_target_properties(Etternity PROPERTIES MACOSX_BUNDLE TRUE)
 
 if(NOT CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
   #TODO: Do we even need these on x86_64?
@@ -26,9 +26,9 @@ endif()
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 
 # Set AppBundle icon
-set(MACOSX_BUNDLE_ICON_FILE etterna.icns)
-set_property(SOURCE CMake/CPack/macOS/etterna.icns PROPERTY MACOSX_PACKAGE_LOCATION "Resources")
-target_sources(Etterna PUBLIC CMake/CPack/macOS/etterna.icns)
+set(MACOSX_BUNDLE_ICON_FILE etternity.icns)
+set_property(SOURCE CMake/CPack/macOS/etternity.icns PROPERTY MACOSX_PACKAGE_LOCATION "Resources")
+target_sources(Etternity PUBLIC CMake/CPack/macOS/etternity.icns)
 
 # macOS Frameworks
 find_library(MAC_FRAME_AUDIOUNIT AudioUnit)
@@ -36,20 +36,20 @@ find_library(MAC_FRAME_CARBON Carbon)
 find_library(MAC_FRAME_COREAUDIO CoreAudio)
 find_library(MAC_FRAME_IOKIT IOKit)
 find_library(MAC_FRAME_METAL Metal)
-target_link_libraries(Etterna PRIVATE ${MAC_FRAME_AUDIOUNIT})
-target_link_libraries(Etterna PRIVATE ${MAC_FRAME_CARBON})
-target_link_libraries(Etterna PRIVATE ${MAC_FRAME_COREAUDIO})
-target_link_libraries(Etterna PRIVATE ${MAC_FRAME_IOKIT})
-target_link_libraries(Etterna PRIVATE ${MAC_FRAME_METAL})
+target_link_libraries(Etternity PRIVATE ${MAC_FRAME_AUDIOUNIT})
+target_link_libraries(Etternity PRIVATE ${MAC_FRAME_CARBON})
+target_link_libraries(Etternity PRIVATE ${MAC_FRAME_COREAUDIO})
+target_link_libraries(Etternity PRIVATE ${MAC_FRAME_IOKIT})
+target_link_libraries(Etternity PRIVATE ${MAC_FRAME_METAL})
 
 # Extern Libraries
-target_link_libraries(Etterna PRIVATE ffmpeg)
+target_link_libraries(Etternity PRIVATE ffmpeg)
 
 # System Libraries
 find_package(OpenGL REQUIRED)
 find_package(BZip2 REQUIRED)
 find_package(Iconv REQUIRED)
-target_link_libraries(Etterna PRIVATE ${OPENGL_LIBRARIES})
-target_link_libraries(Etterna PRIVATE ${BZIP2_LIBRARIES})
-target_link_libraries(Etterna PUBLIC ${ICONV_LIBRARIES})
+target_link_libraries(Etternity PRIVATE ${OPENGL_LIBRARIES})
+target_link_libraries(Etternity PRIVATE ${BZIP2_LIBRARIES})
+target_link_libraries(Etternity PUBLIC ${ICONV_LIBRARIES})
 

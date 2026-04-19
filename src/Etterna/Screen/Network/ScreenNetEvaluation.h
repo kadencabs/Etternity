@@ -1,6 +1,6 @@
-#include "Etterna/Screen/Others/ScreenEvaluation.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
-#include "Etterna/Actor/GameplayAndMenus/StepsDisplay.h"
+#include "Etternity/Screen/Others/ScreenEvaluation.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
+#include "Etternity/Actor/GameplayAndMenus/StepsDisplay.h"
 
 class ScreenNetEvaluation : public ScreenEvaluation
 {

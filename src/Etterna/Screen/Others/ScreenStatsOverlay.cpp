@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
 #include "ScreenStatsOverlay.h"
 
 REGISTER_SCREEN_CLASS(ScreenStatsOverlay);

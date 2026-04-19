@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/BackgroundUtil.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 #include "NotesLoaderSM.h" // may need this.
 #include "NotesLoaderSMA.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 void
 SMALoader::ProcessMultipliers(TimingData& out,

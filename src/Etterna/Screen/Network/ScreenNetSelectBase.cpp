@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/Actor.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Fonts/Font.h"
-#include "Etterna/Singletons/GameSoundManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/Actor.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Fonts/Font.h"
+#include "Etternity/Singletons/GameSoundManager.h"
 #include "RageUtil/Misc/RageInput.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
 #include "ScreenNetSelectBase.h"
@@ -314,7 +314,7 @@ ScreenNetSelectBase::ToUsers()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the PlayerState. */
 class LunaScreenNetSelectBase : public Luna<ScreenNetSelectBase>

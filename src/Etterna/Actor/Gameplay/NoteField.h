@@ -1,13 +1,13 @@
 #ifndef NOTE_FIELD_H
 #define NOTE_FIELD_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Actor/Gameplay/GhostArrowRow.h"
-#include "Etterna/Actor/Gameplay/NoteDisplay.h"
-#include "Etterna/Actor/Base/Quad.h"
-#include "Etterna/Actor/Gameplay/ReceptorArrowRow.h"
-#include "Etterna/Actor/Base/Sprite.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Gameplay/GhostArrowRow.h"
+#include "Etternity/Actor/Gameplay/NoteDisplay.h"
+#include "Etternity/Actor/Base/Quad.h"
+#include "Etternity/Actor/Gameplay/ReceptorArrowRow.h"
+#include "Etternity/Actor/Base/Sprite.h"
 
 class NoteData;
 /** @brief An Actor that renders NoteData. */

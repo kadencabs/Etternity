@@ -2,7 +2,7 @@
 #ifndef RAGE_INPUT_DEVICE_H
 #define RAGE_INPUT_DEVICE_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 #include <chrono>
 #include <utility>
 

@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "NotesLoaderOSU.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/File/RageFile.h"
 #include "RageUtil/Utils/RageUtil_CharConversions.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 #include <cmath>
 #include <string>

@@ -1,7 +1,7 @@
 #ifndef INPUT_QUEUE_H
 #define INPUT_QUEUE_H
 
-#include "Etterna/Models/Misc/GameInput.h"
+#include "Etternity/Models/Misc/GameInput.h"
 #include "InputFilter.h"
 
 #include <chrono>

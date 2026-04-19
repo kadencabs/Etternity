@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorUtil.h"
-#include "Etterna/Singletons/InputFilter.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/InputFilter.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
-#include "Etterna/Models/Misc/ImageCache.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ImageCache.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 #include "Sprite.h"
 
 #include <cassert>
@@ -1244,7 +1244,7 @@ Sprite::AddImageCoords(float fX, float fY)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Sprite. */
 class LunaSprite : public Luna<Sprite>

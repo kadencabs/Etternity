@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "DisplaySpec.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaDisplayMode : public Luna<DisplayMode>
 {

@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "FilterManager.h"
 
 FilterManager* FILTERMAN = nullptr;
@@ -100,7 +100,7 @@ FilterManager::loadpos(std::string name)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaFilterManager : public Luna<FilterManager>
 {

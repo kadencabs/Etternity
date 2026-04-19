@@ -1,12 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/Misc/TimingData.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/TimingData.h"
 
 #include <chrono>
 

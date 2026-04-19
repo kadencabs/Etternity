@@ -3,18 +3,18 @@
 #ifndef SCREEN_SELECT_MUSIC_H
 #define SCREEN_SELECT_MUSIC_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/GameInput.h"
-#include "Etterna/Actor/Menus/MusicWheel.h"
-#include "Etterna/Actor/Menus/OptionsList.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/GameInput.h"
+#include "Etternity/Actor/Menus/MusicWheel.h"
+#include "Etternity/Actor/Menus/OptionsList.h"
 #include "ScreenWithMenuElements.h"
-#include "Etterna/Actor/Base/Sprite.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Models/HighScore/HighScore.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Actor/Gameplay/Player.h"
-#include "Etterna/Actor/Gameplay/NoteField.h"
+#include "Etternity/Actor/Base/Sprite.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Models/HighScore/HighScore.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Actor/Gameplay/Player.h"
+#include "Etternity/Actor/Gameplay/NoteField.h"
 
 enum SelectionState
 {

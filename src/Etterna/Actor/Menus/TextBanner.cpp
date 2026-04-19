@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Songs/Song.h"
 #include "TextBanner.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 REGISTER_ACTOR_CLASS(TextBanner);
 
@@ -93,7 +93,7 @@ TextBanner::SetFromSong(const Song* pSong)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the TextBanner. */
 class LunaTextBanner : public Luna<TextBanner>

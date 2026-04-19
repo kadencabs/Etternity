@@ -148,7 +148,7 @@ function getClearTypeFromScore(pn, score, ret)
 	steps = GAMESTATE:GetCurrentSteps(pn)
 	profile = GetPlayerOrMachineProfile(pn)
 	
-	-- In Etterna 0.74, isScoreValid might not be present or different, but we'll approximate.
+	-- In Etternity 0.74, isScoreValid might not be present or different, but we'll approximate.
 	-- Actually we can just check if score is non-nil.
 	
 	if score ~= nil and song ~= nil and steps ~= nil then

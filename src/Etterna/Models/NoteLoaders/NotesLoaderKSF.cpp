@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/FileTypes/MsdFile.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/FileTypes/MsdFile.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 #include "NotesLoaderKSF.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Utils/RageUtil_CharConversions.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 #include <string>
 #include <algorithm>

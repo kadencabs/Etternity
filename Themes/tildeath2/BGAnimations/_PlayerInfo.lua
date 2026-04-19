@@ -414,7 +414,7 @@ t[#t + 1] = Def.ActorFrame {
 			self:queuecommand("Set")
 		end,
 		SetCommand = function(self)
-			self:settext(GAMESTATE:GetEtternaVersion())
+			self:settext(GAMESTATE:GetEtternityVersion())
 		end,
 		MouseOverCommand = function(self)
 			highlightIfOver(self)

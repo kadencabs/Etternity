@@ -9,9 +9,9 @@
  * That said, here are a few helpers for when they're unavoidable.
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageThreads.h"
 #include "RageTimer.h"

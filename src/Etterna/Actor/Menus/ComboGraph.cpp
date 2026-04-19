@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Actor/Base/BitmapText.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Base/BitmapText.h"
 #include "ComboGraph.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Misc/StageStats.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/StageStats.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 #include <algorithm>
 
@@ -158,7 +158,7 @@ ComboGraph::SetWithoutStageStats(const PlayerStageStats& pss, const float fLastS
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ComboGraph. */
 class LunaComboGraph : public Luna<ComboGraph>

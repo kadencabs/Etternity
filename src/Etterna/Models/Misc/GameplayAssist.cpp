@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CommonMetrics.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "GameplayAssist.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "PlayerState.h"
 #include "RageUtil/Sound/RageSoundManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #include <algorithm>
 

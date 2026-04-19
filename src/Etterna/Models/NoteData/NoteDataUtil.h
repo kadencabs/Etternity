@@ -1,8 +1,8 @@
 #ifndef NOTEDATAUTIL_H
 #define NOTEDATAUTIL_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 
 class PlayerOptions;
 struct RadarValues;

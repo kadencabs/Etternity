@@ -1,24 +1,24 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "NoteFieldPreview.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Screen/Others/Screen.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Screen/Others/Screen.h"
 #include "Player.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 
 #include <cmath>
 #include <limits>
 #include <RageUtil/Graphics/RageDisplay.h>
 
-#include "Etterna/Models/NoteData/NoteDataUtil.h"
+#include "Etternity/Models/NoteData/NoteDataUtil.h"
 
 REGISTER_ACTOR_CLASS(NoteFieldPreview);
 

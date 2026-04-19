@@ -4,8 +4,8 @@
 #ifndef ScreenStatsOverlay_H
 #define ScreenStatsOverlay_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Actor/Base/Quad.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/Quad.h"
 #include "Screen.h"
 #include <chrono>
 

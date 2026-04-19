@@ -6,7 +6,7 @@
 #include "RageSoundPosMap.h"
 #include "RageUtil/Misc/RageThreads.h"
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "fft.h"
 
 class RageSoundReader;

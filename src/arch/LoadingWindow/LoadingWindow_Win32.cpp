@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "LoadingWindow_Win32.h"
 #include "RageUtil/File/RageFileManager.h"

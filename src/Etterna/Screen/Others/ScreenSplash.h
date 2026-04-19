@@ -4,7 +4,7 @@
 #define ScreenSplash_H
 
 #include "ScreenWithMenuElements.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class ScreenSplash : public ScreenWithMenuElements
 {

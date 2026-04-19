@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "archutils/Win32/WindowIcon.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Graphics/RageSurface.h"

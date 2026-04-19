@@ -4,7 +4,7 @@
  * docs for details.
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageMath.h"
 #include "RageTypes.h"
 
@@ -945,7 +945,7 @@ RageBezier2D::SetFromBezier(float fC1X,
 	m_Y.SetFromBezier(fC1Y, fC2Y, fC3Y, fC4Y);
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 struct LunaRageQuadratic : Luna<RageQuadratic>
 {

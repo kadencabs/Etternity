@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "TitleSubstitution.h"
-#include "Etterna/Models/Fonts/FontCharAliases.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Models/Fonts/FontCharAliases.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/FileTypes/XmlFileUtil.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFileUtil.h"
 
 static const std::string TRANSLATIONS_PATH = "Data/Translations.xml";
 static const std::string ERASE_MARKER = "-erase-";

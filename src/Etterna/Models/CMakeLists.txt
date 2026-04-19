@@ -224,4 +224,4 @@ list(APPEND ALL_DATA_HPP
   ${STEPS_HPP}
   ${REST_HPP})
 
-target_sources(Etterna PUBLIC ${ALL_DATA_SRC} ${ALL_DATA_HPP})
+target_sources(Etternity PUBLIC ${ALL_DATA_SRC} ${ALL_DATA_HPP})

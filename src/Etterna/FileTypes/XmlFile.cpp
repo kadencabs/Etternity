@@ -5,9 +5,9 @@
 // XmlFile : XML Lite Parser Library
 // by Cho, Kyung Min: bro@shinbiro.com 2002-10-30
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/DateTime.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/DateTime.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "XmlFile.h"
 

@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "ScreenManager.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Models/Misc/Preference.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
 #include "RageUtil/File/RageFile.h"
@@ -9,20 +9,20 @@
 #include "DownloadManager.h"
 #include "GameState.h"
 #include "ScoreManager.h"
-#include "Etterna/Models/Misc/GamePreferences.h"
-#include "Etterna/Screen/Network/ScreenNetSelectMusic.h"
+#include "Etternity/Models/Misc/GamePreferences.h"
+#include "Etternity/Screen/Network/ScreenNetSelectMusic.h"
 #include "ProfileManager.h"
 #include "SongManager.h"
 #include "ScoreManager.h"
-#include "Etterna/Screen/Others/ScreenInstallOverlay.h"
-#include "Etterna/Screen/Others/ScreenSelectMusic.h"
-#include "Etterna/Globals/SpecialFiles.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Screen/Others/ScreenInstallOverlay.h"
+#include "Etternity/Screen/Others/ScreenSelectMusic.h"
+#include "Etternity/Globals/SpecialFiles.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
-#include "Etterna/Singletons/CryptManager.h"
+#include "Etternity/Singletons/CryptManager.h"
 
 #include "rapidjson/writer.h"
 #include "rapidjson/error/en.h"
@@ -64,10 +64,10 @@ static Preference<float> DownloadCooldownTime(
 
 // Score API Preferences
 static Preference<std::string> serverURL("BaseOnlineAPIUrl",
-										 "https://api.etternaonline.com");
+										 "https://api.etternityonline.com");
 static Preference<std::string> searchURL("BaseOnlineAPISearchUrl",
-										 "https://search.etternaonline.com");
-static Preference<std::string> uiHomePage("BaseOnlineUIUrl", "https://etternaonline.com");
+										 "https://search.etternityonline.com");
+static Preference<std::string> uiHomePage("BaseOnlineUIUrl", "https://etternityonline.com");
 static Preference<unsigned int> automaticSync("automaticScoreSync", 1);
 
 // 
@@ -192,8 +192,8 @@ EmptyTempDLFileDir()
 #pragma region curl
 inline std::string
 useragent() {
-	static auto agent = fmt::format("Etterna/{} ({})",
-					   GAMESTATE->GetEtternaVersion(),
+	static auto agent = fmt::format("Etternity/{} ({})",
+					   GAMESTATE->GetEtternityVersion(),
 					   Core::Platform::getSystem());
 	return agent;
 }
@@ -3513,7 +3513,7 @@ jsonToOnlineScore(Value& score, const std::string& chartkey)
 	hs.SetName(tmp.username);
 	hs.SetModifiers(tmp.modifiers);
 	hs.SetChordCohesion(tmp.nocc);
-	hs.SetEtternaValid(tmp.valid);
+	hs.SetEtternityValid(tmp.valid);
 	hs.SetWifeScore(tmp.wife);
 	hs.SetWifeVersion(tmp.wifeversion);
 	hs.SetSSRNormPercent(tmp.wife);
@@ -3560,7 +3560,7 @@ ScoreToJSON(HighScore* hs, bool includeReplayData, Document::AllocatorType& allo
 	Locator::getLogger()->trace(
 	  "ScoreToJSON :: score {} | ck {}", hs->GetScoreKey(), hs->GetChartKey());
 
-	auto validity = hs->GetEtternaValid() && hs->HasReplayData();
+	auto validity = hs->GetEtternityValid() && hs->HasReplayData();
 
 	d.AddMember("key", stringToVal(hs->GetScoreKey(), allocator), allocator);
 	d.AddMember("wife", hs->GetSSRNormPercent(), allocator);
@@ -6311,7 +6311,7 @@ DownloadablePack::GetThumbnailTexture() {
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 #include "LuaManager.h"
 /** @brief Allow Lua to have access to the ProfileManager. */
 class LunaDownloadManager : public Luna<DownloadManager>

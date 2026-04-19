@@ -4,7 +4,7 @@
 #include "ActorFrame.h"
 #include "Quad.h"
 class XNode;
-#include "Etterna/Models/Lua/LuaExpressionTransform.h"
+#include "Etternity/Models/Lua/LuaExpressionTransform.h"
 /** @brief ActorFrame that moves its children. */
 class ActorScroller : public ActorFrame
 {

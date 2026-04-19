@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Fonts/Font.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Fonts/Font.h"
 #include "FontManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"

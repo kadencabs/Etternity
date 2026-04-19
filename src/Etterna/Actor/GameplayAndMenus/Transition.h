@@ -3,9 +3,9 @@
 #ifndef TRANSITION_H
 #define TRANSITION_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
 
 class Transition : public ActorFrame
 {

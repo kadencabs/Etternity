@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 #include <dlfcn.h>
 #include <sys/stat.h>

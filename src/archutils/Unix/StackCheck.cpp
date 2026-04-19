@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 /* Newer g++ versions (around 4.2) output __stack_chk_fail calls.  This is
  * grossly backwards-incompatible.  It can be disabled, but you'd have to

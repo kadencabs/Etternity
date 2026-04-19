@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Singletons/GameState.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "SongOptions.h"
-#include "Etterna/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/DownloadManager.h"
 
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Foreach.h"
 
 static const char* AutosyncTypeNames[] = {
 	"Off",
@@ -218,8 +218,8 @@ SongOptions::operator==(const SongOptions& other) const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Globals/OptionsBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Globals/OptionsBinding.h"
 
 /** @brief Allow Lua to have access to SongOptions. */
 class LunaSongOptions : public Luna<SongOptions>

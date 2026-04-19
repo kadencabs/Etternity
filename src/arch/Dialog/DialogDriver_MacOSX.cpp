@@ -1,10 +1,10 @@
 #include <vector>
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "DialogDriver_MacOSX.h"
 #include "RageUtil/Misc/RageThreads.h"
-#include "Etterna/Singletons/InputFilter.h"
+#include "Etternity/Singletons/InputFilter.h"
 #include "Core/Services/Locator.hpp"
 #include <CoreFoundation/CoreFoundation.h>
 #include <Core/Misc/AppInfo.hpp>

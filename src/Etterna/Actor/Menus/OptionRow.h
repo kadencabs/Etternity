@@ -3,12 +3,12 @@
 #ifndef OptionRow_H
 #define OptionRow_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/BitmapText.h"
 #include "ModIcon.h"
 #include "OptionsCursor.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class OptionRowHandler;
 class GameCommand;

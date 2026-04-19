@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/Foreach.h"
 #include "LuaManager.h"
 #include "MessageManager.h"
 #include "Core/Services/Locator.hpp"
@@ -313,7 +313,7 @@ MessageSubscriber::UnsubscribeAll()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the MessageManager. */
 class LunaMessageManager : public Luna<MessageManager>

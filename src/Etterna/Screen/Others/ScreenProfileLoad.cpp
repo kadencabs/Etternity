@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "ScreenProfileLoad.h"
 
 REGISTER_SCREEN_CLASS(ScreenProfileLoad);
@@ -56,7 +56,7 @@ ScreenProfileLoad::Continue()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenProfileLoad. */
 class LunaScreenProfileLoad : public Luna<ScreenProfileLoad>

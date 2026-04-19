@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
-#include "Etterna/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
 #include "RageDisplay.h"
 #include "RageDisplay_Null.h"
 #include "Core/Services/Locator.hpp"

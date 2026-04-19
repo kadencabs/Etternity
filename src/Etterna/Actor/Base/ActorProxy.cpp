@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorProxy.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 
 REGISTER_ACTOR_CLASS(ActorProxy);
 
@@ -33,7 +33,7 @@ ActorProxy::LoadFromNode(const XNode* pNode)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ActorProxy. */
 class LunaActorProxy : public Luna<ActorProxy>

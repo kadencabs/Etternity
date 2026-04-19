@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataUtil.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataUtil.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 #include "NotesWriterDWI.h"
 #include "RageUtil/File/RageFile.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 #include <algorithm>
 

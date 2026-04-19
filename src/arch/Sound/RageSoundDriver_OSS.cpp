@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_OSS.h"
 
 #include "Core/Services/Locator.hpp"

@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "LocalizedString.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "NoteTypes.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 TapNote TAP_EMPTY(TapNoteType_Empty,
 				  TapNoteSubType_Invalid,
@@ -251,7 +251,7 @@ HoldNoteResult::GetLastHeldBeat() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the TapNoteResult. */
 class LunaTapNoteResult : public Luna<TapNoteResult>

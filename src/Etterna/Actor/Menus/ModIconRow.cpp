@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "ModIconRow.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 
 int
 OptionToPreferredColumn(std::string sOptionText);
@@ -168,7 +168,7 @@ ModIconRow::SetFromGameState()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ModIconRow. */
 class LunaModIconRow : public Luna<ModIconRow>

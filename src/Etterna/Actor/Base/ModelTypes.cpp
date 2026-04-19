@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/FileTypes/IniFile.h"
 #include "ModelTypes.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/File/RageFile.h"

@@ -4,10 +4,10 @@
 #ifndef STYLE_H
 #define STYLE_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/GameInput.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/GameInput.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 /** @brief Each style can have a maximum amount of columns to work with. */
 const int MAX_COLS_PER_PLAYER = MAX_NOTE_TRACKS;

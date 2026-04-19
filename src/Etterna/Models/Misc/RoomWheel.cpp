@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "LocalizedString.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RoomWheel.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Screen/Others/ScreenTextEntry.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Screen/Others/ScreenTextEntry.h"
 
 static LocalizedString EMPTY_STRING("RoomWheel", "Empty");
 
@@ -363,7 +363,7 @@ RoomWheel::StopSearch()
 	BuildFromRoomDatas();
 }
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaRoomWheel : public Luna<RoomWheel>
 {

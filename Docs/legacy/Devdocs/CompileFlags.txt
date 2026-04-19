@@ -1,11 +1,11 @@
-Etterna has a few compile flags that are helpful to know, as well as one
+Etternity has a few compile flags that are helpful to know, as well as one
 inherited from sm-ssc that should be nuked.
 
 ================================================================================
-Etterna:
+Etternity:
 ================================================================================
 WITHOUT_NETWORKING
-Disables all networking stuff (e.g. Etterna Online).
+Disables all networking stuff (e.g. Etternity Online).
 --------------------------------------------------------------------------------
 
 ================================================================================

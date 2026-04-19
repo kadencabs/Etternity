@@ -1,16 +1,16 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/AnnouncerManager.h"
-#include "Etterna/Models/Misc/CodeDetector.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/AnnouncerManager.h"
+#include "Etternity/Models/Misc/CodeDetector.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenPlayerOptions.h"
 #include "ScreenSongOptions.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 REGISTER_SCREEN_CLASS(ScreenPlayerOptions);
 
@@ -142,7 +142,7 @@ ScreenPlayerOptions::UpdateDisqualified(int row, PlayerNumber pn)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenPlayerOptions. */
 class LunaScreenPlayerOptions : public Luna<ScreenPlayerOptions>

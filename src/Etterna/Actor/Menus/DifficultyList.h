@@ -2,10 +2,10 @@
 #ifndef DIFFICULTY_LIST_H
 #define DIFFICULTY_LIST_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
-#include "Etterna/Actor/GameplayAndMenus/StepsDisplay.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
+#include "Etternity/Actor/GameplayAndMenus/StepsDisplay.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class Song;
 class Steps;

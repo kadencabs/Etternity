@@ -1,10 +1,10 @@
 #ifndef HIGH_SCORE_H
 #define HIGH_SCORE_H
 
-#include "Etterna/Models/Misc/DateTime.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/Grade.h"
-#include "Etterna/Models/HighScore/Replay.h"
+#include "Etternity/Models/Misc/DateTime.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Grade.h"
+#include "Etternity/Models/HighScore/Replay.h"
 
 class XNode;
 struct RadarValues;
@@ -49,7 +49,7 @@ struct HighScore
 	[[nodiscard]] auto GetSongOffset() const -> float;
 	[[nodiscard]] auto GetJudgeScale() const -> float;
 	[[nodiscard]] auto GetChordCohesion() const -> bool;
-	[[nodiscard]] auto GetEtternaValid() const -> bool;
+	[[nodiscard]] auto GetEtternityValid() const -> bool;
 	[[nodiscard]] auto GetDSFlag() const -> bool;
 	[[nodiscard]] auto GetStageSeed() const -> int;
 	[[nodiscard]] auto IsUploadedToServer(const std::string& s) const -> bool;
@@ -121,7 +121,7 @@ struct HighScore
 	void SetPlayedSeconds(float f);
 	void SetJudgeScale(float f);
 	void SetChordCohesion(bool b);
-	void SetEtternaValid(bool b);
+	void SetEtternityValid(bool b);
 	void SetDSFlag(bool b);
 	void SetStageSeed(int i);
 	void AddUploadedServer(const std::string& s);

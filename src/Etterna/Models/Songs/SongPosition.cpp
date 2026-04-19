@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
 #include "SongPosition.h"
 
 static Preference<float> g_fVisualDelaySeconds("VisualDelaySeconds", 0.0f);
@@ -65,7 +65,7 @@ SongPosition::Reset()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 class LunaSongPosition : public Luna<SongPosition>
 {
   public:

@@ -3,7 +3,7 @@
 #ifndef RAGETYPES_H
 #define RAGETYPES_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 
 enum BlendMode
 {

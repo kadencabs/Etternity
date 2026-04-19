@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ArrowEffects.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ReceptorArrowRow.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 
 #include <map>
 

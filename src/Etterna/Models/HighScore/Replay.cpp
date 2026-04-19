@@ -1,21 +1,21 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Replay.h"
 #include "HighScore.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataUtil.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataUtil.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
 
 // Singletons
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/ReplayManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Singletons/SongManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/ReplayManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/SongManager.h"
 
 #include "rapidjson/document.h"
 
@@ -3683,7 +3683,7 @@ Replay::GenerateJudgeInfoAndReplaySnapshots(int startingRow, float timingScale) 
 }
 
 // Lua
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaReplay : public Luna<Replay>
 {

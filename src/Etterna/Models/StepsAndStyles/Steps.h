@@ -1,13 +1,13 @@
 #ifndef STEPS_H
 #define STEPS_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/Grade.h"
-#include "Etterna/Models/Misc/RadarValues.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Grade.h"
+#include "Etternity/Models/Misc/RadarValues.h"
 #include "RageUtil/Utils/RageUtil_CachedObject.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 
 class Profile;
 struct lua_State;
@@ -195,7 +195,7 @@ class Steps
 	auto SortSkillsetsAtRate(float x, bool includeoverall)
 	  -> std::vector<std::pair<Skillset, float>>;
 
-	void CalcEtternaMetadata(Calc* calc = nullptr);
+	void CalcEtternityMetadata(Calc* calc = nullptr);
 	auto DoATestThing(float ev, Skillset ss, float rate, Calc* calc) -> float;
 	void GetCalcDebugOutput(); // now spits out everything with 1 calc call
 	std::vector<std::vector<std::vector<std::vector<float>>>>

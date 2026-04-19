@@ -1,6 +1,6 @@
 #include "rngthing.h"
 #include <RageUtil/Utils/RageUtil.h>
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 #include <ctime>
 

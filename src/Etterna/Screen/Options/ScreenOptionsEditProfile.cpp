@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/OptionRowHandler.h"
-#include "Etterna/Models/Misc/Profile.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/OptionRowHandler.h"
+#include "Etternity/Models/Misc/Profile.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenOptionsEditProfile.h"
-#include "Etterna/Screen/Others/ScreenPrompt.h"
+#include "Etternity/Screen/Others/ScreenPrompt.h"
 
 enum EditProfileRow
 {

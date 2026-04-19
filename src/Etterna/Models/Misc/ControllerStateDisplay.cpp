@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "ControllerStateDisplay.h"
 #include "EnumHelper.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 #include "RageUtil/Misc/RageInputDevice.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 static const char* ControllerStateButtonNames[] = {
 	"UpLeft", "UpRight", "Center", "DownLeft", "DownRight",

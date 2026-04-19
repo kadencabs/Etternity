@@ -18,9 +18,9 @@
  * offset value, but it's annoying.
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "AutoKeysounds.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Sound/RageSoundReader_Chain.h"
 #include "RageUtil/Sound/RageSoundReader_ChannelSplit.h"
@@ -31,7 +31,7 @@
 #include "RageUtil/Sound/RageSoundReader_PitchChange.h"
 #include "RageUtil/Sound/RageSoundReader_PostBuffering.h"
 #include "RageUtil/Sound/RageSoundReader_ThreadedBuffer.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/Song.h"
 
 #include <algorithm>
 

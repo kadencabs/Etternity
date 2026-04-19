@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Actor/Gameplay/Background.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Gameplay/Background.h"
 #include "BackgroundUtil.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/FileTypes/IniFile.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/Song.h"
 
 #include <algorithm>
 

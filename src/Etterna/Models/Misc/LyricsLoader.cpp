@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "LyricsLoader.h"
 #include "RageUtil/File/RageFile.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #include <algorithm>
 

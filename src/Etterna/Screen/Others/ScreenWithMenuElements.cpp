@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Actor/Menus/MenuTimer.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Actor/Menus/MenuTimer.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenWithMenuElements.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #include <algorithm>
 #include <utility>
@@ -336,7 +336,7 @@ ScreenWithMenuElements::UpdateTimedFunctions(float fDeltaTime)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 /** @brief Allow Lua to have access to the ScreenWithMenuElements. */
 class LunaScreenWithMenuElements : public Luna<ScreenWithMenuElements>
 {

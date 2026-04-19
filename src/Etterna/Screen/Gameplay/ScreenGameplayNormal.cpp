@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ScreenGameplayNormal.h"
-#include "Etterna/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/Difficulty.h"
 
 REGISTER_SCREEN_CLASS(ScreenGameplayNormal);
 

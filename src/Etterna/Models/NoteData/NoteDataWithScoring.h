@@ -1,8 +1,8 @@
 #ifndef NOTE_DATA_WITH_SCORING_H
 #define NOTE_DATA_WITH_SCORING_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 struct RadarValues;
 class NoteData;

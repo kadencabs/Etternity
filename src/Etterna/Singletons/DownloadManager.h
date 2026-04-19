@@ -2,12 +2,12 @@
 #ifndef SM_DOWNMANAGER
 #define SM_DOWNMANAGER
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageUtil/File/RageFile.h"
-#include "Etterna/Models/HighScore/HighScore.h"
+#include "Etternity/Models/HighScore/HighScore.h"
 #include "ScreenManager.h"
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/Difficulty.h"
 
 #include "curl/curl.h"
 #include "rapidjson/document.h"

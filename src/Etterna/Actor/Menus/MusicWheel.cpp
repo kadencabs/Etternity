@@ -1,26 +1,26 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Singletons/FilterManager.h"
-#include "Etterna/Models/Misc/GameCommand.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/MessageManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Singletons/FilterManager.h"
+#include "Etternity/Models/Misc/GameCommand.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/MessageManager.h"
 #include "MusicWheel.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/Songs/SongUtil.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/Songs/SongUtil.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Globals/rngthing.h"
 
 #include <algorithm>
 
@@ -1734,7 +1734,7 @@ MusicWheel::FinishChangingSorts()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaMusicWheel : public Luna<MusicWheel>
 {

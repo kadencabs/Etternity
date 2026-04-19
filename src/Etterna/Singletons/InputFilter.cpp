@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Models/Misc/GameInput.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/GameInput.h"
 #include "InputFilter.h"
 #include "InputMapper.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/Preference.h"
 #include "RageUtil/Misc/RageInput.h"
 #include "RageUtil/Misc/RageThreads.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
 
@@ -546,7 +546,7 @@ InputFilter::IsShiftPressed() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to InputFilter. */
 class LunaInputFilter : public Luna<InputFilter>

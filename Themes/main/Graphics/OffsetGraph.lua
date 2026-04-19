@@ -485,7 +485,7 @@ t[#t+1] = Def.ActorMultiVertex{
 				end
 
 				if math.abs(rawOffset) >= 1000 then
-					-- Misses: vertical line (Etterna recorded misses as 1000ms)
+					-- Misses: vertical line (Etternity recorded misses as 1000ms)
 					local a = alpha == 1 and 0.3 or 0.1
 					c[4] = a
 					verts[#verts+1] = {{x - dotWidth/4, params.height, 0}, c}

@@ -7,4 +7,4 @@ list(APPEND HA_GENERAL_SRC
     "MetaIntervalInfo.h"
     "MetaRowInfo.h")
 
-target_sources(Etterna PUBLIC ${HA_GENERAL_SRC})
+target_sources(Etternity PUBLIC ${HA_GENERAL_SRC})

@@ -1,27 +1,27 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Profile.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/FileTypes/IniFile.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/MinaCalc/MinaCalc.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataWithScoring.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/FileTypes/IniFile.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/MinaCalc/MinaCalc.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataWithScoring.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/XMLProfile.h"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/XMLProfile.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Singletons/DownloadManager.h"
 
 #include <algorithm>
 #include <map>
@@ -777,7 +777,7 @@ Profile::MakeFileNameNoExtension(const std::string& sFileNameBeginning,
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Profile. */
 class LunaProfile : public Luna<Profile>

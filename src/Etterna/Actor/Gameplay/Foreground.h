@@ -1,7 +1,7 @@
 #ifndef FOREGROUND_H
 #define FOREGROUND_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
 
 class Song;
 

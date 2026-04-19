@@ -1,7 +1,7 @@
 ﻿#ifndef LUA_REFERENCE_H
 #define LUA_REFERENCE_H
 
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 
 struct lua_State;
 using Lua = lua_State;

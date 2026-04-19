@@ -2,7 +2,7 @@
 #define NOTE_DATA_H
 
 #include "NoteDataStructures.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 
 #include <iterator>
 #include <map>

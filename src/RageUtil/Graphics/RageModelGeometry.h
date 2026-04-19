@@ -3,7 +3,7 @@
 #ifndef RAGE_MODEL_GEOMETRY_H
 #define RAGE_MODEL_GEOMETRY_H
 
-#include "Etterna/Actor/Base/ModelTypes.h"
+#include "Etternity/Actor/Base/ModelTypes.h"
 #include "RageUtil/Misc/RageTypes.h"
 #include <vector>
 

@@ -1,16 +1,16 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
 #include "DifficultyList.h"
 
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Songs/SongUtil.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Actor/GameplayAndMenus/StepsDisplay.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/SongUtil.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Actor/GameplayAndMenus/StepsDisplay.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <algorithm>
 
@@ -394,7 +394,7 @@ StepsDisplayList::HandleMessage(const Message& msg)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the StepsDisplayList. */
 class LunaStepsDisplayList : public Luna<StepsDisplayList>

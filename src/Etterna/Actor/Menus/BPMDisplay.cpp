@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "BPMDisplay.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Globals/rngthing.h"
 
 #include <climits>
 #include <algorithm>
@@ -273,7 +273,7 @@ SongBPMDisplay::Update(float fDeltaTime)
 
 REGISTER_ACTOR_CLASS(SongBPMDisplay);
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 /** @brief Allow Lua to have access to the BPMDisplay. */
 class LunaBPMDisplay : public Luna<BPMDisplay>
 {

@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
 #include "NoteData.h"
 #include "NoteDataUtil.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
-#include "Etterna/Models/Misc/RadarValues.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
+#include "Etternity/Models/Misc/RadarValues.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Globals/rngthing.h"
 
 #include <utility>
 #include <numeric>

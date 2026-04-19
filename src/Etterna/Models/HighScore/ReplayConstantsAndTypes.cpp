@@ -1,5 +1,5 @@
 #include "ReplayConstantsAndTypes.h"
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 static const char* ReplayTypeNames[] = {
 	"V0",

@@ -1,7 +1,7 @@
 #ifndef FilterManager_H
 #define FilterManager_H
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 #include <unordered_map>
 #include <array>
 

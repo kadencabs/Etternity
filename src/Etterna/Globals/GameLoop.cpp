@@ -1,20 +1,20 @@
 #include "global.h"
 #include "GameLoop.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/InputFilter.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/InputFilter.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "RageUtil/Misc/RageInput.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 
 #include <chrono>
 #include <mutex>
@@ -131,8 +131,8 @@ static void CheckFocus() {
 }
 
 // Anonymous Namespace
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Singletons/GameManager.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Singletons/GameManager.h"
 #include "StepMania.h" // XXX
 namespace {
     void DoChangeTheme() {

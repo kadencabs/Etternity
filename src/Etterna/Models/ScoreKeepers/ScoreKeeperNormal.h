@@ -4,8 +4,8 @@
 #define SCORE_KEEPER_NORMAL_H
 
 #include "ScoreKeeper.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 class Steps;
 class Song;
 struct RadarValues;

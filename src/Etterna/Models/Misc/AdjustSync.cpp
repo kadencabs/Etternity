@@ -10,16 +10,16 @@
  *
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "AdjustSync.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 std::vector<TimingData> AdjustSync::s_vpTimingDataOriginal;
 float AdjustSync::s_fGlobalOffsetSecondsOriginal = 0.0f;

@@ -1,16 +1,16 @@
 #ifndef Profile_H
 #define Profile_H
 
-#include "Etterna/Models/Misc/DateTime.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/Grade.h"
-#include "Etterna/Models/HighScore/HighScore.h"
-#include "Etterna/Models/Lua/LuaReference.h"
-#include "Etterna/Models/Songs/SongUtil.h"			 // for SongID
-#include "Etterna/Models/StepsAndStyles/StepsUtil.h" // for StepsID
-#include "Etterna/Models/StepsAndStyles/StyleUtil.h" // for StyleID
-#include "Etterna/Models/Misc/XMLProfile.h"
-#include "Etterna/Models/Misc/DBProfile.h"
+#include "Etternity/Models/Misc/DateTime.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Grade.h"
+#include "Etternity/Models/HighScore/HighScore.h"
+#include "Etternity/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Songs/SongUtil.h"			 // for SongID
+#include "Etternity/Models/StepsAndStyles/StepsUtil.h" // for StepsID
+#include "Etternity/Models/StepsAndStyles/StyleUtil.h" // for StyleID
+#include "Etternity/Models/Misc/XMLProfile.h"
+#include "Etternity/Models/Misc/DBProfile.h"
 #include "arch/LoadingWindow/LoadingWindow.h"
 
 #include <map>
@@ -221,7 +221,7 @@ class Profile
 
 	// seriously why is this not a thing -mina
 	std::string profiledir;
-	bool IsEtternaProfile{ false };
+	bool IsEtternityProfile{ false };
 	/**
 	 * @brief Which machine did we play on last, based on the Guid?
 	 *

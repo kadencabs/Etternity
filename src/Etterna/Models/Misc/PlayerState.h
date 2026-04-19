@@ -7,7 +7,7 @@
 #include "PlayerNumber.h"
 #include "PlayerOptions.h"
 #include "SampleHistory.h"
-#include "Etterna/Models/Songs/SongPosition.h"
+#include "Etternity/Models/Songs/SongPosition.h"
 
 struct lua_State;
 

@@ -1,11 +1,11 @@
 #ifndef SCREEN_OPTIONS_LIST_H
 #define SCREEN_OPTIONS_LIST_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/CodeSet.h"
-#include "Etterna/Models/Misc/OptionRowHandler.h"
-#include "Etterna/Screen/Others/ScreenWithMenuElements.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/CodeSet.h"
+#include "Etternity/Models/Misc/OptionRowHandler.h"
+#include "Etternity/Screen/Others/ScreenWithMenuElements.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class OptionsList;
 class OptionListRow : public ActorFrame

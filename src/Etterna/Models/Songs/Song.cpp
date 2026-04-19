@@ -1,34 +1,34 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Sound/RageSoundReader_FileReader.h"
 #include "RageUtil/Graphics/RageSurface_Load.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "Song.h"
 #include "SongCacheIndex.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Models/Misc/TitleSubstitution.h"
-#include "Etterna/Models/Misc/ImageCache.h"
-#include "Etterna/Actor/Base/Sprite.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/Misc/TitleSubstitution.h"
+#include "Etternity/Models/Misc/ImageCache.h"
+#include "Etternity/Actor/Base/Sprite.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Graphics/RageSurface.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "SongUtil.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/StepsUtil.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Models/Misc/BackgroundUtil.h"
-#include "Etterna/Models/NoteLoaders/NotesLoader.h"
-#include "Etterna/Models/NoteWriters/NotesWriterDWI.h"
-#include "Etterna/Models/NoteWriters/NotesWriterETT.h"
-#include "Etterna/Models/NoteWriters/NotesWriterSM.h"
-#include "Etterna/Models/NoteWriters/NotesWriterSSC.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/FilterManager.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/StepsUtil.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Models/NoteLoaders/NotesLoader.h"
+#include "Etternity/Models/NoteWriters/NotesWriterDWI.h"
+#include "Etternity/Models/NoteWriters/NotesWriterETT.h"
+#include "Etternity/Models/NoteWriters/NotesWriterSM.h"
+#include "Etternity/Models/NoteWriters/NotesWriterSSC.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/FilterManager.h"
+#include "Etternity/Singletons/GameState.h"
 #include <RageUtil/Sound/RageSound.h>
 
 #include <algorithm>
@@ -37,12 +37,12 @@
 #include <set>
 #include <map>
 
-#include "Etterna/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
 
 using std::vector;
 
 //-Nick12 Used for song file hashing
-#include <Etterna/Singletons/CryptManager.h>
+#include <Etternity/Singletons/CryptManager.h>
 
 /** @brief How long does a song sample last by default? */
 const float DEFAULT_MUSIC_SAMPLE_LENGTH = 25.f;
@@ -1095,20 +1095,20 @@ Song::ReCalculateRadarValuesAndLastSecond(bool fromCache,
 
 	if (duringCache) {
 		for (auto& n : m_vpSteps) {
-			// Cache etterna stuff and 'radar values'
+			// Cache etternity stuff and 'radar values'
 
 			// Skip difficulties without notes
 			if (n->IsNoteDataEmpty())
 				continue;
 
 			// only ever decompress the notedata when writing the cache file
-			// for this we don't use the etterna compressed format -mina
+			// for this we don't use the etternity compressed format -mina
 			n->Decompress();
 
-			// calc etterna metadata will replace the unwieldy notedata
+			// calc etternity metadata will replace the unwieldy notedata
 			// string with a compressed format for both cache and internal
 			// use but not yet
-			n->CalcEtternaMetadata(calc);
+			n->CalcEtternityMetadata(calc);
 			n->CalculateRadarValues();
 
 			// calculate lastSecond
@@ -1239,7 +1239,7 @@ Song::SaveToSSCFile(const std::string& sPath, bool bSavingCache)
 	if (!bSavingCache)
 		for (auto* s : vpStepsToSave) {
 			s->Decompress();
-			s->CalcEtternaMetadata(SONGMAN->calc.get());
+			s->CalcEtternityMetadata(SONGMAN->calc.get());
 			s->SetFilename(path);
 		}
 	if (bSavingCache) {
@@ -2062,7 +2062,7 @@ Song::PlaySampleMusicExtended()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Song. */
 class LunaSong : public Luna<Song>

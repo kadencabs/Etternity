@@ -1,22 +1,22 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Singletons/AnnouncerManager.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/FilterManager.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Actor/Menus/MusicWheel.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Singletons/AnnouncerManager.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/FilterManager.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Actor/Menus/MusicWheel.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenNetSelectMusic.h"
 #include "ScreenNetSelectBase.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
 
 #include <vector>
 
@@ -335,7 +335,7 @@ ScreenNetSelectMusic::GetMusicWheel()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the PlayerState. */
 class LunaScreenNetSelectMusic : public Luna<ScreenNetSelectMusic>

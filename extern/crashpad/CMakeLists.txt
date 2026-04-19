@@ -41,7 +41,7 @@ include(FetchContent)
 
 # Here we only download depot_tools by using FetchContent. If the developer has
 # installed depot_tools on their own system and added it to path, this would
-# not be necessary, but for the sake of Etterna, it was added to keep build instruction
+# not be necessary, but for the sake of Etternity, it was added to keep build instruction
 # modification to a minimum. Unlike ExternalProject, FetchContent will download the
 # git repository *during project generation*.
 FetchContent_Declare(depot_tools

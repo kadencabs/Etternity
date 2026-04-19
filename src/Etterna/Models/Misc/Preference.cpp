@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Singletons/MessageManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Singletons/MessageManager.h"
 #include "Preference.h"
 #include "Core/Services/Locator.hpp"
 #include "SubscriptionManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 static SubscriptionManager<IPreference> m_Subscribers;
 

@@ -1,11 +1,11 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/CodeSet.h"
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/CodeSet.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 #include "ScreenMessage.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 #include <functional>
 #include <list>

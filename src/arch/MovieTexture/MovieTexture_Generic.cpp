@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "MovieTexture_Generic.h"
 #include "RageUtil/Graphics/RageSurfaceUtils.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Graphics/RageSurface.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Graphics/RageTextureRenderTarget.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Actor/Base/Sprite.h"
+#include "Etternity/Actor/Base/Sprite.h"
 
 #ifdef _WIN32
 #include "archutils/Win32/ErrorStrings.h"

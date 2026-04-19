@@ -3,7 +3,7 @@
 #include "Core/Platform/Platform.hpp"
 #include "Core/Services/Locator.hpp"
 #include "Core/Misc/AppInfo.hpp"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Globals/GameLoop.h"
 
 #include <ghc/filesystem.hpp>
 #include "client/crash_report_database.h"
@@ -64,7 +64,7 @@ bool Core::Crash::initCrashpad() {
 		handler, // relative path to executable handler file
 		dataDir, // the crashpad database
 		dataDir, // an existing directory for metrics data
-		"https://crash.etterna.dev/api/minidump/upload?api_key=0b03527eb91c4d4f8d7576cf4e4939c4", // an upload server
+		"https://crash.etternity.dev/api/minidump/upload?api_key=0b03527eb91c4d4f8d7576cf4e4939c4", // an upload server
 		{}, // crash report metadata
 		{"--no-upload-gzip", "--no-rate-limit"}, // any additional handler arguments
 		true, // auto-restart if handler dies

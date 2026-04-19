@@ -1,8 +1,8 @@
 #ifndef AUTO_KEYSOUNDS_H
 #define AUTO_KEYSOUNDS_H
 
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 #include "RageUtil/Sound/RageSound.h"
 
 class RageSoundReader;

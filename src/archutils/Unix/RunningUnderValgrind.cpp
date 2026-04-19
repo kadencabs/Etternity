@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RunningUnderValgrind.h"
 
 #if defined(__i386__) && defined(__GNUC__)

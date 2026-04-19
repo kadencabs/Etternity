@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenNetRoom.h"
-#include "Etterna/Screen/Others/ScreenTextEntry.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Actor/Menus/WheelItemBase.h"
+#include "Etternity/Screen/Others/ScreenTextEntry.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Actor/Menus/WheelItemBase.h"
 #include "RageUtil/Utils/RageUtil.h"
 
 AutoScreenMessage(SM_BackFromRoomName);
@@ -248,7 +248,7 @@ ScreenNetRoom::InfoSetVisible(bool visibility)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the PlayerState. */
 class LunaScreenNetRoom : public Luna<ScreenNetRoom>

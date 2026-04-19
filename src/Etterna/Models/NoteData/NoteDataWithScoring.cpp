@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
 #include "NoteData.h"
 #include "NoteDataWithScoring.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Models/Misc/GamePreferences.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Models/Misc/GamePreferences.h"
 
 #include <algorithm>
 

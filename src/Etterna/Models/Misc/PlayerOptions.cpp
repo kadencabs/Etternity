@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CommonMetrics.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
 #include "PlayerOptions.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Globals/rngthing.h"
 #include "Core/Services/Locator.hpp"
 
 #include <cmath>
@@ -1369,8 +1369,8 @@ PlayerOptions::ResetPrefs(ResetPrefsType type)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Globals/OptionsBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Globals/OptionsBinding.h"
 
 /** @brief Allow Lua to have access to PlayerOptions. */
 class LunaPlayerOptions : public Luna<PlayerOptions>

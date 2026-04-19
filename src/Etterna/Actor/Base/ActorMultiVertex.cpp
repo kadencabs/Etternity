@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorMultiVertex.h"
 #include "ActorUtil.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Graphics/RageTexture.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <cassert>
 #include <algorithm>
@@ -688,7 +688,7 @@ ActorMultiVertex::AMV_TweenState::GetSafeNumToDraw(DrawMode dm, int num) const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ActorMultiVertex. */
 class LunaActorMultiVertex : public Luna<ActorMultiVertex>

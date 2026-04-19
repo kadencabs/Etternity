@@ -3,9 +3,9 @@
 #ifndef RAGE_DISPLAY_OGL_H
 #define RAGE_DISPLAY_OGL_H
 
-#include "Etterna/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
 #include "RageDisplay.h"
-#include "Etterna/Actor/Base/Sprite.h"
+#include "Etternity/Actor/Base/Sprite.h"
 #include "RageUtil/Graphics/RageTextureRenderTarget.h"
 
 /* Making an OpenGL call doesn't also flush the error state; if we happen

@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_ALSA9_Software.h"
 
 #include "Core/Services/Locator.hpp"
@@ -6,7 +6,7 @@
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ALSA9Dynamic.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 #include "archutils/Unix/GetSysInfo.h"
 

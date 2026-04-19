@@ -1,9 +1,9 @@
 #ifndef SCREEN_MANAGER_H
 #define SCREEN_MANAGER_H
 
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Screen/Others/ScreenMessage.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
 
 class Actor;
 class Screen;

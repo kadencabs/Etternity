@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/BackgroundUtil.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 #include "NotesWriterSSC.h"
 #include "RageUtil/File/RageFile.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 /**
  * @brief Turn a vector of lines into a single line joined by newline

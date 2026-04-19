@@ -59,22 +59,22 @@
  * it.
  */
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Misc/Preference.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Screen/Others/Screen.h"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Screen/Others/Screen.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
 #include "ScreenManager.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 #include <set>
 #include <map>
@@ -951,7 +951,7 @@ ScreenManager::PlaySharedBackgroundOffCommand()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenManager. */
 class LunaScreenManager : public Luna<ScreenManager>

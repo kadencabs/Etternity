@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CodeDetector.h"
 #include "Game.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "InputEventPlus.h"
-#include "Etterna/Singletons/InputQueue.h"
+#include "Etternity/Singletons/InputQueue.h"
 #include "PlayerOptions.h"
 #include "PlayerState.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 const char* CodeNames[] = {
 	"PrevSteps1",

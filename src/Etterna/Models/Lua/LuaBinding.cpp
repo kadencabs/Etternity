@@ -1,9 +1,9 @@
-﻿#include "Etterna/Globals/global.h"
+﻿#include "Etternity/Globals/global.h"
 #include "LuaBinding.h"
 #include "LuaReference.h"
 #include "RageUtil/Utils/RageUtil.h"
 
-#include "Etterna/Models/Misc/SubscriptionManager.h"
+#include "Etternity/Models/Misc/SubscriptionManager.h"
 static SubscriptionManager<LuaBinding> m_Subscribers;
 
 namespace {

@@ -1,8 +1,8 @@
 #ifndef RAGE_THREADS_H
 #define RAGE_THREADS_H
 
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 #include <mutex>
 #include <atomic>

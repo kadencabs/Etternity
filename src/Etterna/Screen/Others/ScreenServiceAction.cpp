@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenServiceAction.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Globals/StepMania.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Globals/StepMania.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 static LocalizedString COPIED("ScreenServiceAction", "%d copied");
 static LocalizedString OVERWRITTEN("ScreenServiceAction", "%d overwritten");

@@ -1,10 +1,10 @@
-Etterna Command Line Arguments
+Etternity Command Line Arguments
 ================================================================================
 Pass all arguments with --. For example, version would be entered as --version.
-etterna --version
+etternity --version
 
-Passing package files to Etterna on the command line will install them:
-etterna moonlight.smzip
+Passing package files to Etternity on the command line will install them:
+etternity moonlight.smzip
 ================================================================================
 [GameState]
 * player
@@ -26,7 +26,7 @@ Connects to a server for online play.
 usage: --Type=arcade
 Reads preferences from [Preferences-{Type}], usually from the metrics.
 --------------------------------------------------------------------------------
-[Etterna]
+[Etternity]
 * ExportNsisStrings
 usage: --ExportNsisStrings
 Exports strings for the installer.

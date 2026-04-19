@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "archutils/Win32/AppInstance.h"
 #include "archutils/Win32/DirectXHelpers.h"
 #include "archutils/Win32/ErrorStrings.h"
 #include "archutils/Win32/GraphicsWindow.h"
 #include "archutils/Win32/RegistryAccess.h"
-#include "Etterna/Models/Misc/GamePreferences.h" //needed for Axis Fix
-#include "Etterna/Singletons/InputFilter.h"
+#include "Etternity/Models/Misc/GamePreferences.h" //needed for Axis Fix
+#include "Etternity/Singletons/InputFilter.h"
 #include "InputHandler_DirectInput.h"
 #include "InputHandler_DirectInputHelper.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
 

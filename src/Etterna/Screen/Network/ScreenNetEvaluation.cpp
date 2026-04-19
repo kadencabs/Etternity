@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
 #include "ScreenNetEvaluation.h"
-#include "Etterna/Models/Songs/SongUtil.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Songs/SongUtil.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 
 #define USERSBG_WIDTH THEME->GetMetricF("ScreenNetEvaluation", "UsersBGWidth")
 #define USERSBG_HEIGHT THEME->GetMetricF("ScreenNetEvaluation", "UsersBGHeight")
@@ -81,7 +81,7 @@ ScreenNetEvaluation::UpdateStats()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ScreenNetEvaluation. */
 class LunaScreenNetEvaluation : public Luna<ScreenNetEvaluation>

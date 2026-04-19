@@ -1,24 +1,24 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/AnnouncerManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/AnnouncerManager.h"
 #include "Foreach.h"
 #include "GameCommand.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/GameState.h"
 #include "LocalizedString.h"
 #include "PlayerOptions.h"
 #include "PlayerState.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Screen/Others/ScreenPrompt.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Screen/Others/ScreenPrompt.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Platform/Platform.hpp"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/Songs/SongUtil.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/Songs/SongUtil.h"
 
 static LocalizedString COULD_NOT_LAUNCH_BROWSER(
   "GameCommand",
@@ -536,8 +536,8 @@ GameCommand::IsZero() const
 
 // lua start
 #include "Game.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 /** @brief Allow Lua to have access to the GameCommand. */
 class LunaGameCommand : public Luna<GameCommand>

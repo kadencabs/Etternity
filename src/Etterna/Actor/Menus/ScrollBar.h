@@ -3,8 +3,8 @@
 #ifndef SCROLL_BAR_H
 #define SCROLL_BAR_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
 
 class ScrollBar : public ActorFrame
 {

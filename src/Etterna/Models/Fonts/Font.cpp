@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Font.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/FileTypes/IniFile.h"
 
 #include "FontCharAliases.h"
 #include "FontCharmaps.h"
@@ -8,7 +8,7 @@
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 #include "arch/Dialog/Dialog.h"
 
 #include <algorithm>

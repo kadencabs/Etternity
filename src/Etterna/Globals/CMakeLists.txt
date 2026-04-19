@@ -19,4 +19,4 @@ if(NOT APPLE)
 	list(APPEND GLOBAL_FILES_SRC "Main.cpp")
 endif()
 
-target_sources(Etterna PUBLIC ${GLOBAL_FILES_SRC} ${GLOBAL_FILES_HPP})
+target_sources(Etternity PUBLIC ${GLOBAL_FILES_SRC} ${GLOBAL_FILES_HPP})

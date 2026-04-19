@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/HighScore/HighScore.h"
-#include "Etterna/Actor/Gameplay/Player.h"
-#include "Etterna/Actor/Gameplay/LifeMeterBar.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/HighScore/HighScore.h"
+#include "Etternity/Actor/Gameplay/Player.h"
+#include "Etternity/Actor/Gameplay/LifeMeterBar.h"
 #include "ReplayManager.h"
 
 #include <memory>
@@ -755,7 +755,7 @@ ReplayManager::CustomMissWindowFunction() -> float
 	}
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 class LunaReplayManager : public Luna<ReplayManager>
 {
   public:

@@ -6,7 +6,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#include "Etterna/Models/NoteData/NoteDataStructures.h"
+#include "Etternity/Models/NoteData/NoteDataStructures.h"
 #include "SoloCalc.h"
 
 #include <numeric>

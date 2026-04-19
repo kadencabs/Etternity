@@ -3,11 +3,11 @@
 
 #include <utility>
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "RageUtil/Sound/RageSound.h"
 #include "ScreenWithMenuElements.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 /** @brief The list of possible keyboard rows. */
 enum KeyboardRow

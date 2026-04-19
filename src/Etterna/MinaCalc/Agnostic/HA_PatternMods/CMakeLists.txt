@@ -9,4 +9,4 @@ list(APPEND HA_PATTERN_MODS
     "TheThingFinder.h"
     "GenericChordstream.h")
 
-target_sources(Etterna PUBLIC ${HA_PATTERN_MODS})
+target_sources(Etternity PUBLIC ${HA_PATTERN_MODS})

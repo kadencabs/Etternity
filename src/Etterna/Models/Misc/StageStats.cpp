@@ -1,23 +1,23 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/MinaCalc/MinaCalc.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/MinaCalc/MinaCalc.h"
 #include "PlayerState.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Profile.h"
-#include "Etterna/Singletons/ProfileManager.h"
+#include "Etternity/Singletons/ProfileManager.h"
 #include "StageStats.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "AdjustSync.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Models/Songs/Song.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Models/Songs/Song.h"
 #include "Core/Services/Locator.hpp"
 #include "GamePreferences.h"
-#include "Etterna/Singletons/ReplayManager.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Models/NoteData/NoteDataUtil.h"
+#include "Etternity/Singletons/ReplayManager.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Models/NoteData/NoteDataUtil.h"
 
 #if !( defined(_WIN32) || defined(__APPLE__))
 	#include <cpuid.h> //We only use cpuid.h on Linux :)
@@ -545,8 +545,8 @@ FillInHighScore(const PlayerStageStats& pss,
 	hs.SetStageSeed(GAMESTATE->m_iStageSeed);
 	hs.SetSongOffset(ps.GetDisplayedTiming().m_fBeat0OffsetInSeconds);
 
-	// Etterna validity check, used for ssr/eo eligibility -mina
-	hs.SetEtternaValid(DetermineScoreEligibility(pss, ps));
+	// Etternity validity check, used for ssr/eo eligibility -mina
+	hs.SetEtternityValid(DetermineScoreEligibility(pss, ps));
 
 	// force fail grade if player 'gave up' or autoplay was used
 	if (pss.gaveuplikeadumbass || pss.everusedautoplay) {
@@ -615,7 +615,7 @@ FillInHighScore(const PlayerStageStats& pss,
 		hs.RescoreToWife3(maxpoints);
 	}
 
-	if (hs.GetEtternaValid()) {
+	if (hs.GetEtternityValid()) {
 		auto dakine = pss.CalcSSR(hs.GetSSRNormPercent());
 		FOREACH_ENUM(Skillset, ss)
 		hs.SetSkillsetSSR(ss, dakine[ss]);
@@ -769,7 +769,7 @@ StageStats::GetMinimumMissCombo() const -> unsigned int
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the StageStats. */
 class LunaStageStats : public Luna<StageStats>

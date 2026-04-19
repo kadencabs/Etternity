@@ -1,6 +1,6 @@
 #include "global.h"
 #include "StepMania.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Globals/rngthing.h"
 
 // Rage global classes
 #include "Core/Services/Locator.hpp"
@@ -9,53 +9,53 @@
 #include "Core/Misc/AppInfo.hpp"
 #include "Core/Platform/Platform.hpp"
 
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Misc/RageInput.h"
 #include "RageUtil/Sound/RageSoundManager.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Misc/RageThreads.h"
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
 #include "arch/Dialog/Dialog.h"
 #include "arch/LoadingWindow/LoadingWindow.h"
-#include "Etterna/Models/Misc/CodeDetector.h"
-#include "Etterna/Singletons/CommandLineActions.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Misc/CodeDetector.h"
+#include "Etternity/Singletons/CommandLineActions.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "RageUtil/Graphics/RageSurface.h"
 #include "RageUtil/Graphics/RageSurface_Load.h"
-#include "Etterna/Screen/Others/Screen.h"
-#include "Etterna/Globals/GameLoop.h"
+#include "Etternity/Screen/Others/Screen.h"
+#include "Etternity/Globals/GameLoop.h"
 
 #if !defined(SUPPORT_OPENGL) && !defined(SUPPORT_D3D)
 #define SUPPORT_OPENGL
 #endif
 
 // StepMania global classes
-#include "Etterna/Singletons/AnnouncerManager.h"
-#include "Etterna/Singletons/FilterManager.h"
-#include "Etterna/Singletons/FontManager.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/InputFilter.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Singletons/InputQueue.h"
-#include "Etterna/Models/Songs/SongCacheIndex.h"
-#include "Etterna/Models/Misc/ImageCache.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Singletons/ReplayManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/AnnouncerManager.h"
+#include "Etternity/Singletons/FilterManager.h"
+#include "Etternity/Singletons/FontManager.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/InputFilter.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Singletons/InputQueue.h"
+#include "Etternity/Models/Songs/SongCacheIndex.h"
+#include "Etternity/Models/Misc/ImageCache.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/ReplayManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Actor/Base/ModelManager.h"
-#include "Etterna/Singletons/CryptManager.h"
+#include "Etternity/Actor/Base/ModelManager.h"
+#include "Etternity/Singletons/CryptManager.h"
 #include "GameLoop.h"
-#include "Etterna/Singletons/MessageManager.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Singletons/StatsManager.h"
+#include "Etternity/Singletons/MessageManager.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Singletons/StatsManager.h"
 #include "discord_rpc.h"
 
 #include <ctime>
@@ -114,15 +114,15 @@ StepMania::GetPreferredVideoModeParams(VideoModeParams& paramsOut)
 	  PREFSMAN->m_fDisplayAspectRatio);
 }
 
-static LocalizedString COLOR("Etterna", "color");
-static LocalizedString TEXTURE("Etterna", "texture");
-static LocalizedString WINDOWED("Etterna", "Windowed");
-static LocalizedString FULLSCREEN("Etterna", "Fullscreen");
-static LocalizedString ANNOUNCER_("Etterna", "Announcer");
-static LocalizedString VSYNC("Etterna", "Vsync");
-static LocalizedString NO_VSYNC("Etterna", "NoVsync");
-static LocalizedString SMOOTH_LINES("Etterna", "SmoothLines");
-static LocalizedString NO_SMOOTH_LINES("Etterna", "NoSmoothLines");
+static LocalizedString COLOR("Etternity", "color");
+static LocalizedString TEXTURE("Etternity", "texture");
+static LocalizedString WINDOWED("Etternity", "Windowed");
+static LocalizedString FULLSCREEN("Etternity", "Fullscreen");
+static LocalizedString ANNOUNCER_("Etternity", "Announcer");
+static LocalizedString VSYNC("Etternity", "Vsync");
+static LocalizedString NO_VSYNC("Etternity", "NoVsync");
+static LocalizedString SMOOTH_LINES("Etternity", "SmoothLines");
+static LocalizedString NO_SMOOTH_LINES("Etternity", "NoSmoothLines");
 
 static std::string
 GetActualGraphicOptionsString()
@@ -737,19 +737,19 @@ CheckVideoDefaultSettings()
 }
 
 static LocalizedString ERROR_INITIALIZING_CARD(
-  "Etterna",
+  "Etternity",
   "There was an error while initializing your video card.");
-static LocalizedString ERROR_DONT_FILE_BUG("Etterna",
+static LocalizedString ERROR_DONT_FILE_BUG("Etternity",
 										   "Please do not file this error as a "
 										   "bug!  Use the web page below to "
 										   "troubleshoot this problem.");
-static LocalizedString ERROR_VIDEO_DRIVER("Etterna", "Video Driver: %s");
+static LocalizedString ERROR_VIDEO_DRIVER("Etternity", "Video Driver: %s");
 static LocalizedString ERROR_NO_VIDEO_RENDERERS(
-  "Etterna",
+  "Etternity",
   "No video renderers attempted.");
-static LocalizedString ERROR_INITIALIZING("Etterna", "Initializing %s...");
+static LocalizedString ERROR_INITIALIZING("Etternity", "Initializing %s...");
 static LocalizedString ERROR_UNKNOWN_VIDEO_RENDERER(
-  "Etterna",
+  "Etternity",
   "Unknown video renderer value: %s");
 
 RageDisplay*
@@ -1239,7 +1239,7 @@ StepMania::SaveScreenshot(const std::string& Dir,
 
 /* Returns true if the key has been handled and should be discarded, false if
  * the key should be sent on to screens. */
-static LocalizedString SERVICE_SWITCH_PRESSED("Etterna",
+static LocalizedString SERVICE_SWITCH_PRESSED("Etternity",
 											  "Service switch pressed");
 static LocalizedString RELOADED_METRICS("ThemeManager", "Reloaded metrics");
 static LocalizedString RELOADED_METRICS_AND_TEXTURES(
@@ -1497,7 +1497,7 @@ void StepMania::HandleInputEvents(float fDeltaTime) {
 	}
 }
 
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 
 int
 LuaFunc_SaveScreenshot(lua_State* L)

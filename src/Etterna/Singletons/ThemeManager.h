@@ -1,7 +1,7 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "RageUtil/Misc/RageTypes.h"
 
 #include <set>

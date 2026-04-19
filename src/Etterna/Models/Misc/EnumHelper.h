@@ -1,7 +1,7 @@
 #ifndef ENUM_HELPER_H
 #define ENUM_HELPER_H
 
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include <memory>
 
 #include "lua.hpp"

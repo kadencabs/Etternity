@@ -1,7 +1,7 @@
 #include "CodeSet.h"
 #include "InputEventPlus.h"
-#include "Etterna/Singletons/MessageManager.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/MessageManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #define CODE_NAMES THEME->GetMetric(sType, "CodeNames")
 #define CODE(s) THEME->GetMetric(sType, ssprintf("Code%s", (s).c_str()))

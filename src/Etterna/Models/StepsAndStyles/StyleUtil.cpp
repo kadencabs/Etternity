@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Singletons/GameManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Singletons/GameManager.h"
 #include "Style.h"
 #include "StyleUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 void
 StyleID::FromStyle(const Style* p)

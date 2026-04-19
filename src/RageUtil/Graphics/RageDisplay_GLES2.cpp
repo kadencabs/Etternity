@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 #include "RageDisplay.h"
 #include "RageDisplay_GLES2.h"
@@ -11,7 +11,7 @@
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Utils/RageUtil.h"
 
-#include "Etterna/Models/Misc/DisplayResolutions.h"
+#include "Etternity/Models/Misc/DisplayResolutions.h"
 
 #include "arch/LowLevelWindow/LowLevelWindow.h"
 

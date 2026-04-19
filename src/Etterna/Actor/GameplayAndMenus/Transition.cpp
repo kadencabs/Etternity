@@ -1,4 +1,4 @@
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "Transition.h"
 
 Transition::Transition()

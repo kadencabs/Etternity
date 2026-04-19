@@ -1,7 +1,7 @@
 #include "Platform.hpp"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Globals/global.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
 
 #include <fmt/format.h>
 

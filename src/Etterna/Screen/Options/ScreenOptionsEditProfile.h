@@ -1,7 +1,7 @@
 #ifndef ScreenOptionsEditProfile_H
 #define ScreenOptionsEditProfile_H
 
-#include "Etterna/Models/Misc/Profile.h"
+#include "Etternity/Models/Misc/Profile.h"
 #include "ScreenOptions.h"
 
 class ScreenOptionsEditProfile : public ScreenOptions

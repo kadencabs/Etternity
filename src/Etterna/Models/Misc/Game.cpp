@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Game.h"
 
 TapNoteScore
@@ -65,7 +65,7 @@ Game::GetMapJudgmentTo(TapNoteScore tns) const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Game. */
 class LunaGame : public Luna<Game>

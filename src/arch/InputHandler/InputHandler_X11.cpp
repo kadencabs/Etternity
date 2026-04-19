@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "InputHandler_X11.h"
 
 #include <array>
 
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Graphics/RageDisplay.h"
-#include "Etterna/Singletons/InputFilter.h"
+#include "Etternity/Singletons/InputFilter.h"
 #include "archutils/Unix/X11Helper.h"
 
 #include <X11/Xlib.h>

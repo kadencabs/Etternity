@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "arch_setup.h"
 #ifdef _WIN32
 #include <windows.h>

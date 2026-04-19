@@ -1,4 +1,4 @@
-﻿#include "Etterna/Globals/global.h"
+﻿#include "Etternity/Globals/global.h"
 #include "LifeMeter.h"
 #include "LifeMeterBar.h"
 
@@ -14,7 +14,7 @@ LifeMeter::MakeLifeMeter(LifeType t)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the LifeMeter. */
 class LunaLifeMeter : public Luna<LifeMeter>

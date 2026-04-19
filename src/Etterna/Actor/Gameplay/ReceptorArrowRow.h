@@ -1,8 +1,8 @@
 #ifndef RECEPTOR_ARROW_ROW_H
 #define RECEPTOR_ARROW_ROW_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "NoteDisplay.h"
 #include "ReceptorArrow.h"
 

@@ -1,5 +1,5 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageTypes.h"
 #include "RageUtil/Utils/RageUtil.h"
 

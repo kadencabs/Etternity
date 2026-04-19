@@ -4,7 +4,7 @@
 #include "EnumHelper.h"
 #include "RageUtil/Misc/RageTimer.h"
 // ReSharper disable once CppUnusedIncludeDirective MACROS LUL
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 
 #include <cassert>
 

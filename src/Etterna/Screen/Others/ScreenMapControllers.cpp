@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
 #include "RageUtil/Misc/RageInput.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenMapControllers.h"
 #include "ScreenPrompt.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #include <set>
 #include <algorithm>

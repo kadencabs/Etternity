@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "EnumHelper.h"
 #include "GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameManager.h"
 #include "LocalizedString.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ThemeMetric.h"
 

@@ -3,8 +3,8 @@
 #ifndef SONG_UTIL_H
 #define SONG_UTIL_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "RageUtil/Utils/RageUtil_CachedObject.h"
 #include <utility>
 

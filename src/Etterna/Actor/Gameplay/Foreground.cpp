@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
 #include "Foreground.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 #include "Core/Services/Locator.hpp"
 
 #include <algorithm>

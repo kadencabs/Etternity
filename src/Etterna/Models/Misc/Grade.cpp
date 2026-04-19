@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "EnumHelper.h"
 #include "Grade.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 LuaXType(Grade);
 

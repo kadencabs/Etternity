@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CommonMetrics.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 
 #include <algorithm>

@@ -3,9 +3,9 @@
 #ifndef SCREEN_MAP_CONTROLLERS_H
 #define SCREEN_MAP_CONTROLLERS_H
 
-#include "Etterna/Actor/Base/ActorScroller.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Singletons/InputMapper.h"
+#include "Etternity/Actor/Base/ActorScroller.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Singletons/InputMapper.h"
 #include "RageUtil/Sound/RageSound.h"
 #include "ScreenWithMenuElements.h"
 

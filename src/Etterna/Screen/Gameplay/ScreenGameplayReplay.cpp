@@ -1,29 +1,29 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ScreenGameplayReplay.h"
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Singletons/StatsManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Actor/Gameplay/ArrowEffects.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/GamePreferences.h"
-#include "Etterna/Models/Misc/PlayerInfo.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Actor/Gameplay/Player.h"
-#include "Etterna/Singletons/DownloadManager.h"
-#include "Etterna/Singletons/GameSoundManager.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/StatsManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Actor/Gameplay/ArrowEffects.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/GamePreferences.h"
+#include "Etternity/Models/Misc/PlayerInfo.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Actor/Gameplay/Player.h"
+#include "Etternity/Singletons/DownloadManager.h"
+#include "Etternity/Singletons/GameSoundManager.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ReplayManager.h"
-#include "Etterna/Models/ScoreKeepers/ScoreKeeperNormal.h"
+#include "Etternity/Singletons/ReplayManager.h"
+#include "Etternity/Models/ScoreKeepers/ScoreKeeperNormal.h"
 
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 
 REGISTER_SCREEN_CLASS(ScreenGameplayReplay);
 
@@ -417,7 +417,7 @@ ScreenGameplayReplay::SetRate(const float newRate) -> float
 	if (paused) {
 		p.m_Volume = 0.F;
 	}
-	// Set up the music so we don't wait for an Etternaty when messing around
+	// Set up the music so we don't wait for an Etternityty when messing around
 	// near the end of the song.
 	if (fSecondsToStartFadingOutMusic < GAMESTATE->m_pCurSteps->lastsecond) {
 		p.m_fFadeOutSeconds = MUSIC_FADE_OUT_SECONDS;

@@ -1,13 +1,13 @@
 #ifndef StepsDisplay_H
 #define StepsDisplay_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class Steps;
 class PlayerState;

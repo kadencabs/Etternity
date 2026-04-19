@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_WaveOut.h"
 
 #if defined(_MSC_VER)
@@ -7,7 +7,7 @@
 
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "archutils/Win32/ErrorStrings.h"
 
 REGISTER_SOUND_DRIVER_CLASS(WaveOut);

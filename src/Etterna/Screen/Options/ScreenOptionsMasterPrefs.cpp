@@ -1,21 +1,21 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/AnnouncerManager.h"
-#include "Etterna/Models/Misc/DisplaySpec.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Models/Misc/PlayerOptions.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/AnnouncerManager.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Models/Misc/PlayerOptions.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ScreenOptionsMasterPrefs.h"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Globals/SpecialFiles.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Globals/SpecialFiles.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 using namespace StringConversion;
 
@@ -468,7 +468,7 @@ LifeDifficulty(int& sel, bool ToSel, const ConfOption* pConfOption)
 	MoveMap(sel, pConfOption, ToSel, mapping, ARRAYLEN(mapping));
 }
 
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 
 static int
 GetTimingDifficulty()

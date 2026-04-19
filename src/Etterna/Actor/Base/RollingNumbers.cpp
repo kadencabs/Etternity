@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorUtil.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RollingNumbers.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 #include <algorithm>
 
@@ -142,7 +142,7 @@ RollingNumbers::UpdateText()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the RollingNumbers. */
 class LunaRollingNumbers : public Luna<RollingNumbers>

@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_AU.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "archutils/Darwin/DarwinThreadHelpers.h"
 #include <CoreServices/CoreServices.h>
 #include <AudioToolbox/AudioServices.h>

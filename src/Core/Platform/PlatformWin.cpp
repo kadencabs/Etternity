@@ -3,7 +3,7 @@
 #include "Core/Services/Locator.hpp"
 #include "Core/Misc/AppInfo.hpp"
 #include "archutils/Win32/GraphicsWindow.h"
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 #include <windows.h>
 #include <atlstr.h>
@@ -131,7 +131,7 @@ namespace Core::Platform {
 		 *
 		 * This affects every process using a high resolution clock and is
 		 * bad for battery life. The input thread is scheduled quick enough
-		 * with or without timeBeginPeriod, but Etterna's audio code relies on
+		 * with or without timeBeginPeriod, but Etternity's audio code relies on
 		 * this being better than the default of ~16ms. */
 		bool isOnBatteryPower = false;
 		SYSTEM_POWER_STATUS powerStatus = {};
@@ -370,7 +370,7 @@ namespace Core::Platform {
 	bool isOtherInstanceRunning(int argc, char** argv){
 		// We create a system-wide mutex with a unique name. If it does not exist, we know
 		// there are no other instances. This is a fix for an issue where some windows had
-		// a title of "Etterna" and it generated false positives (Notably explorer on an Etterna folder)
+		// a title of "Etternity" and it generated false positives (Notably explorer on an Etternity folder)
 		//
 		// SHA256 of ETTERNA in the middle
 		CreateMutex(NULL, TRUE, TEXT(" ETTERNA2aced23fdf1270d6a97c9425f957829fce5ad666fec0c6fdfcdae5561f8b905dETTERNA "));

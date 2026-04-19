@@ -1,9 +1,9 @@
 #ifndef LIFEMETERBAR_H
 #define LIFEMETERBAR_H
 
-#include "Etterna/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/AutoActor.h"
 #include "LifeMeter.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class StreamDisplay;
 

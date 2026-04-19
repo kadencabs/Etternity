@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Singletons/GameState.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "StreamDisplay.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 static const char* StreamTypeNames[] = {
 	"Normal",

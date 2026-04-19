@@ -3,4 +3,4 @@ list(APPEND HA_SEQUENCERS
     "ThingSequencing.h"
     "TrillSequencing.h")
 
-target_sources(Etterna PUBLIC ${HA_SEQUENCERS})
+target_sources(Etternity PUBLIC ${HA_SEQUENCERS})

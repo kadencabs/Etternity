@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Singletons/InputMapper.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Singletons/InputMapper.h"
 #include "OptionsList.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Models/Songs/SongUtil.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Songs/SongUtil.h"
 
 #include <algorithm>
 #include <map>

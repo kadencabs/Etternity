@@ -1,10 +1,10 @@
 #ifndef NotesLoaderSM_H
 #define NotesLoaderSM_H
 
-#include "Etterna/Models/Misc/BackgroundUtil.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/BackgroundUtil.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 
-#include "Etterna/FileTypes/MsdFile.h" // we require the struct from here.
+#include "Etternity/FileTypes/MsdFile.h" // we require the struct from here.
 
 class Song;
 class Steps;

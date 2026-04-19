@@ -18,4 +18,4 @@ list(APPEND HD_PATTERN_MODS
     "GenericBracketing.h"
     "GenericStream.h")
 
-target_sources(Etterna PUBLIC ${HD_PATTERN_MODS})
+target_sources(Etternity PUBLIC ${HD_PATTERN_MODS})

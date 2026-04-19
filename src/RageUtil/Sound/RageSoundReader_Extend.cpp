@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundReader_Extend.h"
 #include "RageSoundUtil.h"
 #include "RageUtil/Utils/RageUtil.h"

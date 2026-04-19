@@ -1,16 +1,16 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/FileTypes/IniFile.h"
-#include "Etterna/Singletons/InputFilter.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/FileTypes/IniFile.h"
+#include "Etternity/Singletons/InputFilter.h"
 #include "InputMapper.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/MessageManager.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/MessageManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Misc/RageInput.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Globals/SpecialFiles.h"
+#include "Etternity/Globals/SpecialFiles.h"
 #include "arch/Dialog/Dialog.h"
 
 #include <map>
@@ -1460,7 +1460,7 @@ InputMappings::ClearFromInputMap(const GameInput& GameI, int iSlotIndex)
 	return true;
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaInputMapper : public Luna<InputMapper>
 {

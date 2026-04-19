@@ -4,8 +4,8 @@
 #ifndef TEXTBANNER_H
 #define TEXTBANNER_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/BitmapText.h"
 class Song;
 
 class TextBanner final : public ActorFrame

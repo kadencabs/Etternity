@@ -1,6 +1,6 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ImageCache.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
@@ -14,9 +14,9 @@
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "CommonMetrics.h"
-#include "Etterna/Models/Songs/SongCacheIndex.h"
-#include "Etterna/Globals/SpecialFiles.h"
-#include "Etterna/Actor/Base/Sprite.h"
+#include "Etternity/Models/Songs/SongCacheIndex.h"
+#include "Etternity/Globals/SpecialFiles.h"
+#include "Etternity/Actor/Base/Sprite.h"
 
 #include <algorithm>
 

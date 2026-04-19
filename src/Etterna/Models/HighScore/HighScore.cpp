@@ -1,20 +1,20 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "HighScore.h"
 #include "Replay.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Models/Misc/RadarValues.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Models/Misc/RadarValues.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/Models/Misc/NoteTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
-#include "Etterna/Singletons/ReplayManager.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Singletons/ReplayManager.h"
 
 #include <algorithm>
 #include <cmath>
@@ -22,7 +22,7 @@
 #include <sstream>
 #include <utility>
 
-#include "Etterna/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/ScoreManager.h"
 
 struct HighScoreImpl
 {
@@ -46,7 +46,7 @@ struct HighScoreImpl
 	float fSongOffset;
 	float fJudgeScale;
 	bool bNoChordCohesion;
-	bool bEtternaValid;
+	bool bEtternityValid;
 	bool bUsedDS;
 	int stage_seed;
 	std::vector<std::string> uploaded;
@@ -127,7 +127,7 @@ HighScoreImpl::HighScoreImpl()
 	fMusicRate = 0.F;
 	fSongOffset = 0.F; // not for saving, only for replays
 	fJudgeScale = 0.F;
-	bEtternaValid = true;
+	bEtternityValid = true;
 	played_seconds = 0.F;
 	iMaxCombo = 0;
 	sModifiers = "";
@@ -173,7 +173,7 @@ HighScoreImpl::CreateEttNode() const -> XNode*
 	pNode->AppendChild("SSRNormPercent", fSSRNormPercent);
 	pNode->AppendChild("JudgeScale", fJudgeScale);
 	pNode->AppendChild("NoChordCohesion", bNoChordCohesion);
-	pNode->AppendChild("EtternaValid", bEtternaValid);
+	pNode->AppendChild("EtternityValid", bEtternityValid);
 	if (bUsedDS) {
 		pNode->AppendChild("DSFlag", bUsedDS);
 	}
@@ -249,7 +249,7 @@ HighScoreImpl::LoadFromEttNode(const XNode* pNode)
 	pNode->GetChildValue("Rate", fMusicRate);
 	pNode->GetChildValue("JudgeScale", fJudgeScale);
 	pNode->GetChildValue("NoChordCohesion", bNoChordCohesion);
-	pNode->GetChildValue("EtternaValid", bEtternaValid);
+	pNode->GetChildValue("EtternityValid", bEtternityValid);
 	auto dsSuccess = pNode->GetChildValue("DSFlag", bUsedDS);
 	if (!dsSuccess) {
 		bUsedDS = false;
@@ -556,9 +556,9 @@ HighScore::GetChordCohesion() const -> bool
 	return !m_Impl->bNoChordCohesion;
 }
 auto
-HighScore::GetEtternaValid() const -> bool
+HighScore::GetEtternityValid() const -> bool
 {
-	return m_Impl->bEtternaValid;
+	return m_Impl->bEtternityValid;
 }
 auto
 HighScore::GetDSFlag() const -> bool
@@ -852,9 +852,9 @@ HighScore::SetChordCohesion(bool b)
 	m_Impl->bNoChordCohesion = b;
 }
 void
-HighScore::SetEtternaValid(bool b)
+HighScore::SetEtternityValid(bool b)
 {
-	m_Impl->bEtternaValid = b;
+	m_Impl->bEtternityValid = b;
 }
 void
 HighScore::SetDSFlag(bool b)
@@ -1076,7 +1076,7 @@ HighScore::GenerateBrittleValidationKey() const -> std::string
 	key.append(std::to_string(musics));
 	key.append(std::to_string(judges));
 	key.append(std::to_string(static_cast<int>(!GetChordCohesion())));
-	key.append(std::to_string(static_cast<int>(GetEtternaValid())));
+	key.append(std::to_string(static_cast<int>(GetEtternityValid())));
 	key.append(GradeToString(GetWifeGrade()));
 
 	std::string hash_string = CryptManager::GetSHA256ForString(key);
@@ -1159,7 +1159,7 @@ HighScore::CreateEttNode() const -> XNode*
 	return m_Impl->CreateEttNode();
 }
 
-// Used to load from etterna.xml -mina
+// Used to load from etternity.xml -mina
 void
 HighScore::LoadFromEttNode(const XNode* pNode)
 {
@@ -1524,7 +1524,7 @@ HighScore::ConvertDpToWife() -> float
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the HighScore. */
 class LunaHighScore : public Luna<HighScore>
@@ -1640,9 +1640,9 @@ class LunaHighScore : public Luna<HighScore>
 		lua_pushnumber(L, p->GetSkillsetSSR(Enum::Check<Skillset>(L, 1)));
 		return 1;
 	}
-	static auto ToggleEtternaValidation(T* p, lua_State * /*L*/) -> int
+	static auto ToggleEtternityValidation(T* p, lua_State * /*L*/) -> int
 	{
-		p->SetEtternaValid(!p->GetEtternaValid());
+		p->SetEtternityValid(!p->GetEtternityValid());
 		return 0;
 	}
 
@@ -1699,7 +1699,7 @@ class LunaHighScore : public Luna<HighScore>
 	DEFINE_METHOD(GetWifeGrade, GetWifeGrade())
 	DEFINE_METHOD(ConvertDpToWife, ConvertDpToWife())
 	DEFINE_METHOD(GetChordCohesion, GetChordCohesion())
-	DEFINE_METHOD(GetEtternaValid, GetEtternaValid())
+	DEFINE_METHOD(GetEtternityValid, GetEtternityValid())
 	DEFINE_METHOD(HasReplayData, HasReplayData())
 	DEFINE_METHOD(GetChartKey, GetChartKey())
 	DEFINE_METHOD(GetScoreKey, GetScoreKey())
@@ -1730,8 +1730,8 @@ class LunaHighScore : public Luna<HighScore>
 		ADD_METHOD(GetGrade);
 		ADD_METHOD(GetWifeGrade);
 		ADD_METHOD(GetMaxCombo);
-		ADD_METHOD(ToggleEtternaValidation);
-		ADD_METHOD(GetEtternaValid);
+		ADD_METHOD(ToggleEtternityValidation);
+		ADD_METHOD(GetEtternityValid);
 		ADD_METHOD(HasReplayData);
 		ADD_METHOD(GetChartKey);
 		ADD_METHOD(GetReplayType);

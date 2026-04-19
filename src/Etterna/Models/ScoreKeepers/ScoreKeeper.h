@@ -1,7 +1,7 @@
 #ifndef SCORE_KEEPER_H
 #define SCORE_KEEPER_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 
 class NoteData;
 class Song;

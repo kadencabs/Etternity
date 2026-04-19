@@ -1,8 +1,8 @@
 #ifndef STEPS_UTIL_H
 #define STEPS_UTIL_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "RageUtil/Utils/RageUtil_CachedObject.h"
 
 class Steps;

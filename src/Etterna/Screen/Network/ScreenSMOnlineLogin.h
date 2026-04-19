@@ -1,7 +1,7 @@
 #ifndef SCREENSMONLINELOGIN_H
 #define SCREENSMONLINELOGIN_H
 
-#include "Etterna/Screen/Options/ScreenOptions.h"
+#include "Etternity/Screen/Options/ScreenOptions.h"
 
 class ScreenSMOnlineLogin : public ScreenWithMenuElements
 {

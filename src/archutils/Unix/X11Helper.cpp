@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "X11Helper.h"
 #include "Core/Services/Locator.hpp"
 #include "Core/Misc/AppInfo.hpp"
-#include "Etterna/Models/Misc/Preference.h"
-#include "Etterna/Singletons/PrefsManager.h" // XXX: only used for m_bShowMouseCursor -aj
+#include "Etternity/Models/Misc/Preference.h"
+#include "Etternity/Singletons/PrefsManager.h" // XXX: only used for m_bShowMouseCursor -aj
 
 #include <X11/extensions/dpms.h>
 

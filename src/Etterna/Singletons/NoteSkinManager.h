@@ -1,9 +1,9 @@
 #ifndef NOTE_SKIN_MANAGER_H
 #define NOTE_SKIN_MANAGER_H
 
-#include "Etterna/Actor/Base/Actor.h"
-#include "Etterna/Models/Misc/GameInput.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Actor/Base/Actor.h"
+#include "Etternity/Models/Misc/GameInput.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 #include <utility>
 

@@ -2,9 +2,9 @@
 #ifndef REPLAYMAN
 #define REPLAYMAN
 
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Models/HighScore/Replay.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/HighScore/Replay.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
 
 #include <unordered_map>
 

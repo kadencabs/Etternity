@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "DualScrollBar.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 DualScrollBar::DualScrollBar()
 {

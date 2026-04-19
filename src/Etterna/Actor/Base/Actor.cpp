@@ -1,18 +1,18 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Actor.h"
 #include "ActorFrame.h"
 #include "ActorUtil.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Models/Lua/LuaReference.h"
-#include "Etterna/Singletons/MessageManager.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaReference.h"
+#include "Etternity/Singletons/MessageManager.h"
+#include "Etternity/Models/Misc/Preference.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Misc/RageTimer.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/Globals/rngthing.h"
-#include "Etterna/Singletons/FilterManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/Globals/rngthing.h"
+#include "Etternity/Singletons/FilterManager.h"
 
 #include <typeinfo>
 #include <tuple>
@@ -1713,7 +1713,7 @@ Actor::TweenInfo::operator=(const TweenInfo& rhs)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Actor. */
 class LunaActor : public Luna<Actor>

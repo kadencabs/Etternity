@@ -1,7 +1,7 @@
 #ifndef REPLAY_CONSTS_H
 #define REPLAY_CONSTS_H
 
-#include "Etterna/Models/Misc/NoteTypes.h"
+#include "Etternity/Models/Misc/NoteTypes.h"
 
 // contains only tap offset data for rescoring/plots
 const std::string BASIC_REPLAY_DIR = "Save/Replays/";

@@ -1,7 +1,7 @@
 #ifndef LOADING_WINDOW_H
 #define LOADING_WINDOW_H
 
-#include <Etterna/Globals/global.h>
+#include <Etternity/Globals/global.h>
 
 struct RageSurface;
 /** @brief Opens and displays the loading banner. */

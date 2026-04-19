@@ -1,14 +1,14 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/Foreach.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/Foreach.h"
 #include "GraphDisplay.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Misc/StageStats.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Misc/StageStats.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 //#define DIVIDE_LINE_WIDTH
 // THEME->GetMetricI(m_sName,"TexturedBottomHalf")
@@ -306,7 +306,7 @@ GraphDisplay::UpdateVerts()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the GraphDisplay. */
 class LunaGraphDisplay : public Luna<GraphDisplay>

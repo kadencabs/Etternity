@@ -1,9 +1,9 @@
 #ifndef DUAL_SCROLLBAR_H
 #define DUAL_SCROLLBAR_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 /** @brief A scrollbar with two independent thumbs. */
 class DualScrollBar : public ActorFrame
 {

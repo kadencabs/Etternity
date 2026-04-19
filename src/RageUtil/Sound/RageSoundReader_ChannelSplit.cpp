@@ -32,7 +32,7 @@
  *   pStereo->AddSourceChannelToSound( 0, 1 );
  */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundMixBuffer.h"
 #include "RageSoundReader_ChannelSplit.h"
 #include "RageUtil/Utils/RageUtil.h"

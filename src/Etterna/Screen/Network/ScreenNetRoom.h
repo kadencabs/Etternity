@@ -3,10 +3,10 @@
 #ifndef SCREEN_NET_ROOM_H
 #define SCREEN_NET_ROOM_H
 
-#include "Etterna/Actor/Menus/RoomInfoDisplay.h"
-#include "Etterna/Models/Misc/RoomWheel.h"
+#include "Etternity/Actor/Menus/RoomInfoDisplay.h"
+#include "Etternity/Models/Misc/RoomWheel.h"
 #include "ScreenNetSelectBase.h"
-#include "Etterna/Screen/Others/ScreenWithMenuElements.h"
+#include "Etternity/Screen/Others/ScreenWithMenuElements.h"
 
 #include <vector>
 

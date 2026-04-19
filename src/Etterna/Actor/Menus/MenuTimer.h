@@ -3,11 +3,11 @@
 #ifndef MENU_TIMER_H
 #define MENU_TIMER_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
-#include "Etterna/Actor/Base/BitmapText.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/BitmapText.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 std::string
 WARNING_COMMAND_NAME(size_t i);

@@ -1,7 +1,7 @@
 #ifndef SCREEN_SONG_OPTIONS_H
 #define SCREEN_SONG_OPTIONS_H
 
-#include "Etterna/Screen/Options/ScreenOptionsMaster.h"
+#include "Etternity/Screen/Options/ScreenOptionsMaster.h"
 
 class ScreenSongOptions : public ScreenOptionsMaster
 {

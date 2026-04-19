@@ -3,10 +3,10 @@
 #ifndef MUSIC_WHEEL_H
 #define MUSIC_WHEEL_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "MusicWheelItem.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 #include "WheelBase.h"
 
 class Song;

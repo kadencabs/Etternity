@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
-#include "Etterna/Models/Misc/OptionRowHandler.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
+#include "Etternity/Models/Misc/OptionRowHandler.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenNetworkOptions.h"
-#include "Etterna/Screen/Others/ScreenPrompt.h"
-#include "Etterna/Screen/Others/ScreenTextEntry.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Screen/Others/ScreenPrompt.h"
+#include "Etternity/Screen/Others/ScreenTextEntry.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 static LocalizedString CLIENT_CONNECT("ScreenNetworkOptions", "Connect");
 static LocalizedString CLIENT_DISCONNECT("ScreenNetworkOptions", "Disconnect");
@@ -39,7 +39,7 @@ enum DisplayScoreboard
 AutoScreenMessage(SM_DoneConnecting);
 
 Preference<std::string> g_sLastServer("LastConnectedMultiServer",
-									  "multi.etternaonline.com");
+									  "multi.etternityonline.com");
 
 REGISTER_SCREEN_CLASS(ScreenNetworkOptions);
 

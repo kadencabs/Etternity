@@ -11,12 +11,12 @@
  * because two players place from the same set of 4 tracks.
  */
 
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/InputMapper.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/InputMapper.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "Style.h"
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 
 #include <algorithm>
 #include <cfloat>
@@ -148,7 +148,7 @@ Style::ColToButtonName(int iCol) const
 }
 
 // Lua bindings
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the Style. */
 class LunaStyle : public Luna<Style>

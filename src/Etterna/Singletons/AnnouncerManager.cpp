@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "AnnouncerManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/File/RageFileManager.h"
@@ -181,7 +181,7 @@ AnnouncerManager::NextAnnouncer()
 	}
 }
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the AnnouncerManager. */
 class LunaAnnouncerManager : public Luna<AnnouncerManager>

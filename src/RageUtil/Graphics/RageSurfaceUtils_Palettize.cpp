@@ -1,6 +1,6 @@
 /* from http://www.libpng.org/pub/png/apps/pngquant.html */
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSurface.h"
 #include "RageSurfaceUtils.h"
 #include "RageSurfaceUtils_Palettize.h"

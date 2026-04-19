@@ -3,8 +3,8 @@
 #ifndef SCREEN_NET_SELECT_BASE_H
 #define SCREEN_NET_SELECT_BASE_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Screen/Others/ScreenWithMenuElements.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Screen/Others/ScreenWithMenuElements.h"
 
 class ScreenNetSelectBase : public ScreenWithMenuElements
 {

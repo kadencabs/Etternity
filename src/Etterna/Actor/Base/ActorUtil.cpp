@@ -1,15 +1,15 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorUtil.h"
-#include "Etterna/Models/Misc/EnumHelper.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/File/RageFileManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/FileTypes/XmlFileUtil.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFileUtil.h"
 #include "arch/Dialog/Dialog.h"
 
 #include <map>
@@ -586,7 +586,7 @@ ActorUtil::GetFileType(const std::string& sPath)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 namespace {
 int

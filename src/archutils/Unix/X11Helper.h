@@ -4,7 +4,7 @@
 
 #include <X11/Xlib.h> // Window
 #include <X11/Xutil.h>
-#include "Etterna/Models/Misc/DisplaySpec.h"
+#include "Etternity/Models/Misc/DisplaySpec.h"
 namespace X11Helper {
 // All functions in here that return a bool return true on success, and
 // false on failure.

@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
 #include "NoteTypes.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Misc/RageThreads.h"
@@ -1237,7 +1237,7 @@ TimingData::ToVectorString(TimingSegmentType tst, int dec) const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 #define TIMING_DATA_RETURNS_NUMBERS                                            \
 	THEME->GetMetricB("TimingData", "GetReturnsNumbers")

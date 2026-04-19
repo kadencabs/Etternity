@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "ScreenSongOptions.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 REGISTER_SCREEN_CLASS(ScreenSongOptions);
 

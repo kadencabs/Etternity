@@ -1,10 +1,10 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/LocalizedString.h"
-#include "Etterna/Singletons/NetworkSyncManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/LocalizedString.h"
+#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "RoomInfoDisplay.h"
 
-#include "Etterna/Screen/Others/ScreenMessage.h"
+#include "Etternity/Screen/Others/ScreenMessage.h"
 
 AutoScreenMessage(SM_RoomInfoRetract);
 AutoScreenMessage(SM_RoomInfoDeploy);

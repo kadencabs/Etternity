@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataWithScoring.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataWithScoring.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "ScoreKeeper.h"
 
 ScoreKeeper::ScoreKeeper(PlayerState* pPlayerState,

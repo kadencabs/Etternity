@@ -1,13 +1,13 @@
 #ifndef PLAYERINFO_H
 #define PLAYERINFO_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/Misc/PlayerStageStats.h"
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/SoundEffectControl.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Misc/PlayerStageStats.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/SoundEffectControl.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 
 class Player;
 

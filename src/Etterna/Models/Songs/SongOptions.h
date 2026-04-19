@@ -3,7 +3,7 @@
 #ifndef SONG_OPTIONS_H
 #define SONG_OPTIONS_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 
 enum AutosyncType
 {

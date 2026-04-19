@@ -1,9 +1,9 @@
 #ifndef Profile_XML
 #define Profile_XML
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "GameConstantsAndTypes.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 class XNode;
 
@@ -12,7 +12,7 @@ class XMLProfile
   public:
 	static void MoveBackupToDir(std::string sFromDir, std::string sToDir);
 
-	// Etterna profile
+	// Etternity profile
 	auto LoadEttFromDir(std::string dir) -> ProfileLoadResult;
 	auto SaveEttXmlToDir(std::string sDir, const Profile* profile) const
 	  -> bool;

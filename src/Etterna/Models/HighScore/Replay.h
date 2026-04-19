@@ -1,9 +1,9 @@
 #ifndef REPLAY_H
 #define REPLAY_H
 
-#include "Etterna/Models/Misc/EnumHelper.h"
+#include "Etternity/Models/Misc/EnumHelper.h"
 #include "ReplayConstantsAndTypes.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include <set>
 
 struct HighScore;

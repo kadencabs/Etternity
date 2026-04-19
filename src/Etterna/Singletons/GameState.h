@@ -1,13 +1,13 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "MessageManager.h"
-#include "Etterna/Models/Misc/ModsGroup.h"
-#include "Etterna/Models/Songs/SongPosition.h"
-#include "Etterna/Singletons/PrefsManager.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Models/Misc/ModsGroup.h"
+#include "Etternity/Models/Songs/SongPosition.h"
+#include "Etternity/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 struct Game;
 struct lua_State;
@@ -204,7 +204,7 @@ class GameState
 	bool m_bLoadingNextSong;
 	[[nodiscard]] auto GetLoadingCourseSongIndex() const -> int;
 
-	static auto GetEtternaVersion() -> std::string { return "0.74.3"; }
+	static auto GetEtternityVersion() -> std::string { return "0.74.3"; }
 
 	/* is this the best place for this? it's not exactly a pref, and we
 	 * shouldn't be copying and pasting these values everywhere as needed j1-j4

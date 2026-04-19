@@ -3,7 +3,7 @@ find_program(CPPCHECK_EXE "cppcheck")
 if(NOT CPPCHECK_EXE)
 	message(STATUS "cppcheck not found. cppcheck target will not be created.")
 else()
-	get_target_property(SOURCES Etterna SOURCES)
+	get_target_property(SOURCES Etternity SOURCES)
 	add_custom_target(cppcheck
 		COMMENT "Running cppcheck"
 		VERBATIM

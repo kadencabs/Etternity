@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h" // for sending SM_PlayMusicSample
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Singletons/ScreenManager.h" // for sending SM_PlayMusicSample
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 #include "WheelBase.h"
 
 #include <algorithm>
@@ -532,7 +532,7 @@ WheelBase::FirstVisibleIndex()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the WheelBase. */
 class LunaWheelBase : public Luna<WheelBase>

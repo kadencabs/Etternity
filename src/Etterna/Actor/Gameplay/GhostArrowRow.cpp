@@ -1,11 +1,11 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
 #include "GhostArrowRow.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 
 void
 GhostArrowRow::Load(const PlayerState* pPlayerState, float fYReverseOffset)

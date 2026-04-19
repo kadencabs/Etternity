@@ -1,8 +1,8 @@
 #ifndef ScreenInstallOverlay_H
 #define ScreenInstallOverlay_H
 
-#include "Etterna/Actor/Base/BitmapText.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Actor/Base/BitmapText.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "Screen.h"
 
 /** @brief Package installation processing and messaging. */

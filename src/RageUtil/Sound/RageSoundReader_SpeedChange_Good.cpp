@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageSoundReader_SpeedChange_Good.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RageUtil/Misc/RageMath.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Singletons/GameState.h"
 #include "fft.h"
 
 #ifndef __aarch64__

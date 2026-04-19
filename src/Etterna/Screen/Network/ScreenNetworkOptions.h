@@ -1,7 +1,7 @@
 #ifndef SCREEN_NETWORK_OPTIONS_H
 #define SCREEN_NETWORK_OPTIONS_H
 
-#include "Etterna/Screen/Options/ScreenOptions.h"
+#include "Etternity/Screen/Options/ScreenOptions.h"
 
 class ScreenNetworkOptions : public ScreenOptions
 {

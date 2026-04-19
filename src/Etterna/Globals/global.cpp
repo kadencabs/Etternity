@@ -20,7 +20,7 @@ using CrashHandler::IsDebuggerPresent;
 #ifdef _WIN32
 void showCrashDialog(const char* message){
     std::string error_message =
-            "Etterna has crashed.\n\n"
+            "Etternity has crashed.\n\n"
             "A crash report was created in the \"CrashData\" folder.\n\n"
             "Please send that file to the developers, and they can find out what happened!\n\n"
             "Crash Reason: {}";

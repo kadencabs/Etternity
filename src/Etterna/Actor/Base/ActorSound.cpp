@@ -1,8 +1,8 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorSound.h"
 #include "ActorUtil.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
 
 REGISTER_ACTOR_CLASS_WITH_NAME(ActorSound, Sound);
 
@@ -60,7 +60,7 @@ ActorSound::LoadFromNode(const XNode* pNode)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ActorSound. */
 class LunaActorSound : public Luna<ActorSound>

@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/GameCommand.h"
-#include "Etterna/Singletons/GameSoundManager.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/GameCommand.h"
+#include "Etternity/Singletons/GameSoundManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
 #include "Core/Services/Locator.hpp"
-#include "Etterna/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ScreenManager.h"
 #include "ScreenSelect.h"
-#include "Etterna/Singletons/ThemeManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
 
 #define CHOICE_NAMES THEME->GetMetric(m_sName, "ChoiceNames")
 #define CHOICE(s) THEME->GetMetric(m_sName, ssprintf("Choice%s", (s).c_str()))

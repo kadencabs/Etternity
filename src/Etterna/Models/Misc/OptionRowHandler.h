@@ -2,7 +2,7 @@
 #define OptionRowHandler_H
 
 #include "GameCommand.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 
 #include <set>
 

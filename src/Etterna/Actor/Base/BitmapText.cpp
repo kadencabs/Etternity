@@ -1,16 +1,16 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorUtil.h"
 #include "BitmapText.h"
-#include "Etterna/Models/Fonts/Font.h"
-#include "Etterna/Singletons/FontManager.h"
-#include "Etterna/Models/Lua/LuaBinding.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Fonts/Font.h"
+#include "Etternity/Singletons/FontManager.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "RageUtil/Graphics/RageTexture.h"
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/Globals/rngthing.h"
 #include "Core/Services/Locator.hpp"
 
 #include <algorithm>
@@ -1443,7 +1443,7 @@ ColorBitmapText::SetMaxLines(int iNumLines, int iDirection)
 }
 
 // lua start
-#include "Etterna/Models/Fonts/FontCharAliases.h"
+#include "Etternity/Models/Fonts/FontCharAliases.h"
 
 /** @brief Allow Lua to have access to the BitmapText. */
 class LunaBitmapText : public Luna<BitmapText>

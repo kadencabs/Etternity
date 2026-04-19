@@ -2,8 +2,8 @@
 #ifndef COMBO_GRAPH_H
 #define COMBO_GRAPH_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class StageStats;
 class PlayerStageStats;

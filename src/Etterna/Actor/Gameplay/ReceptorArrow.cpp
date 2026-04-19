@@ -1,9 +1,9 @@
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/NoteSkinManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/NoteSkinManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "RageUtil/Utils/RageUtil.h"
 #include "ReceptorArrow.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 
 ReceptorArrow::ReceptorArrow()
 {

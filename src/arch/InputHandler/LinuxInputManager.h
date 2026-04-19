@@ -4,7 +4,7 @@
 #include <vector>
 using namespace std;
 
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 class InputHandler_Linux_Joystick;
 class InputHandler_Linux_Event;
 

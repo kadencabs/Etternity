@@ -1,14 +1,14 @@
 #ifndef SCREENOPTIONS_H
 #define SCREENOPTIONS_H
 
-#include "Etterna/Actor/Menus/DualScrollBar.h"
-#include "Etterna/Models/Misc/InputEventPlus.h"
-#include "Etterna/Models/Lua/LuaExpressionTransform.h"
-#include "Etterna/Actor/Menus/OptionRow.h"
-#include "Etterna/Actor/Menus/OptionsCursor.h"
+#include "Etternity/Actor/Menus/DualScrollBar.h"
+#include "Etternity/Models/Misc/InputEventPlus.h"
+#include "Etternity/Models/Lua/LuaExpressionTransform.h"
+#include "Etternity/Actor/Menus/OptionRow.h"
+#include "Etternity/Actor/Menus/OptionsCursor.h"
 #include "RageUtil/Sound/RageSound.h"
-#include "Etterna/Screen/Others/ScreenWithMenuElements.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Screen/Others/ScreenWithMenuElements.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 class OptionRowHandler;
 

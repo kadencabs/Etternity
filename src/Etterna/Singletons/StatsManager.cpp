@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "CryptManager.h"
 #include "GameState.h"
 #include "LuaManager.h"
-#include "Etterna/Models/Misc/Profile.h"
+#include "Etternity/Models/Misc/Profile.h"
 #include "ProfileManager.h"
 #include "ScoreManager.h"
 #include "StatsManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 #include <algorithm>
 
@@ -173,7 +173,7 @@ StatsManager::GetStepsInUse(set<Steps*>& apInUseOut) const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the StatsManager. */
 class LunaStatsManager : public Luna<StatsManager>

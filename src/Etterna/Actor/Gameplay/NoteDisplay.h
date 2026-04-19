@@ -1,11 +1,11 @@
 #ifndef NOTE_DISPLAY_H
 #define NOTE_DISPLAY_H
 
-#include "Etterna/Actor/Base/Actor.h"
-#include "Etterna/Models/Misc/CubicSpline.h"
-#include "Etterna/Models/Misc/GameInput.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/Misc/PlayerNumber.h"
+#include "Etternity/Actor/Base/Actor.h"
+#include "Etternity/Models/Misc/CubicSpline.h"
+#include "Etternity/Models/Misc/GameInput.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/Misc/PlayerNumber.h"
 
 class Sprite;
 class Model;

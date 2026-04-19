@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ActorFrameTexture.h"
 #include "ActorUtil.h"
 #include "RageUtil/Graphics/RageTextureManager.h"
@@ -89,7 +89,7 @@ ActorFrameTexture::DrawPrimitives()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the ActorFrameTexture. */
 class LunaActorFrameTexture : public Luna<ActorFrameTexture>

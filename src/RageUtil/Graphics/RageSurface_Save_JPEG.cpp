@@ -1,4 +1,4 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSurface.h"
 #include "RageSurfaceUtils.h"
 #include "RageSurface_Save_JPEG.h"

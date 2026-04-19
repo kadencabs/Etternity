@@ -3,8 +3,8 @@
 #ifndef ROOM_INFO_DISPLAY_H
 #define ROOM_INFO_DISPLAY_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Models/Misc/RoomWheel.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Models/Misc/RoomWheel.h"
 
 class RoomInfoDisplay : public ActorFrame
 {

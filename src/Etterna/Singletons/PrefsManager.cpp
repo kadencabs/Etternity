@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/FileTypes/IniFile.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/FileTypes/IniFile.h"
 #include "LuaManager.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Models/Misc/Preference.h"
 #include "PrefsManager.h"
 #include "RageUtil/Graphics/RageDisplay.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Globals/SpecialFiles.h"
+#include "Etternity/Globals/SpecialFiles.h"
 
 #include <map>
 
@@ -447,7 +447,7 @@ PrefsManager::GetPreferencesSection() const
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the PrefsManager. */
 class LunaPrefsManager : public Luna<PrefsManager>

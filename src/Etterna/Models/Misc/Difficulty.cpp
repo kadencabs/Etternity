@@ -1,9 +1,9 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "Difficulty.h"
 #include "GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/LuaManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/LuaManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 #include "ThemeMetric.h"
 
 static const char* DifficultyNames[] = {
@@ -117,7 +117,7 @@ StepsToCustomDifficulty(const Steps* pSteps)
 	return GetCustomDifficulty(pSteps->m_StepsType, pSteps->GetDifficulty());
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 LuaFunction(StepsToCustomDifficulty,
 			StepsToCustomDifficulty(Luna<Steps>::check(L, 1)));

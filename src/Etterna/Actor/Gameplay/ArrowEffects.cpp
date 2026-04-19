@@ -1,18 +1,18 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "ArrowEffects.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Singletons/GameState.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Singletons/GameState.h"
 #include "NoteDisplay.h"
-#include "Etterna/Models/Misc/PlayerState.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Models/Misc/PlayerState.h"
+#include "Etternity/Singletons/PrefsManager.h"
 #include "RageUtil/Misc/RageMath.h"
 #include "RageUtil/Misc/RageTimer.h"
-#include "Etterna/Models/Misc/ScreenDimensions.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
-#include "Etterna/Models/Songs/SongOptions.h"
+#include "Etternity/Models/Misc/ScreenDimensions.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
+#include "Etternity/Models/Songs/SongOptions.h"
 
 #include <algorithm>
 
@@ -983,7 +983,7 @@ ThemeMetric<float> GRAY_ARROWS_Y_STANDARD("Player", "ReceptorArrowsYStandard");
 ThemeMetric<float> GRAY_ARROWS_Y_REVERSE("Player", "ReceptorArrowsYReverse");
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 namespace {
 /* Update() need to be exposed to use ArrowEffects off ScreenGameplay. It is

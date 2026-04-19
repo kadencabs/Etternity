@@ -1,36 +1,36 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/Actor.h"
-#include "Etterna/Models/Misc/AdjustSync.h"
-#include "Etterna/Models/Misc/CommonMetrics.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/Actor.h"
+#include "Etternity/Models/Misc/AdjustSync.h"
+#include "Etternity/Models/Misc/CommonMetrics.h"
 #include "CryptManager.h"
 #include "discord_rpc.h"
 #include "DownloadManager.h"
-#include "Etterna/Models/Misc/Foreach.h"
-#include "Etterna/Models/Misc/Game.h"
-#include "Etterna/Models/Misc/GameCommand.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Foreach.h"
+#include "Etternity/Models/Misc/Game.h"
+#include "Etternity/Models/Misc/GameCommand.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
 #include "GameManager.h"
-#include "Etterna/Models/Misc/GamePreferences.h"
+#include "Etternity/Models/Misc/GamePreferences.h"
 #include "GameState.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "MessageManager.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "NetworkSyncManager.h"
 #include "NoteSkinManager.h"
-#include "Etterna/Models/Misc/PlayerState.h"
+#include "Etternity/Models/Misc/PlayerState.h"
 #include "ProfileManager.h"
 #include "ScreenManager.h"
-#include "Etterna/Screen/Others/Screen.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/Models/Songs/SongUtil.h"
+#include "Etternity/Screen/Others/Screen.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/Models/Songs/SongUtil.h"
 #include "StatsManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/StepsAndStyles/Style.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/StepsAndStyles/Style.h"
 #include "ThemeManager.h"
 #include "SongManager.h"
-#include "Etterna/Models/Misc/Profile.h"
-#include "Etterna/Models/Songs/SongOptions.h"
-#include "Etterna/Globals/rngthing.h"
+#include "Etternity/Models/Misc/Profile.h"
+#include "Etternity/Models/Songs/SongOptions.h"
+#include "Etternity/Globals/rngthing.h"
 #include "Core/Services/Locator.hpp"
 
 #include <algorithm>
@@ -1345,7 +1345,7 @@ GameState::IsPracticeMode()
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the GameState. */
 class LunaGameState : public Luna<GameState>
@@ -1831,7 +1831,7 @@ class LunaGameState : public Luna<GameState>
 		return 1;
 	}
 
-	DEFINE_METHOD(GetEtternaVersion, GetEtternaVersion())
+	DEFINE_METHOD(GetEtternityVersion, GetEtternityVersion())
 	DEFINE_METHOD(IsPracticeMode, IsPracticeMode())
 	LunaGameState()
 	{
@@ -1912,7 +1912,7 @@ class LunaGameState : public Luna<GameState>
 		ADD_METHOD(SetFailTypeExplicitlySet);
 		ADD_METHOD(SetCurrentStyle);
 		ADD_METHOD(IsCourseMode);
-		ADD_METHOD(GetEtternaVersion);
+		ADD_METHOD(GetEtternityVersion);
 		ADD_METHOD(CountNotesSeparately);
 		ADD_METHOD(GetCoinMode);
 		ADD_METHOD(UpdateDiscordMenu);

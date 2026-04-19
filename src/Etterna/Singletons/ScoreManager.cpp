@@ -1,13 +1,13 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/HighScore/HighScore.h"
-#include "Etterna/MinaCalc/MinaCalc.h"
-#include "Etterna/Models/NoteData/NoteData.h"
-#include "Etterna/Models/NoteData/NoteDataStructures.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/HighScore/HighScore.h"
+#include "Etternity/MinaCalc/MinaCalc.h"
+#include "Etternity/Models/NoteData/NoteData.h"
+#include "Etternity/Models/NoteData/NoteDataStructures.h"
 #include "RageUtil/Misc/RageTimer.h"
 #include "ScoreManager.h"
-#include "Etterna/Models/Songs/Song.h"
-#include "Etterna/FileTypes/XmlFile.h"
+#include "Etternity/Models/Songs/Song.h"
+#include "Etternity/FileTypes/XmlFile.h"
 #include "arch/LoadingWindow/LoadingWindow.h"
 #include "RageUtil/Misc/RageThreads.h"
 
@@ -16,7 +16,7 @@
 #include <algorithm>
 
 #include "GameManager.h"
-#include "Etterna/MinaCalc/MinaCalcHelpers.h"
+#include "Etternity/MinaCalc/MinaCalcHelpers.h"
 
 using std::lock_guard;
 using std::mutex;
@@ -272,7 +272,7 @@ ScoresForChart::SetTopScores()
 	for (auto& i : ScoresByRate) {
 		auto& hs = i.second.noccPBptr;
 		if ((hs != nullptr) && hs->GetSSRCalcVersion() == GetCalcVersion() &&
-			hs->GetEtternaValid() &&
+			hs->GetEtternityValid() &&
 			static_cast<int>(hs->GetChordCohesion()) == 0 &&
 			hs->GetGrade() != Grade_Failed) {
 			eligiblescores.emplace_back(hs);
@@ -287,7 +287,7 @@ ScoresForChart::SetTopScores()
 			auto& hs = i.second.PBptr;
 			if ((hs != nullptr) &&
 				hs->GetSSRCalcVersion() == GetCalcVersion() &&
-				hs->GetEtternaValid() &&
+				hs->GetEtternityValid() &&
 				static_cast<int>(hs->GetChordCohesion()) != 0 &&
 				hs->GetGrade() != Grade_Failed) {
 				eligiblescores.emplace_back(hs);
@@ -865,7 +865,7 @@ ScoreManager::UnInvalidateAllScores(const std::string& profileID)
 {
 	for (auto& i : pscores[profileID]) {
 		for (const auto& s : i.second.GetAllScores()) {
-			s->SetEtternaValid(true);
+			s->SetEtternityValid(true);
 		}
 	}
 }
@@ -910,7 +910,7 @@ ScoreManager::SortTopSSRPtrs(Skillset ss, const std::string& profileID, bool get
 			if (getSSRs) {
 				if (hs->GetSSRCalcVersion() != GetCalcVersion())
 					continue;
-				if (!hs->GetEtternaValid())
+				if (!hs->GetEtternityValid())
 					continue;
 				if (static_cast<int>(hs->GetChordCohesion()) == 1)
 					continue;
@@ -1250,7 +1250,7 @@ ScoresAtRate::LoadFromNode(const XNode* node,
 		hs.LoadFromEttNode(p);
 
 		const auto negbpmrecalc =
-		  !hs.GetEtternaValid() && hs.GetGrade() == Grade_Failed &&
+		  !hs.GetEtternityValid() && hs.GetGrade() == Grade_Failed &&
 		  SONGMAN->IsChartLoaded(ck) &&
 		  SONGMAN->GetStepsByChartkey(ck)->GetTimingData()->HasWarps() &&
 		  GetGradeFromPercent(hs.GetSSRNormPercent()) <= Grade_Tier12;
@@ -1258,7 +1258,7 @@ ScoresAtRate::LoadFromNode(const XNode* node,
 			// the point is to rescore formerly-invalidated negbpm files
 			// which were force-failed and force-invalidated
 			hs.SetGrade(GetGradeFromPercent(hs.GetSSRNormPercent()));
-			hs.SetEtternaValid(1);
+			hs.SetEtternityValid(1);
 			hs.SetWifeVersion(0);
 			Locator::getLogger()->info("Identified negbpm score to revalidate "
 									   "- CK {} SK {} - SSR% {:.4f}",
@@ -1406,7 +1406,7 @@ ScoreManager::GetScoresForChart(const std::string& ck, const std::string& profil
 	return nullptr;
 }
 
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 class LunaScoresAtRate : public Luna<ScoresAtRate>
 {

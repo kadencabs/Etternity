@@ -1,12 +1,12 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/Actor/Base/ActorUtil.h"
-#include "Etterna/Models/Fonts/Font.h"
-#include "Etterna/Singletons/GameSoundManager.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/Actor/Base/ActorUtil.h"
+#include "Etternity/Models/Fonts/Font.h"
+#include "Etternity/Singletons/GameSoundManager.h"
 #include "MenuTimer.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ScreenManager.h"
-#include "Etterna/Singletons/ThemeManager.h"
-#include "Etterna/Models/Misc/ThemeMetric.h"
+#include "Etternity/Singletons/ScreenManager.h"
+#include "Etternity/Singletons/ThemeManager.h"
+#include "Etternity/Models/Misc/ThemeMetric.h"
 
 #include <algorithm>
 
@@ -211,7 +211,7 @@ MenuTimer::SetText(float fSeconds)
 }
 
 // lua start
-#include "Etterna/Models/Lua/LuaBinding.h"
+#include "Etternity/Models/Lua/LuaBinding.h"
 
 /** @brief Allow Lua to have access to the MenuTimer. */
 class LunaMenuTimer : public Luna<MenuTimer>

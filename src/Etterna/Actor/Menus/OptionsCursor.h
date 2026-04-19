@@ -1,8 +1,8 @@
 #ifndef OPTIONS_CURSOR_H
 #define OPTIONS_CURSOR_H
 
-#include "Etterna/Actor/Base/ActorFrame.h"
-#include "Etterna/Actor/Base/AutoActor.h"
+#include "Etternity/Actor/Base/ActorFrame.h"
+#include "Etternity/Actor/Base/AutoActor.h"
 
 /** @brief A cursor for ScreenOptions. */
 class OptionsCursor : public ActorFrame

@@ -6,7 +6,7 @@
 #include "Command.h"
 #include "Difficulty.h"
 #include "GameConstantsAndTypes.h"
-#include "Etterna/Models/Lua/LuaReference.h"
+#include "Etternity/Models/Lua/LuaReference.h"
 #include "PlayerNumber.h"
 #include <map>
 

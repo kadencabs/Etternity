@@ -1,8 +1,8 @@
 #ifndef PREFSMANAGER_H
 #define PREFSMANAGER_H
 
-#include "Etterna/Models/Misc/GameConstantsAndTypes.h"
-#include "Etterna/Models/Misc/Preference.h"
+#include "Etternity/Models/Misc/GameConstantsAndTypes.h"
+#include "Etternity/Models/Misc/Preference.h"
 
 class IniFile;
 

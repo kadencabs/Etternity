@@ -1,12 +1,12 @@
 #ifndef SONG_H
 #define SONG_H
 
-#include "Etterna/Models/Misc/Difficulty.h"
+#include "Etternity/Models/Misc/Difficulty.h"
 #include "RageUtil/Misc/RageTypes.h"
 #include "RageUtil/Utils/RageUtil_CachedObject.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
-#include "Etterna/Models/Misc/TimingData.h"
-#include "Etterna/Models/Misc/DateTime.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Models/Misc/TimingData.h"
+#include "Etternity/Models/Misc/DateTime.h"
 
 #include <set>
 

@@ -1,27 +1,27 @@
-#include "Etterna/Globals/global.h"
-#include "Etterna/FileTypes/XmlFile.h"
-#include "Etterna/FileTypes/XmlFileUtil.h"
+#include "Etternity/Globals/global.h"
+#include "Etternity/FileTypes/XmlFile.h"
+#include "Etternity/FileTypes/XmlFileUtil.h"
 #include "Profile.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/ProfileManager.h"
-#include "Etterna/Models/NoteData/NoteData.h"
+#include "Etternity/Singletons/ProfileManager.h"
+#include "Etternity/Models/NoteData/NoteData.h"
 #include "XMLProfile.h"
 #include "RageUtil/File/RageFile.h"
 #include "RageUtil/File/RageFileDriverDeflate.h"
-#include "Etterna/Singletons/GameState.h"
-#include "Etterna/Singletons/GameManager.h"
-#include "Etterna/Singletons/LuaManager.h"
+#include "Etternity/Singletons/GameState.h"
+#include "Etternity/Singletons/GameManager.h"
+#include "Etternity/Singletons/LuaManager.h"
 #include "RageUtil/File/RageFileManager.h"
-#include "Etterna/Singletons/ScoreManager.h"
-#include "Etterna/Singletons/CryptManager.h"
-#include "Etterna/Singletons/SongManager.h"
-#include "Etterna/Models/StepsAndStyles/Steps.h"
+#include "Etternity/Singletons/ScoreManager.h"
+#include "Etternity/Singletons/CryptManager.h"
+#include "Etternity/Singletons/SongManager.h"
+#include "Etternity/Models/StepsAndStyles/Steps.h"
 
 using std::string;
 
-const string ETT_XML = "Etterna.xml";
-const string ETT_XML_GZ = "Etterna.xml.gz";
+const string ETT_XML = "Etternity.xml";
+const string ETT_XML_GZ = "Etternity.xml.gz";
 /** @brief The filename containing the signature for ETT_XML's signature. */
 const string DONT_SHARE_SIG = "DontShare.sig";
 static Preference<bool> g_bProfileDataCompress("ProfileDataCompress", false);
@@ -30,7 +30,7 @@ ProfileLoadResult
 XMLProfile::LoadEttFromDir(string dir)
 {
 	profiledir = dir + PROFILEMAN->GetStatsPrefix();
-	loadingProfile->IsEtternaProfile = true;
+	loadingProfile->IsEtternityProfile = true;
 	const auto fn = profiledir.append(ETT_XML);
 
 	int iError;
@@ -53,10 +53,10 @@ XMLProfile::LoadEttFromDir(string dir)
 bool
 XMLProfile::SaveEttXmlToDir(string sDir, const Profile* profile) const
 {
-	Locator::getLogger()->info("Saving Etterna Profile to: {}", sDir.c_str());
+	Locator::getLogger()->info("Saving Etternity Profile to: {}", sDir.c_str());
 	const std::unique_ptr<XNode> xml(SaveEttXmlCreateNode(profile));
 	auto pDir = sDir + PROFILEMAN->GetStatsPrefix();
-	// Save Etterna.xml
+	// Save Etternity.xml
 	const auto fn = pDir.append(ETT_XML);
 	const auto fngz = pDir.append(ETT_XML_GZ);
 	{

@@ -1,7 +1,7 @@
 #ifndef CODE_SET_H
 #define CODE_SET_H
 
-#include "Etterna/Singletons/InputQueue.h"
+#include "Etternity/Singletons/InputQueue.h"
 
 struct Message;
 class InputQueueCodeSet

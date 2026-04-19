@@ -1,7 +1,7 @@
-#include "Etterna/Globals/global.h"
+#include "Etternity/Globals/global.h"
 #include "RageSoundDriver_Null.h"
 #include "RageUtil/Utils/RageUtil.h"
-#include "Etterna/Singletons/PrefsManager.h"
+#include "Etternity/Singletons/PrefsManager.h"
 
 REGISTER_SOUND_DRIVER_CLASS(Null);
 
