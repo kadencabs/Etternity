@@ -293,10 +293,15 @@ jobs:
 
       - name: Generate CMake
         run: |
-          mkdir main/build && cd main/build
+          mkdir main/build
+          cd main/build
+
           export PATH="$(brew --prefix nasm)/bin:$PATH"
           export NASM="$(which nasm)"
-          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl \
+          export FFMPEG_EXTRA_OPTS="--disable-yasm"
+
+          cmake \
+            -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1_osx_high_sierra \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
             -DWITH_CRASHPAD=OFF \
             -G Ninja ..
