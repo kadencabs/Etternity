@@ -21,7 +21,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 # PROJECT WIDE SETUP
 project(Etternity
 		VERSION 0.74.3
-        HOMEPAGE_URL https://github.com/etternagame/etternity/
+        HOMEPAGE_URL https://github.com/kadencabs/etternity/
         LANGUAGES C CXX ASM)
 
 ## CMake and Compiler Setup

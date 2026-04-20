@@ -8,7 +8,7 @@
 /**
  * This class is a Service Locator to be used to isolate the globals this program has.
  * Locator has flaws of it's own, thought could help isolate the number of singletons
- * etterna currently has.
+ * etternity currently has.
  */
 class Locator {
 public:

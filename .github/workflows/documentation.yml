@@ -1,5 +1,5 @@
-# Workflow for building and deploying Etterna documentation
-name: Etterna documentation CI
+# Workflow for building and deploying Etternity documentation
+name: Etternity documentation CI
 
 on:
   # Runs on pushes to develop

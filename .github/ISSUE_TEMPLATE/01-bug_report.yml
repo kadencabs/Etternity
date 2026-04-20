@@ -1,5 +1,5 @@
 name: 🐞 Bug Report
-description: File a report to help us improve Etterna!
+description: File a report to help us improve Etternity!
 title: "[Bug]: "
 labels: ["Type: Bug", "Needs triage"]
 
@@ -28,7 +28,7 @@ body:
   - type: dropdown
     attributes:
       label: Version Info
-      description: What version of Etterna are you running?
+      description: What version of Etternity are you running?
       options:
         - Latest available release
         - Compiled from develop

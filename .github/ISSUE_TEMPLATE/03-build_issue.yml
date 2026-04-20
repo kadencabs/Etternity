@@ -1,15 +1,15 @@
 name: ⚙️ Build Issue
-description: Having a problem building Etterna? Let us know here!
+description: Having a problem building Etternity? Let us know here!
 labels: ["Type: Maintenance"]
 title: "[Build Issue]: "
 assignees:
-  - jameskr97
+  - kadencabs
 
 body:
   - type: checkboxes
     attributes:
       label: Have you read through the build instructions before reading this?
-      description: All information related to building Etterna is written in that document
+      description: All information related to building Etternity is written in that document
       options:
         - label: I have read the build instructions
           required: true
@@ -26,7 +26,7 @@ body:
   - type: textarea
     attributes:
       label: Describe the build issue
-      description: What problem do you have when building Etterna?
+      description: What problem do you have when building Etternity?
     validations:
       required: true
 

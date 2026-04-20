@@ -11,7 +11,7 @@ jobs:
     name: Submission Runner
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Etterna
+      - name: Checkout Etternity
         uses: actions/checkout@v3
         with:
           path: main
@@ -21,7 +21,7 @@ jobs:
 
       - name: Download Coverity Build Tool
         run: |
-          wget https://scan.coverity.com/download/linux64 --post-data "token=${{secrets.COVERITY_SCAN_TOKEN}}&project=etternagame%2Fetterna" -O cov-analysis-linux64.tar.gz
+          wget https://scan.coverity.com/download/linux64 --post-data "token=${{secrets.COVERITY_SCAN_TOKEN}}&project=Etternitygame%2FEtternity" -O cov-analysis-linux64.tar.gz
           mkdir cov-analysis-linux64
           tar xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
 
@@ -36,12 +36,12 @@ jobs:
       - name: Submit the result to Coverity Scan
         run: |
           cd main/build
-          tar czvf etterna.tgz cov-int
+          tar czvf Etternity.tgz cov-int
           curl \
             --form token=$TOKEN \
-            --form email=etternadev@gmail.com \
-            --form file=@etterna.tgz \
+            --form email=Etternitydev@gmail.com \
+            --form file=@Etternity.tgz \
             --form description="Advanced cross-platform rhythm game focused on keyboard play" \
-            https://scan.coverity.com/builds?project=etternagame%2Fetterna
+            https://scan.coverity.com/builds?project=Etternitygame%2FEtternity
         env:
           TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}

@@ -125,7 +125,7 @@ namespace Core::Platform {
     ghc::filesystem::path getExecutableDirectory();
 
     /**
-     * @brief Get the base game directory. "The etterna folder".
+     * @brief Get the base game directory. "The etternity folder".
      *
      * This is the folder where the user chose to install the application.
      * NOTE: This directory is retrieved based on the binary location.

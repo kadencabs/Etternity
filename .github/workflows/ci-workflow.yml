@@ -402,8 +402,8 @@ jobs:
 #          brew link --force nasm
 #          brew unlink openssl@3 || true
 #          brew unlink openssl@1.1 || true
-#          brew tap etternagame/Etternity
-#          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/Etternity/openssl@1.1_osx_high_sierra || true
+#          brew tap kadencabs/Etternity
+#          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install etternagame/etterna/openssl@1.1_osx_high_sierra || true
 #
 #      - name: Add nasm to PATH
 #        run: echo "$(brew --prefix nasm)/bin" >> $GITHUB_PATH

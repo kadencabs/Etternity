@@ -1006,7 +1006,7 @@ sm_main(int argc, char* argv[])
 
 	// Almost everything uses this to read and write files.  Load this early.
 	FILEMAN = new RageFileManager(argv[0]);
-	const char* envRootDir = std::getenv("ETTERNA_ROOT_DIR");
+	const char* envRootDir = std::getenv("ETTERNITY_ROOT_DIR");
 	std::string rootDir = (envRootDir && std::strlen(envRootDir) > 0)
 			? envRootDir : Core::Platform::getAppDirectory();
 	if (!FILEMAN->Mount("dir", rootDir, "/")) {
@@ -1034,13 +1034,13 @@ sm_main(int argc, char* argv[])
 	// Set up alternative filesystem trees.
 	if (!PREFSMAN->m_sAdditionalFolders.Get().empty())
 		MountAdditionalDirs(PREFSMAN->m_sAdditionalFolders, ",", "/");
-	const char* envAdditionalFolders = std::getenv("ETTERNA_ADDITIONAL_ROOT_DIRS");
+	const char* envAdditionalFolders = std::getenv("ETTERNITY_ADDITIONAL_ROOT_DIRS");
 	if (envAdditionalFolders && std::strlen(envAdditionalFolders) > 0)
 		MountAdditionalDirs(envAdditionalFolders, PATH_SEPARATOR, "/");
 
 	if (!PREFSMAN->m_sAdditionalSongFolders.Get().empty())
 		MountAdditionalDirs(PREFSMAN->m_sAdditionalSongFolders, ",", "/AdditionalSongs");
-	const char* envAdditionalSongFolders = std::getenv("ETTERNA_ADDITIONAL_SONG_DIRS");
+	const char* envAdditionalSongFolders = std::getenv("ETTERNITY_ADDITIONAL_SONG_DIRS");
 	if (envAdditionalSongFolders && std::strlen(envAdditionalSongFolders) > 0)
 		MountAdditionalDirs(envAdditionalSongFolders, PATH_SEPARATOR, "/AdditionalSongs");
 

@@ -3,7 +3,7 @@ set(CPACK_PACKAGE_NAME "Etternity")
 set(CPACK_PACKAGE_VENDOR "Etternity Team")
 set(CMAKE_PACKAGE_DESCRIPTION "Advanced cross-platform rhythm game focused on keyboard play")
 set(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/CMake/CPack/license_install.txt)
-set(CPACK_COMPONENT_ETTERNA_REQUIRED TRUE)  # Require Etternity component to be installed
+set(CPACK_COMPONENT_ETTERNITY_REQUIRED TRUE)  # Require Etternity component to be installed
 
 # Custom Variables
 set(INSTALL_DIR "Etternity" CACHE STRING "Output directory for built game")
@@ -12,7 +12,7 @@ set(ASSET_DIR "${INSTALL_DIR}" CACHE STRING "Output directory for game assets")
 if(UNIX)
     set(CPACK_GENERATOR TGZ)
     set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
-    set(CPACK_PACKAGE_CONTACT https://github.com/etternagame/etternity)
+    set(CPACK_PACKAGE_CONTACT https://github.com/kadencabs/etternity)
 
     install(TARGETS Etternity COMPONENT Etternity DESTINATION ${INSTALL_DIR})
     if(WITH_CRASHPAD AND TARGET crashpad)
