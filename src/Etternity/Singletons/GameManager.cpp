@@ -115,7 +115,7 @@ static const AutoMappings g_AutoKeyMappings_Dance = AutoMappings(
   AutoMappingEntry(0, KEY_Cz, DANCE_BUTTON_LEFT, false),
   AutoMappingEntry(0, KEY_Cx, DANCE_BUTTON_DOWN, false),
   AutoMappingEntry(0, KEY_PERIOD, DANCE_BUTTON_UP,    false),
- AutoMappingEntry(0, KEY_SLASH,  DANCE_BUTTON_RIGHT, false),
+  AutoMappingEntry(0, KEY_SLASH,  DANCE_BUTTON_RIGHT, false),
   AutoMappingEntry(0, KEY_EQUAL, GAME_BUTTON_EFFECT_UP, false),
   AutoMappingEntry(0, KEY_HYPHEN, GAME_BUTTON_EFFECT_DOWN, false),
   AutoMappingEntry(0, KEY_ACCENT, GAME_BUTTON_RESTART, false),
