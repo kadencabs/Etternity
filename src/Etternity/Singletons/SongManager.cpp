@@ -25,7 +25,6 @@
 #include "Etternity/Models/Misc/TitleSubstitution.h"
 #include "arch/LoadingWindow/LoadingWindow.h"
 #include "ScreenManager.h"
-#include "NetworkSyncManager.h"
 #include "Etternity/MinaCalc/MinaCalc.h"
 #include "Etternity/FileTypes/XmlFileUtil.h"
 #include "DownloadManager.h"

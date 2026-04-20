@@ -1,7 +1,6 @@
 #include "Etternity/Globals/global.h"
 #include "Etternity/Actor/Base/ActorUtil.h"
 #include "Etternity/Models/Misc/LocalizedString.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "RoomInfoDisplay.h"
 
 #include "Etternity/Screen/Others/ScreenMessage.h"

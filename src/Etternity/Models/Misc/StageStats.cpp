@@ -8,7 +8,6 @@
 #include "Etternity/Singletons/ProfileManager.h"
 #include "StageStats.h"
 #include "Etternity/Models/StepsAndStyles/Style.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "AdjustSync.h"
 #include "Etternity/Singletons/ScoreManager.h"
 #include "Etternity/Singletons/DownloadManager.h"

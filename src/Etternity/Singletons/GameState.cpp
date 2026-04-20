@@ -15,7 +15,6 @@
 #include "Etternity/Models/Lua/LuaReference.h"
 #include "MessageManager.h"
 #include "Etternity/Models/NoteData/NoteData.h"
-#include "NetworkSyncManager.h"
 #include "NoteSkinManager.h"
 #include "Etternity/Models/Misc/PlayerState.h"
 #include "ProfileManager.h"

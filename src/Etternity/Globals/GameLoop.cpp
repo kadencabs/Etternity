@@ -12,7 +12,6 @@
 #include "Etternity/Singletons/GameState.h"
 #include "Etternity/Singletons/InputFilter.h"
 #include "Etternity/Singletons/InputMapper.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "RageUtil/Misc/RageInput.h"
 #include "Etternity/Singletons/ScreenManager.h"
 

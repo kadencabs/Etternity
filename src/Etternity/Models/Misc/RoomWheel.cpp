@@ -1,7 +1,6 @@
 #include "Etternity/Globals/global.h"
 #include "Etternity/Actor/Base/ActorUtil.h"
 #include "LocalizedString.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Core/Services/Locator.hpp"
 #include "RageUtil/Utils/RageUtil.h"
 #include "RoomWheel.h"

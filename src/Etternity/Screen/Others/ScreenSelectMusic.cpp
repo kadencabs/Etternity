@@ -29,7 +29,6 @@
 #include "RageUtil/Misc/RageInput.h"
 #include "ScreenTextEntry.h"
 #include "Etternity/Singletons/DownloadManager.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Etternity/Singletons/FilterManager.h"
 #include "Etternity/Models/Misc/GamePreferences.h"
 #include "Etternity/Models/Misc/PlayerOptions.h"

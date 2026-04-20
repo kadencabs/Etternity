@@ -8,7 +8,6 @@
 #include "Etternity/Models/Misc/LocalizedString.h"
 #include "Etternity/Singletons/MessageManager.h"
 #include "MusicWheel.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Etternity/Models/Misc/PlayerState.h"
 #include "Etternity/Singletons/PrefsManager.h"
 #include "Core/Services/Locator.hpp"

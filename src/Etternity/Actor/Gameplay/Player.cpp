@@ -10,7 +10,6 @@
 #include "Etternity/Singletons/InputMapper.h"
 #include "LifeMeter.h"
 #include "Etternity/Singletons/MessageManager.h"
-#include "Etternity/Singletons/NetworkSyncManager.h" //used for sending timing offset
 #include "Etternity/Models/NoteData/NoteDataUtil.h"
 #include "Etternity/Models/NoteData/NoteDataWithScoring.h"
 #include "NoteField.h"

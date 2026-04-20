@@ -14,7 +14,6 @@
 #include "Etternity/Models/Lua/LuaBinding.h"
 #include "Etternity/Singletons/LuaManager.h"
 #include "Etternity/Models/Misc/LyricsLoader.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Etternity/Models/NoteData/NoteDataUtil.h"
 #include "Etternity/Models/NoteData/NoteDataWithScoring.h"
 #include "Etternity/Actor/Gameplay/Player.h"

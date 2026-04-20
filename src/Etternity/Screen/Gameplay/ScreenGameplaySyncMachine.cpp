@@ -8,10 +8,8 @@
 #include "Etternity/Models/NoteLoaders/NotesLoaderSSC.h"
 #include "Etternity/Singletons/PrefsManager.h"
 #include "ScreenGameplaySyncMachine.h"
-
 #include "Etternity/Models/Songs/SongOptions.h"
 #include "Etternity/Models/Songs/SongUtil.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Etternity/Singletons/ProfileManager.h"
 
 REGISTER_SCREEN_CLASS(ScreenGameplaySyncMachine);

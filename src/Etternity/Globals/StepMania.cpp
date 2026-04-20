@@ -54,7 +54,6 @@
 #include "Etternity/Singletons/CryptManager.h"
 #include "GameLoop.h"
 #include "Etternity/Singletons/MessageManager.h"
-#include "Etternity/Singletons/NetworkSyncManager.h"
 #include "Etternity/Singletons/StatsManager.h"
 #include "discord_rpc.h"
 
@@ -1142,8 +1141,6 @@ sm_main(int argc, char* argv[])
 	PROFILEMAN = new ProfileManager;
 	PROFILEMAN->Init(pLoadingWindow); // must load after SONGMAN
 	SONGMAN->CalcTestStuff();		  // must be after profileman init
-
-	NSMAN = new NetworkSyncManager(pLoadingWindow);
 	STATSMAN = new StatsManager;
 
 	FILTERMAN = new FilterManager;
