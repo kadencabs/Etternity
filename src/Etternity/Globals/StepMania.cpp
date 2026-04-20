@@ -290,7 +290,6 @@ ShutdownGame()
 	SAFE_DELETE(SCREENMAN);
 	SAFE_DELETE(STATSMAN);
 	SAFE_DELETE(MESSAGEMAN);
-	SAFE_DELETE(NSMAN);
 	/* Delete INPUTMAN before the other INPUTFILTER handlers, or an input
 	 * driver may try to send a message to INPUTFILTER after we delete it. */
 	SAFE_DELETE(INPUTMAN);
