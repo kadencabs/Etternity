@@ -85,32 +85,15 @@ list(APPEND SCREEN_REST_HPP
 	"Others/ScreenTitleMenu.h"
 	"Others/ScreenWithMenuElements.h")
 
-list(APPEND SCREEN_NET_SRC
-	"Network/ScreenNetEvaluation.cpp"
-	"Network/ScreenNetRoom.cpp"
-	"Network/ScreenNetSelectBase.cpp"
-	"Network/ScreenNetSelectMusic.cpp"
-	"Network/ScreenNetworkOptions.cpp"
-	"Network/ScreenSMOnlineLogin.cpp")
-
-list(APPEND SCREEN_NET_HPP
-	"Network/ScreenNetEvaluation.h"
-	"Network/ScreenNetRoom.h"
-	"Network/ScreenNetSelectBase.h"
-	"Network/ScreenNetSelectMusic.h"
-	"Network/ScreenNetworkOptions.h"
-	"Network/ScreenSMOnlineLogin.h")
 
 list(APPEND ALL_SCREENS_SRC
 	${SCREEN_GAMEPLAY_SRC}
 	${SCREEN_OPTION_SRC}
-	${SCREEN_NET_SRC}
 	${SCREEN_REST_SRC})
 
 list(APPEND ALL_SCREENS_HPP
 	${SCREEN_GAMEPLAY_HPP}
 	${SCREEN_OPTION_HPP}
-	${SCREEN_NET_HPP}
 	${SCREEN_REST_HPP})
 
 target_sources(Etternity PUBLIC ${ALL_SCREENS_SRC} ${ALL_SCREENS_HPP})
