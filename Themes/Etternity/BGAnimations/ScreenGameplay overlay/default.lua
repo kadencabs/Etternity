@@ -464,7 +464,7 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "CenteredScore",
 	InitCommand = function(self)
 		local coords, sizes = getCoords()
-		self:xy(coords.DisplayPercentX, coords.DisplayPercentY):diffusealpha(0.8)
+		self:xy(coords.DisplayPercentX - 45, coords.DisplayPercentY):diffusealpha(0.8)
 	end,
 
 	LoadFont("Common Normal") .. {
@@ -570,7 +570,7 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "NotefieldMean",
 	InitCommand = function(self)
 		local coords, sizes = getCoords()
-		self:xy(coords.DisplayMeanX, coords.DisplayMeanY):diffusealpha(0)
+		self:xy(coords.DisplayMeanX - 45, coords.DisplayMeanY):diffusealpha(0)
 		local statType = HV.GetNotefieldStat()
 		local showStat = statType ~= "Off" and not HV.MinimalisticMode() and not isSync
 		self:visible(showStat)
@@ -1028,7 +1028,7 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "TallyAndMetrics",
 	InitCommand = function(self)
 		local coords, sizes = getCoords()
-		self:xy(coords.JudgeCounterX, coords.JudgeCounterY - 45):diffusealpha(0.8)
+		self:xy(coords.JudgeCounterX - 45, coords.JudgeCounterY - 45):diffusealpha(0.8)
 	end,
 
 	-- COLUMN 1: Judgments + OK/NG
