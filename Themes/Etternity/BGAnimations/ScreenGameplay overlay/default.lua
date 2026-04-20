@@ -6,6 +6,14 @@ local HV_MaxPoints = 1 -- Placeholder, will be set in BeginCommand
 local HV_PBThreshold = 0
 local HV_JudgeScale = 1.0
 
+-- Helper: get coords/sizes for current keymode (call inside command functions only)
+local function getCoords()
+	local keymode = tostring(GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()) .. "K"
+	local coords = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode]
+	local sizes  = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode]
+	return coords, sizes
+end
+
 local t = Def.ActorFrame {
 	Name = "GameplayOverlay",
 	BeginCommand = function(self)
@@ -59,6 +67,10 @@ local t = Def.ActorFrame {
 				HV_PBThreshold = tonumber(ThemePrefs.Get("HV_AutoFailThreshold_Wife")) or 93.00
 			end
 		end
+
+		-- Wire up MovableValues keymode
+		local km = tostring(GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()) .. "K"
+		setMovableKeymode(km)
 	end,
 	OnCommand = function(self)
 		-- Double check mods on OnCommand just in case
@@ -88,8 +100,6 @@ local t = Def.ActorFrame {
 		end
 	end,
 	
-
-	
 	CurrentSongChangedMessageCommand = function(self)
 		-- Re-apply sync mods on every loop start to prevent engine resets
 		if isSync then
@@ -106,11 +116,9 @@ local t = Def.ActorFrame {
 	end,
 	
 	-- Shared PointsLost Accumulator (Wife3 Adherent)
-	-- Fully compliant with Etterna's internal wife3 scoring and evaluation mechanics
 	JudgmentMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
 		
-		-- Exclude non-tap judgements that don't affect points
 		local s = params.TapNoteScore
 		if params.HoldNoteScore or not s or s == "TapNoteScore_None" or s == "TapNoteScore_AvoidMine" or 
 		   s == "TapNoteScore_CheckpointHit" or s == "TapNoteScore_CheckpointMiss" then
@@ -118,14 +126,12 @@ local t = Def.ActorFrame {
 		end
 
 		if s == "TapNoteScore_HitMine" then
-			-- Match Etterna engine internal Wife3 rescoring logic (-350% weight = 7.0 points lost)
 			HV_PointsLost = HV_PointsLost + 7.0
 		elseif params.TapNoteOffset then
 			local offset = math.abs(params.TapNoteOffset) * 1000
 			local weight = wife3(offset, HV_JudgeScale, "Wife3")
 			HV_PointsLost = HV_PointsLost + (2.0 - weight)
 		elseif s == "TapNoteScore_Miss" then
-			-- A full miss loses 7.5 points relative to the 2.0 potential max per tap (2.0 - (-5.5) = 7.5)
 			HV_PointsLost = HV_PointsLost + 7.5
 		end
 		
@@ -183,12 +189,11 @@ local judgmentTNS = {
 t[#t + 1] = Def.ActorFrame {
 	BeginCommand = function(self)
 		self:SetUpdateFunction(function(self)
-			-- Lifebar still uses this for now
 			MESSAGEMAN:Broadcast("PlayingUpdate")
 		end)
 	end,
 
-	-- NoteMask for Sync Mode (placed here to be below judgments/combo)
+	-- NoteMask for Sync Mode
 	Def.Quad {
 		Name = "SyncNoteMask",
 		InitCommand = function(self)
@@ -228,7 +233,6 @@ t[#t + 1] = Def.ActorFrame {
 			self:playcommand("UpdateBars")
 		end)
 	end,
-	-- Interactive Seek (Practice Mode Only)
 	Def.Quad {
 		Name = "MouseHitbox",
 		InitCommand = function(self)
@@ -236,13 +240,10 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		UpdateBarsCommand = function(self)
 			if not GAMESTATE:IsPracticeMode() then return end
-			
-			-- Direct polling for smoother dragging and bypass input callback issues
 			if INPUTFILTER:IsBeingPressed("left mouse button") and isOver(self) then
 				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					local mx = INPUTFILTER:GetMouseX()
-					-- Use IsOver's absolute coordinates or calculate manually
 					local rx = mx - self:GetTrueX()
 					local pct = (rx / barW) + 0.5
 					local top = SCREENMAN:GetTopScreen()
@@ -280,7 +281,6 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 
-	-- Loop Markers
 	Def.ActorFrame {
 		Name = "LoopMarkers",
 		InitCommand = function(self) self:visible(GAMESTATE:IsPracticeMode()) end,
@@ -314,7 +314,6 @@ t[#t + 1] = Def.ActorFrame {
 		}
 	},
 
-	-- Remaining Time (incorporating music rate and ms)
 	LoadFont("Common Normal") .. {
 		Name = "TimeRemaining",
 		InitCommand = function(self)
@@ -334,7 +333,6 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 
-	-- Elapsed Time (incorporating music rate and ms)
 	LoadFont("Common Normal") .. {
 		Name = "TimeElapsed",
 		InitCommand = function(self)
@@ -349,8 +347,7 @@ t[#t + 1] = Def.ActorFrame {
 				local ms = math.floor((curTime - math.floor(curTime)) * 100)
 				self:settext(string.format("%d:%02d.%02d", mins, secs, ms))
 			end
-		end,
-
+		end
 	}
 }
 end -- End progress bar visibility check
@@ -360,14 +357,13 @@ end -- End progress bar visibility check
 -- ============================================================
 local lifeBarW = 8
 local lifeBarH = SCREEN_HEIGHT * 0.5
-local lifeBarX = SCREEN_CENTER_X + 220
-local lifeBarY = SCREEN_CENTER_Y
 
 if not HV.MinimalisticMode() and not isSync then
 t[#t + 1] = Def.ActorFrame {
 	Name = "VerticalLifeBar",
 	InitCommand = function(self)
-		self:xy(lifeBarX, lifeBarY):visible(false)
+		local coords, sizes = getCoords()
+		self:xy(coords.LifeP1X, coords.LifeP1Y):visible(false)
 	end,
 
 	Def.Quad {
@@ -403,18 +399,17 @@ t[#t + 1] = Def.ActorFrame {
 				local fillH = lifeBarH * lifeVal
 				self:zoomto(lifeBarW, fillH)
 
-				-- Coloring based on Life Difficulty (consistent with avatar.lua)
 				local diff = GetLifeDifficulty()
 				if diff <= 2 then
-					self:diffuse(color("#A0CFAB")) -- Green
+					self:diffuse(color("#A0CFAB"))
 				elseif diff <= 4 then
-					self:diffuse(color("#5ABAFF")) -- Cyan/Blue
+					self:diffuse(color("#5ABAFF"))
 				elseif diff == 5 then
-					self:diffuse(color("#CFD198")) -- Yellow
+					self:diffuse(color("#CFD198"))
 				elseif diff == 6 then
-					self:diffuse(color("#E0B080")) -- Orange
+					self:diffuse(color("#E0B080"))
 				else
-					self:diffuse(color("#CF9898")) -- Red
+					self:diffuse(color("#CF9898"))
 				end
 				self:diffusealpha(0.8)
 			end
@@ -428,7 +423,6 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 
-	-- Life % counter
 	LoadFont("Common Normal") .. {
 		Name = "LifePct",
 		InitCommand = function(self)
@@ -452,12 +446,10 @@ t[#t + 1] = Def.ActorFrame {
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 				lifeVal = pss:GetCurrentLife() or 0
 			end
-			
 			if lifeVal then
 				self:settext(string.format("%.1f%%", lifeVal * 100))
 			end
-		end,
-
+		end
 	}
 }
 end -- End Vertical Life Bar
@@ -471,13 +463,15 @@ if showCurrentWife then
 t[#t + 1] = Def.ActorFrame {
 	Name = "CenteredScore",
 	InitCommand = function(self)
-		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y - 90):diffusealpha(0.8)
+		local coords, sizes = getCoords()
+		self:xy(coords.DisplayPercentX, coords.DisplayPercentY):diffusealpha(0.8)
 	end,
 
 	LoadFont("Common Normal") .. {
 		Name = "ScoreValue",
 		InitCommand = function(self)
-			self:zoom(0.45):diffuse(brightText):diffusealpha(0.7)
+			local coords, sizes = getCoords()
+			self:zoom(0.45 * (sizes.DisplayPercentZoom or 1)):diffuse(brightText):diffusealpha(0.7)
 			local scoreMode = ThemePrefs.Get("HV_ScoreDisplayMode") or "Normal"
 			if scoreMode == "Subtractive" then
 				self:settext("100.0000%")
@@ -509,11 +503,9 @@ t[#t + 1] = Def.ActorFrame {
 			if not wifePct then return end
 			self:settext(string.format("%.4f%%", wifePct))
 			
-			-- Use standard Etterna grade tiers and theme colors
 			local tier = getEtternaGrade(wifePct)
 			self:diffuse(HVColor.GetGradeColor(tier)):diffusealpha(0.7)
-		end,
-
+		end
 	}
 }
 end
@@ -530,14 +522,14 @@ if showGoalTrackerText then
 	local targetGoalPct = tonumber(targetGoalPref) or 93
 	local targetGoal = targetGoalPct / 100
 
-	-- Set the engine-side target goal and replay mode
 	GAMESTATE:GetPlayerState():SetTargetGoal(targetGoal)
 	GAMESTATE:GetPlayerState():SetGoalTrackerUsesReplay(pacemakerMode == "PBReplay")
 
 	t[#t + 1] = Def.ActorFrame {
 		Name = "TextPacemaker",
 		InitCommand = function(self)
-			self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y - 115)
+			local coords, sizes = getCoords()
+			self:xy(coords.TargetTrackerX, coords.TargetTrackerY -  85)
 		end,
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
@@ -555,7 +547,6 @@ if showGoalTrackerText then
 				local tDiff = msg.WifeDifferential
 				local displayTarget = targetGoalPct
 
-				-- In PB or PB Replay mode, use the PB goal/differential if available
 				if (pacemakerMode == "PB" or pacemakerMode == "PBReplay") and msg.WifePBGoal ~= nil then
 					tDiff = msg.WifePBDifferential
 					displayTarget = msg.WifePBGoal * 100
@@ -567,8 +558,7 @@ if showGoalTrackerText then
 					self:diffuse(HVColor.Negative or color("#ff0000"))
 				end
 				self:settextf("%+5.2f (%5.2f%%)", tDiff or 0, displayTarget)
-			end,
-
+			end
 		}
 	}
 end
@@ -579,8 +569,8 @@ end
 t[#t + 1] = Def.ActorFrame {
 	Name = "NotefieldMean",
 	InitCommand = function(self)
-		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y + 70):diffusealpha(0)
-		-- Check if notefield stat should be shown
+		local coords, sizes = getCoords()
+		self:xy(coords.DisplayMeanX, coords.DisplayMeanY):diffusealpha(0)
 		local statType = HV.GetNotefieldStat()
 		local showStat = statType ~= "Off" and not HV.MinimalisticMode() and not isSync
 		self:visible(showStat)
@@ -589,70 +579,71 @@ t[#t + 1] = Def.ActorFrame {
 		self:linear(0.2):diffusealpha(0.8)
 	end,
 
-		LoadFont("Common Normal") .. {
-			InitCommand = function(self)
-				self:zoom(0.35):diffuse(mainText)
-				local statType = HV.GetNotefieldStat()
-				self.statType = statType
-				self.currWifePoints = 0
-				if statType == "J4" then
-					self:settext("100.0000%")
-				else
-					self:settext("0.00ms")
-				end
-			end,
-			JudgmentMessageCommand = function(self, msg)
-				if self.statType == "J4" then
-					if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
-						local ts = ms.JudgeScalers[4] or 1.0
-						if msg.TapNoteOffset then
-							self.currWifePoints = self.currWifePoints + wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
-						elseif msg.TapNoteScore == "TapNoteScore_Miss" then
-							self.currWifePoints = self.currWifePoints - 5.5
-						elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
-							self.currWifePoints = self.currWifePoints - 7.0
-						end
-					elseif msg.HoldNoteScore == "HoldNoteScore_LetGo" then
-						self.currWifePoints = self.currWifePoints - 4.5
+	LoadFont("Common Normal") .. {
+		InitCommand = function(self)
+			local coords, sizes = getCoords()
+			self:zoom(0.35 * (sizes.DisplayMeanZoom or 1)):diffuse(mainText)
+			local statType = HV.GetNotefieldStat()
+			self.statType = statType
+			self.currWifePoints = 0
+			if statType == "J4" then
+				self:settext("100.0000%")
+			else
+				self:settext("0.00ms")
+			end
+		end,
+		JudgmentMessageCommand = function(self, msg)
+			if self.statType == "J4" then
+				if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
+					local ts = ms.JudgeScalers[4] or 1.0
+					if msg.TapNoteOffset then
+						self.currWifePoints = self.currWifePoints + wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
+					elseif msg.TapNoteScore == "TapNoteScore_Miss" then
+						self.currWifePoints = self.currWifePoints - 5.5
+					elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
+						self.currWifePoints = self.currWifePoints - 7.0
 					end
+				elseif msg.HoldNoteScore == "HoldNoteScore_LetGo" then
+					self.currWifePoints = self.currWifePoints - 4.5
 				end
-				self:queuecommand("Update")
-			end,
-			UpdateCommand = function(self)
-				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-				if not pss then return end
+			end
+			self:queuecommand("Update")
+		end,
+		UpdateCommand = function(self)
+			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
+			if not pss then return end
 
-				if self.statType == "J4" then
-					local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
-									   pss:GetTapNoteScores("TapNoteScore_W2") +
-									   pss:GetTapNoteScores("TapNoteScore_W3") +
-									   pss:GetTapNoteScores("TapNoteScore_W4") +
-									   pss:GetTapNoteScores("TapNoteScore_W5") +
-									   pss:GetTapNoteScores("TapNoteScore_Miss")
-					local maxPoints = notesPassed * 2
-					if maxPoints > 0 then
-						local j4 = math.min((self.currWifePoints / maxPoints) * 100, 100)
-						self:settextf("%.4f%%", j4)
-					else
-						self:settext("100.0000%")
-					end
-				elseif self.statType == "StdDev" then
-					local dvt = pss:GetOffsetVector()
-					if dvt and #dvt > 0 then
-						self:settextf("%.2fms", wifeSd(dvt))
-					end
+			if self.statType == "J4" then
+				local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
+								   pss:GetTapNoteScores("TapNoteScore_W2") +
+								   pss:GetTapNoteScores("TapNoteScore_W3") +
+								   pss:GetTapNoteScores("TapNoteScore_W4") +
+								   pss:GetTapNoteScores("TapNoteScore_W5") +
+								   pss:GetTapNoteScores("TapNoteScore_Miss")
+				local maxPoints = notesPassed * 2
+				if maxPoints > 0 then
+					local j4 = math.min((self.currWifePoints / maxPoints) * 100, 100)
+					self:settextf("%.4f%%", j4)
 				else
-					local dvt = pss:GetOffsetVector()
-					if dvt and #dvt > 0 then
-						self:settextf("%.2fms", wifeMean(dvt))
-					end
+					self:settext("100.0000%")
 				end
-			end,
-			PracticeModeResetMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end,
-			PracticeModeReloadMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end
-		
-		}
+			elseif self.statType == "StdDev" then
+				local dvt = pss:GetOffsetVector()
+				if dvt and #dvt > 0 then
+					self:settextf("%.2fms", wifeSd(dvt))
+				end
+			else
+				local dvt = pss:GetOffsetVector()
+				if dvt and #dvt > 0 then
+					self:settextf("%.2fms", wifeMean(dvt))
+				end
+			end
+		end,
+		PracticeModeResetMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end,
+		PracticeModeReloadMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end
 	}
+}
+
 
 -- ============================================================
 -- CENTERED COMBO / MISS COMBO
@@ -663,11 +654,11 @@ if showCombo then
 t[#t + 1] = Def.ActorFrame {
 	Name = "ComboDisplay",
 	InitCommand = function(self)
-		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y - 55)
+		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y - 93)
 		self.comboBreaks = 0
 	end,
 
-	LoadFont("combo/_mochiy pop one 24px") .. {
+	LoadFont("_theFont 24px") .. {
 		Name = "ComboNumber",
 		InitCommand = function(self)
 			self:zoom(0.75):diffuse(brightText):y(-4)
@@ -797,7 +788,6 @@ t[#t + 1] = Def.ActorFrame {
 
 }
 end -- End combo visibility check
-
 -- ============================================================
 -- COMBO BREAK LANE HIGHLIGHT
 -- ============================================================
@@ -805,31 +795,20 @@ local showComboBreakHighlight = HV.ComboBreakHighlight() and not HV.Minimalistic
 
 if showComboBreakHighlight then
 
--- Helper: build a gradient AMV lane quad.
--- xOffset: lane center X (relative to parent ActorFrame at SCREEN_CENTER)
--- laneW: lane pixel width
--- The quad spans from y=0 (screen center, top of highlight, transparent)
---   to y=SCREEN_HEIGHT/2 (receptor area, bottom, opaque at flash time).
--- Vertices are ordered: TL, TR, BR, BL (quad strip).
 local function makeCBLane(name, xOffset, laneW)
 	local halfW   = laneW / 2
-	-- The parent frame sits at SCREEN_CENTER_Y.
-	-- Receptors are near SCREEN_BOTTOM, so the opaque end of the gradient
-	-- is SCREEN_HEIGHT/2 pixels below the frame origin (positive Y = down).
-	-- 80% height means topY = (bottomY) - (0.8 * SCREEN_HEIGHT) = -0.3 * SCREEN_HEIGHT
-	local topY    = -SCREEN_HEIGHT * 0.3 -- 80% height highlight
-	local bottomY = SCREEN_HEIGHT / 2    -- receptor area       → opaque at flash peak
+	local topY    = -SCREEN_HEIGHT * 0.3
+	local bottomY = SCREEN_HEIGHT / 2
 
 	return Def.ActorMultiVertex {
 		Name = name,
 		InitCommand = function(self)
 			self:x(xOffset)
-			-- Pre-set vertices with the desired gradient (peak alpha handled in FlashCommand)
 			self:SetVertices({
-				{{-halfW, topY,    0}, {1, 1, 1, 0}}, -- TL
-				{{ halfW, topY,    0}, {1, 1, 1, 0}}, -- TR
-				{{ halfW, bottomY, 0}, {1, 1, 1, 1}}, -- BR
-				{{-halfW, bottomY, 0}, {1, 1, 1, 1}}, -- BL
+				{{-halfW, topY,    0}, {1, 1, 1, 0}},
+				{{ halfW, topY,    0}, {1, 1, 1, 0}},
+				{{ halfW, bottomY, 0}, {1, 1, 1, 1}},
+				{{-halfW, bottomY, 0}, {1, 1, 1, 1}},
 			})
 			self:SetDrawState({Mode="DrawMode_Quads", First=1, Num=4})
 			self:diffusealpha(0)
@@ -838,9 +817,6 @@ local function makeCBLane(name, xOffset, laneW)
 			local c = params and params.color or color("#FF5050")
 			self:stoptweening()
 			self:diffuse(c)
-			
-			-- Instant snap to a clearer peak (0.35) and a single linear fade-out.
-			-- This avoids the "snapping to dim" feeling of the dual-ramp approach.
 			self:diffusealpha(0.35)
 			self:linear(0.70)
 			self:diffusealpha(0)
@@ -854,7 +830,6 @@ t[#t + 1] = Def.ActorFrame {
 		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
 	end,
 
-	-- 4 gradient lane highlights for standard 4K (64px wide, spaced 64px apart)
 	makeCBLane("Lane1", -96, 64),
 	makeCBLane("Lane2", -32, 64),
 	makeCBLane("Lane3",  32, 64),
@@ -864,7 +839,6 @@ t[#t + 1] = Def.ActorFrame {
 		if params.Player ~= PLAYER_1 then return end
 		if not params.TapNoteScore then return end
 
-		-- Flash on combo-breaking judgments
 		local isComboBreak = (params.TapNoteScore == "TapNoteScore_Miss" or
 							  params.TapNoteScore == "TapNoteScore_W5" or
 							  params.TapNoteScore == "TapNoteScore_W4")
@@ -875,7 +849,6 @@ t[#t + 1] = Def.ActorFrame {
 			elseif params.TapNoteScore == "TapNoteScore_W5" then jColor = judgmentColors[5]
 			elseif params.TapNoteScore == "TapNoteScore_Miss" then jColor = judgmentColors[6] end
 
-			-- Flash lanes that had notes in this judgment
 			for i = 1, 4 do
 				if params.Notes[i] ~= nil then
 					local lane = self:GetChild("Lane" .. i)
@@ -888,7 +861,6 @@ t[#t + 1] = Def.ActorFrame {
 	end
 }
 end -- End combo break highlight
-
 
 t[#t + 1] = Def.ActorFrame {
 	Name = "IndicatorFrame",
@@ -905,45 +877,44 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "ChordDensityGraphContainer",
 	InitCommand = function(self)
 		self:xy(SCREEN_LEFT + 20, SCREEN_CENTER_Y)
-		-- Only show CDG if it's not a Sync screen AND Practice Mode is ON
 		self:visible(not isSync and GAMESTATE:IsPracticeMode())
 	end,
 	LoadActor("../_chorddensitygraph.lua") .. {
 		InitCommand = function(self)
-			self:zoom(0.8) -- Slightly larger
+			self:zoom(0.8)
 		end
 	}
 }
-
 
 t[#t + 1] = LoadActor("replayscrolling.lua")
 
 -- ============================================================
 -- ERROR BAR (TIMING BAR)
 -- ============================================================
-local ebW = 240
 local ebH = 2
-local ebCenterY = SCREEN_CENTER_Y + SCREEN_HEIGHT * 0.15 - 40
 local maxOffset = 180 -- ms
 local dotLife = 2.0  -- seconds
 
--- EWMA state
 local ewmaValue = 0
 local ewmaAlpha = 0.07
 local ebMode = ThemePrefs.Get("HV_ErrorBarMode") or "Standard"
 local showEWMA = (ebMode == "EWMAOnly" or ebMode == "Both")
 local showStandard = (ebMode == "Standard" or ebMode == "Both")
 
-	t[#t + 1] = Def.ActorFrame {
-		Name = "ErrorBar",
-		InitCommand = function(self)
-			local ebMode = ThemePrefs.Get("HV_ErrorBarMode") or "Standard"
-			self:xy(SCREEN_CENTER_X, ebCenterY):visible(ebMode ~= "Off" and not isSync)
-		end,
+t[#t + 1] = Def.ActorFrame {
+	Name = "ErrorBar",
+	InitCommand = function(self)
+		local coords, sizes = getCoords()
+		local ebMode = ThemePrefs.Get("HV_ErrorBarMode") or "Standard"
+		self:xy(coords.ErrorBarX, coords.ErrorBarY - 265):visible(ebMode ~= "Off" and not isSync)
+		-- store width for children to use
+		self.ebW = sizes.ErrorBarWidth or 280
+	end,
 
 	-- Background line
 	Def.Quad {
 		InitCommand = function(self)
+			local ebW = self:GetParent().ebW or 280
 			self:zoomto(ebW, ebH):visible(false)
 		end
 	},
@@ -960,6 +931,7 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 	LoadFont("Common Normal") .. {
 		Text = "EARLY",
 		InitCommand = function(self)
+			local ebW = self:GetParent().ebW or 240
 			self:x(-ebW/2 - 5):y(-12):zoom(0.25):halign(0):diffusealpha(0)
 		end,
 		OnCommand = function(self)
@@ -970,6 +942,7 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 	LoadFont("Common Normal") .. {
 		Text = "LATE",
 		InitCommand = function(self)
+			local ebW = self:GetParent().ebW or 240
 			self:x(ebW/2 + 5):y(-12):zoom(0.25):halign(1):diffusealpha(0)
 		end,
 		OnCommand = function(self)
@@ -983,6 +956,7 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 			self:zoomto(2, ebH + 8):diffuse(accentColor):visible(showEWMA)
 		end,
 		UpdateEWMACommand = function(self, params)
+			local ebW = self:GetParent().ebW or 240
 			local offset = params.offset
 			ewmaValue = (1 - ewmaAlpha) * ewmaValue + ewmaAlpha * offset
 			self:x((ewmaValue / maxOffset) * (ebW / 2))
@@ -992,18 +966,16 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 	JudgmentMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
 		if not params.TapNoteScore then return end
-		if params.HoldNoteScore then return end -- Skip holds
+		if params.HoldNoteScore then return end
 
 		local offset = params.TapNoteOffset
 		if not offset then return end
 
-		-- Exclude misses from EWMA
 		if params.TapNoteScore == "TapNoteScore_Miss" then return end
 
-		-- Clamp for visualization
-		local visualOffset = offset * 1000 -- to ms
+		local visualOffset = offset * 1000
+		local ebW = self.ebW or 240
 		
-		-- Update EWMA marker if enabled
 		if showEWMA then
 			self:GetChild("EWMAMarker"):playcommand("UpdateEWMA", {offset = visualOffset})
 		end
@@ -1020,7 +992,6 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 		local xPos = (visualOffset / maxOffset) * (ebW / 2)
 		local jColor = offsetToJudgeColor(visualOffset, jScale)
 
-		-- Pooling system: Cycle through child actors
 		local pool = self:GetChild("Pool")
 		if pool then
 			self.poolIdx = (self.poolIdx or 0) % 50 + 1
@@ -1051,21 +1022,19 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 -- ============================================================
 local colSpacing = 70
 local showJudgeCounter = HV.ShowJudgeCounter()
-local tallyX = SCREEN_CENTER_X + 160
-local tallyY = SCREEN_HEIGHT - 176
 
 if showJudgeCounter and not HV.MinimalisticMode() and not isSync then
 t[#t + 1] = Def.ActorFrame {
 	Name = "TallyAndMetrics",
 	InitCommand = function(self)
-		self:xy(tallyX, tallyY):diffusealpha(0.8)
+		local coords, sizes = getCoords()
+		self:xy(coords.JudgeCounterX, coords.JudgeCounterY - 45):diffusealpha(0.8)
 	end,
 
 	-- COLUMN 1: Judgments + OK/NG
 	Def.ActorFrame {
 		Name = "Column1_Judgments",
 		
-		-- Loop through standard judgments (W1-Miss)
 		(function()
 			local g = Def.ActorFrame{}
 			for i, label in ipairs(judgmentLabels) do
@@ -1104,7 +1073,6 @@ t[#t + 1] = Def.ActorFrame {
 			return g
 		end)(),
 
-		-- OK / NG counters
 		Def.ActorFrame {
 			Name = "OKNGDisplay",
 			InitCommand = function(self)
@@ -1165,18 +1133,16 @@ t[#t + 1] = Def.ActorFrame {
 		}
 	},
 
-	-- COLUMN 2: Performance Metrics (aligned to the right of Column 1)
+	-- COLUMN 2: Performance Metrics
 	Def.ActorFrame {
 		Name = "Column2_Metrics",
 		InitCommand = function(self)
 			self:x(colSpacing)
-			-- Hide metrics in Simple mode
 			if HV.GetJudgmentTallyMode() == "Simple" then
 				self:visible(false)
 			end
 		end,
 
-		-- Rescored % (J4)
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):zoom(0.34):diffuse(dimText)
@@ -1191,9 +1157,8 @@ t[#t + 1] = Def.ActorFrame {
 				self.currWifePoints = 0
 			end,
 			JudgmentMessageCommand = function(self, msg)
-				-- Only process tap-related judgments.
 				if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
-					local ts = ms.JudgeScalers[4] or 1.0 -- J4 rescaling always uses J4 (Index 4)
+					local ts = ms.JudgeScalers[4] or 1.0
 					if msg.TapNoteOffset then
 						self.currWifePoints = self.currWifePoints + wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
 					elseif msg.TapNoteScore == "TapNoteScore_Miss" then
@@ -1215,7 +1180,6 @@ t[#t + 1] = Def.ActorFrame {
 									   pss:GetTapNoteScores("TapNoteScore_W4") +
 									   pss:GetTapNoteScores("TapNoteScore_W5") +
 									   pss:GetTapNoteScores("TapNoteScore_Miss")
-					
 					local maxPoints = notesPassed * 2
 					if maxPoints > 0 then
 						local j4 = math.min((self.currWifePoints / maxPoints) * 100, 100)
@@ -1229,7 +1193,6 @@ t[#t + 1] = Def.ActorFrame {
 			PracticeModeReloadMessageCommand = function(self) self.currWifePoints = 0; self:settext("100.0000%") end
 		},
 
-		-- MA Ratio (W1/W2)
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):y(16):zoom(0.34):diffuse(dimText)
@@ -1250,10 +1213,8 @@ t[#t + 1] = Def.ActorFrame {
 				if pss then
 					local w1 = pss:GetTapNoteScores("TapNoteScore_W1")
 					local w2 = pss:GetTapNoteScores("TapNoteScore_W2")
-					local ratio = 0
 					if w2 > 0 then
-						ratio = w1 / w2
-						self:settext(string.format("%.2f:1", ratio))
+						self:settext(string.format("%.2f:1", w1 / w2))
 					elseif w1 > 0 then
 						self:settext("inf:1")
 					else
@@ -1265,7 +1226,6 @@ t[#t + 1] = Def.ActorFrame {
 			PracticeModeReloadMessageCommand = function(self) self:settext("0.00:1") end
 		},
 
-		-- PA Ratio (W2/W3)
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):y(32):zoom(0.34):diffuse(dimText)
@@ -1286,10 +1246,8 @@ t[#t + 1] = Def.ActorFrame {
 				if pss then
 					local w2 = pss:GetTapNoteScores("TapNoteScore_W2")
 					local w3 = pss:GetTapNoteScores("TapNoteScore_W3")
-					local ratio = 0
 					if w3 > 0 then
-						ratio = w2 / w3
-						self:settext(string.format("%.2f:1", ratio))
+						self:settext(string.format("%.2f:1", w2 / w3))
 					elseif w2 > 0 then
 						self:settext("inf:1")
 					else
@@ -1301,7 +1259,6 @@ t[#t + 1] = Def.ActorFrame {
 			PracticeModeReloadMessageCommand = function(self) self:settext("0.00:1") end
 		},
 
-		-- Longest Combo
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):y(48):zoom(0.34):diffuse(dimText)
@@ -1327,7 +1284,6 @@ t[#t + 1] = Def.ActorFrame {
 			PracticeModeReloadMessageCommand = function(self) self:settext("0") end
 		},
 
-		-- Std Dev
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):y(64):zoom(0.34):diffuse(dimText)
@@ -1348,8 +1304,7 @@ t[#t + 1] = Def.ActorFrame {
 				if pss then
 					local dvt = pss:GetOffsetVector()
 					if dvt and #dvt > 0 then
-						local sd = wifeSd(dvt)
-						self:settext(string.format("%.2f", sd))
+						self:settext(string.format("%.2f", wifeSd(dvt)))
 					end
 				end
 			end,
@@ -1357,7 +1312,6 @@ t[#t + 1] = Def.ActorFrame {
 			PracticeModeReloadMessageCommand = function(self) self:settext("0.00") end
 		},
 
-		-- Largest Offset
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):valign(0):y(80):zoom(0.34):diffuse(dimText)
@@ -1378,8 +1332,7 @@ t[#t + 1] = Def.ActorFrame {
 				if pss then
 					local dvt = pss:GetOffsetVector()
 					if dvt and #dvt > 0 then
-						local max = wifeMax(dvt)
-						self:settext(string.format("%.2f", max))
+						self:settext(string.format("%.2f", wifeMax(dvt)))
 					end
 				end
 			end,
@@ -1403,7 +1356,6 @@ t[#t + 1] = Def.ActorFrame {
 		self:diffusealpha(0.6)
 	end,
 	
-	-- BPM and Rate display added above song title
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:y(-18):zoom(0.35):diffuse(subText):maxwidth(SCREEN_WIDTH / 0.35)
@@ -1419,7 +1371,7 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 
-	LoadFont("Zpix Normal") .. {
+	LoadFont("_open sans 48px") .. {
 		InitCommand = function(self)
 			self:zoom(0.35):diffuse(mainText):maxwidth(SCREEN_WIDTH * 0.5 / 0.35)
 		end,
@@ -1434,14 +1386,13 @@ t[#t + 1] = Def.ActorFrame {
 end
 
 -- ============================================================
--- TOASTY (fires at combo 250, 500, 750, 1000, ...)
--- technically it should be every 250 perfect combo but eh
+-- TOASTY
 -- ============================================================
 local lastToastyCombo = 0
 
 local function safeGetThemePath(type, folder, element)
 	local possiblePaths = {
-		"Themes/Holographic Void/" .. folder .. "/" .. element,
+		"Themes/Main/" .. folder .. "/" .. element,
 		"Themes/_fallback/" .. folder .. "/" .. element
 	}
 	for _, p in ipairs(possiblePaths) do
@@ -1524,7 +1475,6 @@ local hiddenHeight = HV.GetLaneCoverHidden()
 if suddenHeight > 0 or hiddenHeight > 0 then
 	local isReverse = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()
 	
-	-- Helper to create a cover quad (isTop=true for Top, false for Bottom)
 	local function createCover(height, isTop)
 		local h = SCREEN_HEIGHT * (height / 100)
 		return Def.Quad {
@@ -1548,12 +1498,10 @@ if suddenHeight > 0 or hiddenHeight > 0 then
 		end,
 	}
 
-	-- Sudden: spawn side (Top for Standard, Bottom for Reverse)
 	if suddenHeight > 0 then
 		t_cover[#t_cover + 1] = createCover(suddenHeight, not isReverse)
 	end
 
-	-- Hidden: receptor side (Bottom for Standard, Top for Reverse)
 	if hiddenHeight > 0 then
 		t_cover[#t_cover + 1] = createCover(hiddenHeight, isReverse)
 	end
@@ -1606,7 +1554,6 @@ if not isSync then
 			local c = color("1,1,1,1")
 			if condition == "Wife Percent" then
 				local threshold = tonumber(ThemePrefs.Get("HV_AutoFailThreshold_Wife")) or 93.00
-				local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
 				display = string.format("%.4f%%", threshold)
 				txt:xy(11, 20)
 			elseif condition == "Personal Best" then
@@ -1618,7 +1565,6 @@ if not isSync then
 						HV_PBThreshold = tonumber(ThemePrefs.Get("HV_AutoFailThreshold_Wife")) or 93.00
 					end
 				end
-				local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
 				display = string.format("%.4f%%", HV_PBThreshold or 0)
 				txt:xy(11, 20)
 			elseif condition == "Judgement Count" then
@@ -1713,7 +1659,6 @@ if HV.ShowNGIndicator() and not HV.MinimalisticMode() and not isSync then
 	t[#t + 1] = ngFrame
 end
 
-
 -- ============================================================
 -- SYNC MODE CHALLENGE (Note Fading)
 -- ============================================================
@@ -1759,7 +1704,6 @@ t[#t + 1] = Def.ActorFrame {
 
 -- ============================================================
 -- END-OF-CHART CLEAR TYPE CELEBRATION
--- FC and above: rise-up text with color animation at chart end
 -- ============================================================
 local function CelebrationBurst()
 	local burst = Def.ActorFrame{
@@ -1782,7 +1726,6 @@ local function CelebrationBurst()
 			end)
 		end,
 	}
-	-- Create a pool of 24 rays (max intensity)
 	for i = 1, 24 do
 		burst[#burst+1] = Def.Quad{
 			InitCommand = function(self)
@@ -1790,10 +1733,8 @@ local function CelebrationBurst()
 			end,
 			BurstCommand = function(self, params)
 				self:stoptweening():diffusealpha(0):zoomto(2, 0)
-				-- Distribute rays evenly based on the current active count
 				self:rotationz((params.index - 1) * (360 / params.numRays))
 				
-				-- Start white (or red flash for heartbreaks) then transition to clear type color
 				if params.isHeartbreak then
 					self:diffuse(color("#FF0000"))
 				else
@@ -1819,12 +1760,11 @@ t[#t+1] = Def.ActorFrame{
 	Def.ActorFrame{
 		Name = "CTRiseFrame",
 		InitCommand = function(self)
-			self:diffusealpha(0):y(30)  -- start below center
+			self:diffusealpha(0):y(30)
 		end,
 		OffCommand = function(self)
 			if isSync then return end
 			
-			-- Delay slightly to ensure statistics are stabilized
 			self:sleep(0.05)
 			
 			local epn = pn or GAMESTATE:GetEnabledPlayers()[1] or PLAYER_1
@@ -1835,12 +1775,10 @@ t[#t+1] = Def.ActorFrame{
 			
 			local clearLevel = getClearLevel(epn, steps, epss)
 
-			-- Fallback: if getClearLevel failed but it's a Full Combo
 			if clearLevel > 7 and epss:FullComboOfScore("TapNoteScore_W3") then
-				clearLevel = 7 -- Regular FC
+				clearLevel = 7
 			end
 
-			-- MFC=1 ... FC=7
 			if clearLevel <= 7 then
 				local ctName = getClearType(epn, steps, epss)
 				if clearLevel == 7 and (not ctName or ctName == "") then ctName = "FC" end
@@ -1848,22 +1786,21 @@ t[#t+1] = Def.ActorFrame{
 				local ctText = getClearTypeText(ctName)
 				local ctColor = getClearTypeColor(ctName)
 
-				-- Intensity settings: rays and speed
 				local numRays = 10
 				local burstSpeed = 0.6
 				local isHeartbreak = false
 				
-				if clearLevel == 1 then -- MFC
+				if clearLevel == 1 then
 					numRays = 24
 					burstSpeed = 0.4
-				elseif clearLevel == 2 then -- WF (Heartbreak)
+				elseif clearLevel == 2 then
 					numRays = 20
 					burstSpeed = 0.45
 					isHeartbreak = true
-				elseif clearLevel <= 4 then -- PFC variants
+				elseif clearLevel <= 4 then
 					numRays = 16
 					burstSpeed = 0.5
-				elseif clearLevel == 5 then -- BF (Heartbreak)
+				elseif clearLevel == 5 then
 					numRays = 14
 					burstSpeed = 0.55
 					isHeartbreak = true
@@ -1872,14 +1809,12 @@ t[#t+1] = Def.ActorFrame{
 				local txt = self:GetChild("CTText")
 				txt:stoptweening():settext(ctText)
 				
-				-- Intense red flash for heartbreaks
 				if isHeartbreak then
 					txt:diffuse(color("#FF0000"))
 				else
 					txt:diffuse(color("#FFFFFF"))
 				end
 
-				-- Trigger dynamic burst
 				self:GetParent():RunCommandsOnChildren(function(c) 
 					c:playcommand("Celebration", {
 						numRays = numRays, 
@@ -1889,33 +1824,27 @@ t[#t+1] = Def.ActorFrame{
 					})
 				end)
 
-				-- Rise-up animation: from y=30 to y=0
 				self:stoptweening()
 				self:y(30):diffusealpha(0):zoom(1.5)
 				self:decelerate(0.5):y(0):diffusealpha(1):zoom(1)
 
-				-- Special Heartbreak Shake/Pulse
-				if clearLevel == 2 then -- WF: Jitter shake
+				if clearLevel == 2 then
 					for i=1, 4 do
 						self:sleep(0.02):x(-3):sleep(0.02):x(3)
 					end
 					self:sleep(0.02):x(0)
-				elseif clearLevel == 5 then -- BF: Vertical thump/pulse
+				elseif clearLevel == 5 then
 					self:bounce(0.2):effectmagnitude(0, -6, 0):effectclock("bgm"):effectperiod(0.1)
 					self:sleep(0.4):stopeffect()
 				end
 
-				-- Color sweep: stay red/white then transition to clear type color
 				if isHeartbreak then
 					txt:sleep(0.4):linear(0.2):diffuse(color("#FFFFFF")):linear(0.5):diffuse(ctColor)
 				else
 					txt:sleep(0.3):linear(0.5):diffuse(ctColor)
 				end
 				
-				-- Gentle pulse
 				txt:sleep(0.2):linear(0.4):diffusealpha(0.8):linear(0.4):diffusealpha(1)
-
-				-- Hold then fade out before the evaluation screen takes over
 				self:sleep(3):smooth(1):diffusealpha(0):y(-10)
 			end
 		end,
@@ -1928,8 +1857,6 @@ t[#t+1] = Def.ActorFrame{
 		}
 	}
 }
-
-
 
 -- ============================================================
 -- AUTO-FAIL / RESTART MECHANIC
@@ -1978,7 +1905,6 @@ t[#t + 1] = Def.Actor {
 		end
 
 		if triggered then
-			-- Prevent multiple triggers
 			self:playcommand("ActionTriggered")
 		end
 	end,
@@ -1991,7 +1917,6 @@ t[#t + 1] = Def.Actor {
 		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 		
 		if top and pss then
-			-- Explicitly mark the score as Failed for the engine's stats committer
 			if pss.FailPlayer then
 				pss:FailPlayer()
 			end

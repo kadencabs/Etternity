@@ -128,7 +128,7 @@ t[#t+1] = Def.Sprite{
 local metaX = -totalW / 2 + bannerW + 12  -- right of banner + gap
 
 -- Song Title
-t[#t+1] = LoadFont("Zpix Normal") .. {
+t[#t+1] = LoadFont("_open sans 48px") .. {
 	InitCommand = function(self)
 		self:x(metaX):y(-16):halign(0):zoom(0.5)
 		self:maxwidth(metaW / 0.5)

@@ -1,12 +1,17 @@
+-- Fetch user configuration at the top level for global scope
+local keymode = tostring(GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()) .. "K"
+local coords = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode]
+local sizes  = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode]
+
 local DOT_COUNT = 20
 local dotHistory = {}
 
--- Create the Recent Judgment display dots statically first
+-- Create the Recent Judgment display dots statically
 local recentJudgmentDisplay = Def.ActorFrame {
 	Name = "RecentJudgmentDisplay",
 	InitCommand = function(self)
-		self:x(-160) -- Moved back to the left
-		self:y(50) -- Kept the 50px down offset
+		self:x(-160)
+		self:y(50)
 	end,
 	UpdateRowsMessageCommand = function(self)
 		self:visible(HV.RecentJudgmentDisplay() and not HV.MinimalisticMode())
@@ -23,8 +28,10 @@ for i = 1, DOT_COUNT do
 end
 
 local t = Def.ActorFrame {
-	Name = "PlayerJudgment",
+    Name = "PlayerJudgment",
 	InitCommand = function(self)
+		self:xy(coords.JudgeX, coords.JudgeY)
+		self:zoom(sizes.JudgeZoom)
 		self:visible(false)
 		self.lockedUntil = 0
 		self.lockedIndex = -1
@@ -32,7 +39,7 @@ local t = Def.ActorFrame {
 	JudgmentMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
 		if not params.TapNoteScore then return end
-		if params.HoldNoteScore then return end -- Skip hold/roll end events
+		if params.HoldNoteScore then return end 
 		
 		local tns = ToEnumShortString(params.TapNoteScore)
 		local container = self:GetChild("JudgmentContainer")
@@ -48,20 +55,17 @@ local t = Def.ActorFrame {
 		if HV.RecentJudgmentDisplay and HV.RecentJudgmentDisplay() and not HV.MinimalisticMode() then
 			local dotFrame = self:GetChild("RecentJudgmentDisplay")
 			if dotFrame then
-				-- Push history
 				for i = DOT_COUNT, 2, -1 do
 					dotHistory[i] = dotHistory[i-1]
 				end
 				dotHistory[1] = HVColor.GetJudgmentColor(tns)
 				
-				-- Update dots
 				for i = 1, DOT_COUNT do
 					local dot = dotFrame:GetChild("Dot"..i)
 					if dot then
 						if dotHistory[i] then
 							dot:stoptweening()
 							dot:diffuse(dotHistory[i])
-							-- Fade older dots: instant update
 							dot:diffusealpha(math.max(0.1, 1 - (i-1)/DOT_COUNT))
 							dot:visible(true)
 						else
@@ -75,17 +79,16 @@ local t = Def.ActorFrame {
 		local numStates = sprite:GetNumStates()
 		local state
 		if numStates == 12 then
-			-- 2x6 sprite: states are read L-R, T-B in a 2-column grid.
 			local offset = params.TapNoteOffset
 			local isLate = (offset and offset >= 0) and 1 or 0
 			state = jdgIdx * 2 + isLate
 		else
-			-- Standard 1x6 sprite
 			state = jdgIdx
 		end
 
 		local curTime = GetTimeSinceStart()
 		local displayDuration = 0.5
+		
 		if HV.PrioritizeLowerJudgements and HV.PrioritizeLowerJudgements() then
 			if curTime < self.lockedUntil and jdgIdx <= self.lockedIndex then
 				return
@@ -97,9 +100,10 @@ local t = Def.ActorFrame {
 			else
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(params.Player or PLAYER_1)
 				if pss then
-					local w1 = pss:GetTapNoteScores("TapNoteScore_W1")
-					local w2 = pss:GetTapNoteScores("TapNoteScore_W2")
-					local w3 = pss:GetTapNoteScores("TapNoteScore_W3")
+					-- FIX: Added 'or 0' to prevent nil comparison errors
+					local w1 = pss:GetTapNoteScores("TapNoteScore_W1") or 0
+					local w2 = pss:GetTapNoteScores("TapNoteScore_W2") or 0
+					local w3 = pss:GetTapNoteScores("TapNoteScore_W3") or 0
 					
 					if jdgIdx == 1 then
 						if w1 > (w2 * 2.5) then isLower = true end
@@ -127,9 +131,9 @@ local t = Def.ActorFrame {
 		container:stoptweening():visible(true):diffusealpha(1)
 		sprite:setstate(state)
 		
-		-- Apply Animation if enabled (only to the judgment container)
+		-- Apply Animation if enabled
 		if HV.JudgmentAnimation and HV.JudgmentAnimation() then
-			container:zoom(0.81) -- Start slightly larger for the pulse
+			container:zoom(0.81) 
 			container:linear(0.05):zoom(0.65)
 			container:glow(color("1,1,1,0.5")):linear(0.05):glow(color("1,1,1,0"))
 		else

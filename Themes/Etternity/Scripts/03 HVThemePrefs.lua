@@ -473,7 +473,7 @@ local HVPrefs = {
 		Values = {"Top", "Bottom", "Off"}
 	},
 	HV_ShowInGameLeaderboard = {
-		Default = "Local",
+		Default = "Off",
 		Choices = {"Off", "Local"},
 		Values = {"Off", "Local"}
 	},
@@ -524,14 +524,14 @@ local HVPrefs = {
 	
 	-- Visual: Judgment Animation
 	HV_JudgmentAnimation = {
-		Default = true,
+		Default = false,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
 
 	-- Visual: Combo Animation
 	HV_ComboAnimation = {
-		Default = true,
+		Default = false,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
@@ -545,7 +545,7 @@ local HVPrefs = {
 
 	-- Gameplay: Score Display Mode
 	HV_ScoreDisplayMode = {
-		Default = "Normal",
+		Default = "Subtractive",
 		Choices = {"Normal", "Subtractive"},
 		Values = {"Normal", "Subtractive"}
 	},

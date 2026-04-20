@@ -162,7 +162,7 @@ local t = Def.ActorFrame {
 		InitCommand = function(self) self:xy(-overlayW/2 + 24, -overlayH/2 + 52) end,
 
 		LoadFont("Common Normal") .. { InitCommand = function(self) self:halign(0.5):x(45):zoom(0.35):diffuse(accentColor):settext(THEME:GetString("Goals", "PriorityColumn")) end },
-		LoadFont("Zpix Normal") .. { InitCommand = function(self) self:halign(0):x(85):zoom(0.4):diffuse(accentColor):settext(THEME:GetString("Goals", "SongColumn")) end },
+		LoadFont("_open sans 48px") .. { InitCommand = function(self) self:halign(0):x(85):zoom(0.4):diffuse(accentColor):settext(THEME:GetString("Goals", "SongColumn")) end },
 		LoadFont("Common Normal") .. { InitCommand = function(self) self:halign(0.5):x(385):zoom(0.35):diffuse(accentColor):settext(THEME:GetString("Goals", "RateColumn")) end },
 		LoadFont("Common Normal") .. { InitCommand = function(self) self:halign(0.5):x(465):zoom(0.35):diffuse(accentColor):settext(THEME:GetString("Goals", "TargetColumn")) end },
 		LoadFont("Common Normal") .. { InitCommand = function(self) self:halign(0.5):x(545):zoom(0.35):diffuse(accentColor):settext(THEME:GetString("Goals", "PBColumn") or "PB") end },
@@ -240,7 +240,7 @@ local function makeGoalRow(i)
 			Name = "SongDetails",
 			InitCommand = function(self) self:xy(85, rowH/2 - 2) end,
 			
-			LoadFont("Zpix Normal") .. {
+			LoadFont("_open sans 48px") .. {
 				Name = "SongName",
 				InitCommand = function(self)
 					self:halign(0):zoom(0.5):diffuse(brightText):maxwidth(280 / 0.5)

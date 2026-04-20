@@ -330,7 +330,7 @@ t[#t + 1] = Def.ActorFrame {
 	end,
 
 	-- Song Title
-	LoadFont("Zpix Normal") .. {
+	LoadFont("_open sans 48px") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
 			self:halign(0):valign(0):zoom(0.7)

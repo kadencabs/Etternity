@@ -461,7 +461,7 @@ struct VideoCardDefaults
 	}
 } const g_VideoCardDefaults[] = {
 #ifdef _WINDOWS
-	VideoCardDefaults("", "d3d, opengl", 800, 600, 32, 32, 32, 1024, false)
+	VideoCardDefaults("", "d3d, opengl", 1920, 1080, 32, 32, 32, 1024, false)
 #else
 	VideoCardDefaults(
 	  "Voodoo *5",
