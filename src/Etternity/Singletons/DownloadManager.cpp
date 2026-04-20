@@ -10,7 +10,6 @@
 #include "GameState.h"
 #include "ScoreManager.h"
 #include "Etternity/Models/Misc/GamePreferences.h"
-#include "Etternity/Screen/Network/ScreenNetSelectMusic.h"
 #include "ProfileManager.h"
 #include "SongManager.h"
 #include "ScoreManager.h"
@@ -800,8 +799,6 @@ DownloadManager::UpdatePacks(float fDeltaSeconds)
 		auto screen = SCREENMAN->GetScreen(0);
 		if (screen && screen->GetName() == "ScreenSelectMusic")
 			static_cast<ScreenSelectMusic*>(screen)->DifferentialReload();
-		else if (screen && screen->GetName() == "ScreenNetSelectMusic")
-			static_cast<ScreenNetSelectMusic*>(screen)->DifferentialReload();
 		else
 			SONGMAN->DifferentialReload();
 	}
@@ -4649,16 +4646,11 @@ DownloadManager::ForceUploadAllPBs()
 
 OnlineTopScore
 DownloadManager::GetTopSkillsetScore(unsigned int rank,
-									 Skillset ss,
-									 bool& result)
+                                     Skillset ss,
+                                     bool& result)
 {
-	unsigned int index = rank - 1;
-	if (index < topScores[ss].size()) {
-		result = true;
-		return topScores[ss][index];
-	}
-	result = false;
-	return OnlineTopScore();
+    result = false;
+    return OnlineTopScore();
 }
 
 void
