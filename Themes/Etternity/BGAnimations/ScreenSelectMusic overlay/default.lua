@@ -1,4 +1,4 @@
---- Holographic Void: ScreenSelectMusic Overlay
+--- Etternity: ScreenSelectMusic Overlay
 -- Restore sequential Til Death-style login flow.
 
 local accentColor = HVColor.Accent
@@ -82,54 +82,9 @@ local main_af = Def.ActorFrame {
 	EndCommand = function(self)
 		SCREENMAN:set_input_redirected(PLAYER_1, false)
 		SCREENMAN:set_input_redirected(PLAYER_2, false)
-	end,
-	LoginMessageCommand = function(self)
-		local user = DLMAN:GetUsername()
-		local token = DLMAN:GetToken()
-		if user and token and user ~= "" and token ~= "" then
-			ThemePrefs.Set("HV_Username", user)
-			ThemePrefs.Set("HV_PasswordToken", token)
-			ThemePrefs.Save()
-		end
-	end,
-	LoginFailedMessageCommand = function(self)
-		ms.ok("Login Failed. Please check your credentials.")
-	end,
-	LogOutMessageCommand = function(self)
-		-- Only clear username on manual logout to preserve auto-login token
-	end,
-	TriggerLoginFlowMessageCommand = function(self)
-		-- Sequential Til Death flow with frame delay to avoid overlaps
-		local tempEmail = ""
-		easyInputStringOKCancel(
-			"Email:", 255, true,
-			function(email)
-				if email ~= "" then
-					self.tempEmail = email
-					self:sleep(0.02):queuecommand("LoginStep2")
-				else
-					ms.ok("Login Canceled")
-				end
-			end,
-			function() ms.ok("Login Canceled") end
-		)
-	end,
-	
-	LoginStep2Command = function(self)
-		easyInputStringOKCancel(
-			"Password:", 255, true,
-			function(password)
-				if password ~= "" then
-					Trace("[HV] Attempting DLMAN:Login for " .. tostring(self.tempEmail))
-					DLMAN:Login(self.tempEmail, password)
-				else
-					ms.ok("Login Canceled")
-				end
-			end,
-			function() ms.ok("Login Canceled") end
-		)
 	end
 }
+
 
 
 -- LoginButtonUI was moved to decorations/default.lua to nest visually within the profile card.
@@ -258,21 +213,6 @@ main_af[#main_af + 1] = Def.ActorFrame {
 				local virtualX = INPUTFILTER:GetMouseX()
 				local virtualY = INPUTFILTER:GetMouseY()
 				
-				-- Check Login Button logic (btnCX/btnCY defined above)
-				local loginOver = virtualX >= btnCX - btnW/2 and virtualX <= btnCX + btnW/2
-						 and virtualY >= btnCY - btnH/2 and virtualY <= btnCY + btnH/2
-				if loginOver then
-					if DLMAN:IsLoggedIn() then
-						ThemePrefs.Set("HV_Username", "")
-						ThemePrefs.Set("HV_PasswordToken", "")
-						ThemePrefs.Save()
-						DLMAN:Logout()
-						ms.ok("Logged Out")
-					else
-						MESSAGEMAN:Broadcast("TriggerLoginFlow")
-					end
-					return true
-				end
 
 				-- Check Avatar Button
 				if virtualX >= compactProfileX - 8 and virtualX <= compactProfileX + 50
@@ -356,11 +296,6 @@ main_af[#main_af + 1] = Def.ActorFrame {
 							profileOverlayActor.topPage = 1
 							MESSAGEMAN:Broadcast("UpdateOverlayUI")
 						end
-						return true
-					end
-					-- 3. Upload Button
-					if IsMouseOverCentered(scoreAreaX + mainPartW - 40, headerY, 80, 24) then
-						if DLMAN:IsLoggedIn() then DLMAN:UploadAllScores() else ms.ok("Log in to upload scores.") end
 						return true
 					end
 					-- 4. Avatar
@@ -718,7 +653,7 @@ local profileOverlay = Def.ActorFrame {
 		self.recentPage = 1
 		self.currentSkillset = "Overall"
 		self.isRecentMode = false
-		self.isOnlineMode = true
+		self.isOnlineMode = false
 		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y):visible(false)
 	end,
 	
@@ -902,9 +837,7 @@ local profileOverlay = Def.ActorFrame {
 					if not HV.ShowMSD() then self:visible(false); return end
 					local val = 0
 					local prof = PROFILEMAN:GetProfile(PLAYER_1)
-					if DLMAN:IsLoggedIn() and profileOverlayActor.isOnlineMode then 
-						val = DLMAN:GetSkillsetRating("Overall")
-					elseif prof then
+					if prof then
 						val = prof:GetPlayerRating()
 					end
 					self:visible(true):settext(string.format("%.2f", val)):diffuse(HVColor.GetMSDRatingColor(val))
@@ -948,9 +881,7 @@ local profileOverlay = Def.ActorFrame {
 							if not HV.ShowMSD() then self:visible(false); return end
 							local val = 0
 							local prof = PROFILEMAN:GetProfile(PLAYER_1)
-							if DLMAN:IsLoggedIn() and profileOverlayActor.isOnlineMode then 
-								val = DLMAN:GetSkillsetRating(ss)
-							elseif prof then
+							if prof then
 								if ss == "Overall" then val = prof:GetPlayerRating()
 								else val = prof:GetPlayerSkillsetRating(i-2) or 0 end
 							end
@@ -1005,7 +936,7 @@ local profileOverlay = Def.ActorFrame {
 					if p.isRecentMode then
 						modeText = "RECENT SCORES (LOCAL)"
 					else
-						local src = (p.isOnlineMode and DLMAN:IsLoggedIn()) and "ONLINE" or "LOCAL"
+						local src = (p.isOnlineMode and DLMAN:IsLoggedIn()) and "LOCAL"
 						modeText = "TOP SCORES (" .. p.currentSkillset:upper() .. " · " .. src .. ")"
 					end
 					self:settext(modeText)
@@ -1045,25 +976,16 @@ local profileOverlay = Def.ActorFrame {
 				end
 			},
 			-- Toggle Online/Local Button
-			Def.ActorFrame {
-				Name = "SourceToggle",
-				InitCommand = function(self) self:x(mainPartW/2 - 140) end,
-				Def.Quad {
-					Name = "Bg",
-					InitCommand = function(self) 
-						self:zoomto(100, 24):diffuse(accentColor):diffusealpha(0.15)
-					end
-				},
 				LoadFont("Common Normal") .. {
 					Name = "Txt",
 					InitCommand = function(self) self:zoom(0.32) end,
 					UpdateOverlayUIMessageCommand = function(self)
 						local p = profileOverlayActor
 						if p.isRecentMode then
-							self:settext("ONLINE/LOCAL"):diffuse(dimText)
+							self:settext("LOCAL"):diffuse(dimText)
 						else
 							local active = p.isOnlineMode and DLMAN:IsLoggedIn()
-							self:settext(active and "ONLINE" or "LOCAL"):diffuse(brightText)
+							self:settext(active "LOCAL"):diffuse(brightText)
 						end
 					end
 				},
@@ -1079,21 +1001,13 @@ local profileOverlay = Def.ActorFrame {
 					local bg = af:GetChild("Bg")
 					if parent.isRecentMode then
 						bg:diffuse(dimText):diffusealpha(0.1)
-					elseif (parent.isOnlineMode and DLMAN:IsLoggedIn()) or over then
-						bg:diffuse(accentColor):diffusealpha(0.4)
-					else
+					elseif over then -- Removed the DLMAN (online) check
 						bg:diffuse(accentColor):diffusealpha(0.15)
 					end
 				end
 			},
 			-- Upload All Button
 			Def.ActorFrame {
-				Name = "UploadBtn",
-				InitCommand = function(self) self:x(mainPartW/2 - 40) end,
-				Def.Quad {
-					Name = "Bg",
-					InitCommand = function(self) self:zoomto(80, 24):diffuse(color("0.1,0.4,0.1,0.5")) end
-				},
 				LoadFont("Common Normal") .. {
 					InitCommand = function(self) self:zoom(0.32):diffuse(brightText):settext("UPLOAD ALL") end
 				},
@@ -1231,8 +1145,7 @@ local profileOverlay = Def.ActorFrame {
 				self:settext("PAGE " .. cur .. " · CLICK TO FIND SONG · RIGHT-CLICK TO VALIDATE (LOCAL)")
 			end
 		}
-	},
-
+	}
 	UpdateAllScoresCommand = function(self)
 		local rows = self:GetChild("MainArea"):GetChild("ScoreListRows")
 		local start = ((self.isRecentMode and self.recentPage or self.topPage) - 1) * scorePageSize
@@ -1256,19 +1169,14 @@ local profileOverlay = Def.ActorFrame {
 			local score = nil
 			
 			if self.isRecentMode then
-				-- Recent scores are 0-indexed
-				local ok, res = pcall(function() return SCOREMAN:GetRecentScoreForGame(idx) end)
-				score = (ok and res ~= nil) and res or nil
-			else
-				if self.isOnlineMode and DLMAN:IsLoggedIn() then
-					-- Online scores are 1-indexed
-					local ok, res = pcall(function() return DLMAN:GetTopSkillsetScore(idx + 1, self.currentSkillset) end)
-					score = (ok and res ~= nil) and res or nil
-				else
-					local ok, res = pcall(function() return SCOREMAN:GetTopSSRHighScoreForGame(idx, self.currentSkillset) end)
-					score = (ok and res ~= nil) and res or nil
-				end
-			end
+                -- Recent scores are 0-indexed
+                local ok, res = pcall(function() return SCOREMAN:GetRecentScoreForGame(idx) end)
+                score = (ok and res ~= nil) and res or nil
+            else
+                -- Removed Online check: directly fetch local Top SSR scores
+                local ok, res = pcall(function() return SCOREMAN:GetTopSSRHighScoreForGame(idx, self.currentSkillset) end)
+                score = (ok and res ~= nil) and res or nil
+            end
 			
 			row.currentScore = score
 			if score then
@@ -1365,10 +1273,10 @@ local profileOverlay = Def.ActorFrame {
 		self:playcommand("UpdateOverlaySkillsets")
 		self:GetChild("MainArea"):playcommand("UpdateOverlayUI")
 		self:GetChild("Sidebar"):playcommand("UpdateOverlayUI")
-	end,
+	end
 
 	-- Core Logic Signals
-	UpdateOverlayUIMessageCommand = function(self) self:playcommand("UpdateAllScores") end,
+	UpdateOverlayUIMessageCommand = function(self) self:playcommand("UpdateAllScores") end
 	SelectMusicTabChangedMessageCommand = function(self, params)
 		HV.ActiveTab = params and params.Tab or ""
 		local targetTab = params and params.Tab or ""
@@ -1395,8 +1303,8 @@ local profileOverlay = Def.ActorFrame {
 		else
 			self:stoptweening():linear(0.1):diffusealpha(0):queuecommand("Hide")
 		end
-	end,
-	HideCommand = function(self) self:visible(false) end,
+	end
+	HideCommand = function(self) self:visible(false) end
 
 	UnlockInputCommand = function(self)
 		-- Only unlock if we are still not in an active tab (safety check)
@@ -1404,19 +1312,19 @@ local profileOverlay = Def.ActorFrame {
 			SCREENMAN:set_input_redirected(PLAYER_1, false)
 			SCREENMAN:set_input_redirected(PLAYER_2, false)
 		end
-	end,
+	end
 
 	NextScorePageMessageCommand = function(self)
 		if self.isRecentMode then self.recentPage = self.recentPage + 1
 		else self.topPage = self.topPage + 1 end
 		self:playcommand("UpdateAllScores")
-	end,
+	end
 	PrevScorePageMessageCommand = function(self)
 		if self.isRecentMode then self.recentPage = math.max(1, self.recentPage - 1)
 		else self.topPage = math.max(1, self.topPage - 1) end
 		self:playcommand("UpdateAllScores")
 	end
-}
+
 
 main_af[#main_af + 1] = profileOverlay
 

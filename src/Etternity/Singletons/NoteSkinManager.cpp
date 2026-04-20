@@ -25,7 +25,7 @@ NoteSkinManager* NOTESKIN =
   nullptr; // global and accessible from anywhere in our program
 
 const std::string GAME_COMMON_NOTESKIN_NAME = "common";
-const std::string GAME_BASE_NOTESKIN_NAME = "default";
+const std::string GAME_BASE_NOTESKIN_NAME = "Etternity";
 
 // this isn't a global because of nondeterministic global actor ordering
 // might init this before SpecialFiles::NOTESKINS_DIR

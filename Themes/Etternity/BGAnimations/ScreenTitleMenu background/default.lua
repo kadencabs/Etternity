@@ -114,11 +114,9 @@ local t = Def.ActorFrame {
 				local sName = screen:GetName()
 				local isSelect = sName == "ScreenSelectProfile"
 				local prof = af:GetChild("ProfileChip")
-				local online = af:GetChild("OnlineProfileChip")
 				local mp = af:GetChild("MediaPlayer")
 				local quotes = af:GetChild("QuotesOverlay")
 				if prof then prof:visible(not isSelect) end
-				if online then online:visible(not isSelect) end
 				if mp then mp:visible(not isSelect) end
 				if quotes then quotes:visible(not isSelect) end
 			end
@@ -140,10 +138,10 @@ local t = Def.ActorFrame {
 				end
 			end
 
-			-- Title Menu Hover (5 items)
+			-- Title Menu Hover (4 items)
 			local hovered = nil
-			for i = 1, 5 do
-				local static_iy = (SCREEN_CENTER_Y + 20) + 44 * (i - 3)
+			for i = 1, 4 do
+				local static_iy = (SCREEN_CENTER_Y + 20) + 44 * (i - 2.5)
 				if virtualX >= SCREEN_CENTER_X-150 and virtualX <= SCREEN_CENTER_X+150 
 				   and virtualY >= static_iy-22 and virtualY <= static_iy+22 then
 					hovered = i break
@@ -154,7 +152,7 @@ local t = Def.ActorFrame {
 			local selGlow = af:GetChild("SelectionGlow")
 			if selGlow then
 				if hovered then
-					local selY = (SCREEN_CENTER_Y + 20) + 44 * (hovered - 3)
+					local selY = (SCREEN_CENTER_Y + 20) + 44 * (hovered - 2.5)
 					selGlow:stoptweening():linear(0.05):y(selY):diffusealpha(isGlowEnabled and 0.4 or 0)
 				else
 					selGlow:stoptweening():linear(0.1):diffusealpha(0)
@@ -171,7 +169,7 @@ local t = Def.ActorFrame {
 					end
 					-- 2. Sync selection (engine)
 					if screen.SetCurrentChoice then
-						local choiceNames = {"Start", "ColorTheme", "PackDownloader", "Options", "Exit"}
+						local choiceNames = {"Start", "ColorTheme", "Options", "Exit"}
 						screen:SetCurrentChoice(choiceNames[hovered])
 					end
 				end
@@ -545,86 +543,78 @@ t[#t + 1] = Def.ActorFrame {
 t[#t + 1] = LoadActor("../_particles.lua")
 
 t[#t + 1] = Def.ActorFrame {
-	InitCommand = function(self) self:SetUpdateFunction(function(af)
-		af:GetChild("D"):settextf("%04d-%02d-%02d", Year(), MonthOfYear()+1, DayOfMonth())
-		af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
-		
-		local srv = af:GetChild("S")
-		if IsNetSMOnline() then
-			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. (GetServerName() or THEME:GetString("ScreenTitleMenu", "Connected"))):diffuse(color("0.65,1,0.72,1"))
-		else
-			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. THEME:GetString("ScreenTitleMenu", "Offline")):diffuse(dimText)
-		end
-
-		local alrm = af:GetChild("A")
-		local active = ThemePrefs.Get("HV_AlarmActive")
-		if active == "true" or active == true then
-			local type = ThemePrefs.Get("HV_AlarmType")
-			if type == "Time" then
-				alrm:settext("ALARM · " .. (ThemePrefs.Get("HV_AlarmTime") or "12:00")):diffuse(accentColor)
+	Name = "LogoContainer",
+	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
+	-- Persistent Glow Layer
+	LoadFont("Common Large") .. { 
+		Text="HOLOGRAPHIC VOID", 
+		InitCommand=function(self) self:zoom(0.75):diffuse(accentColor):diffusealpha(0) end,
+		RefreshCommand=function(self)
+			self:stopeffect():stoptweening()
+			if tostring(ThemePrefs.Get("HV_EnableGlow")) == "true" then
+				self:diffusealpha(0.4):glow(accentColor)
+				self:thump():effectmagnitude(1.02, 1.02, 1.02):effectperiod(2)
 			else
-				local s = HV.AlarmTimerSeconds or 0
-				if s > 0 then
-					alrm:settext("TIMER · " .. SecondsToMSS(s)):diffuse(accentColor)
-				else
-					alrm:settext("TIMER · " .. (ThemePrefs.Get("HV_AlarmTimerDuration") or 5) .. "M"):diffuse(accentColor)
-				end
+				self:diffusealpha(0)
 			end
-		else
-			alrm:settext("ALARM · OFF"):diffuse(dimText)
-		end
-	end) end,
+		end,
+		OnCommand=function(self) self:playcommand("Refresh") end,
+		ThemePrefChangedMessageCommand=function(self, params) if params.Name == "HV_EnableGlow" then self:playcommand("Refresh") end end
+	},
+	-- Main Text
+	LoadFont("Common Large") .. { 
+		Text="HOLOGRAPHIC VOID", 
+		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end 
+	}
+}
+
+-- Load Shared Background Particles
+t[#t + 1] = LoadActor("../_particles.lua")
+
+-- FIXED SECTION: Containing the children properly within the ActorFrame
+t[#t + 1] = Def.ActorFrame {
+	InitCommand = function(self)
+		self:SetUpdateFunction(function(af)
+			af:GetChild("D"):settextf("%04d-%02d-%02d", Year(), MonthOfYear()+1, DayOfMonth())
+			af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
+
+			local srv = af:GetChild("S")
+			srv:settext(
+				THEME:GetString("ScreenTitleMenu", "Server") ..
+				" · " ..
+				THEME:GetString("ScreenTitleMenu", "Offline")
+			):diffuse(dimText)
+
+			local alrm = af:GetChild("A")
+			local active = ThemePrefs.Get("HV_AlarmActive")
+
+			if active == "true" or active == true then
+				local type = ThemePrefs.Get("HV_AlarmType")
+				if type == "Time" then
+					alrm:settext("ALARM · " .. (ThemePrefs.Get("HV_AlarmTime") or "12:00"))
+						:diffuse(accentColor)
+				else
+					local s = HV.AlarmTimerSeconds or 0
+					if s > 0 then
+						alrm:settext("TIMER · " .. SecondsToMSS(s))
+							:diffuse(accentColor)
+					else
+						alrm:settext("TIMER · " .. (ThemePrefs.Get("HV_AlarmTimerDuration") or 5) .. "M")
+							:diffuse(accentColor)
+					end
+				end
+			else
+				alrm:settext("ALARM · OFF"):diffuse(dimText)
+			end
+		end)
+	end,
+	-- These are now properly comma-separated children of the ActorFrame
 	LoadFont("Common Normal") .. { Name="D", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+14):halign(0):zoom(0.5):diffuse(subText) end },
 	LoadFont("Common Normal") .. { Name="T", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+30):halign(0):zoom(0.35):diffuse(subText) end },
 	LoadFont("Common Normal") .. { Name="S", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+44):halign(0):zoom(0.3):diffuse(dimText) end },
 	LoadFont("Common Normal") .. { Name="A", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+58):halign(0):zoom(0.3):diffuse(dimText) end },
-	
-	-- Online Profile Display (Under Alarm)
-	Def.ActorFrame {
-		Name = "OnlineProfileChip",
-		InitCommand = function(self)
-			self:xy(SCREEN_LEFT + 16, SCREEN_TOP + 100):visible(false)
-			self:SetUpdateFunction(function(af)
-				local loggedIn = DLMAN:IsLoggedIn()
-				af:visible(loggedIn)
-				if not loggedIn then return end
-				
-				local nameTxt = af:GetChild("Name")
-				local ratingTxt = af:GetChild("Rating")
-				local rankTxt = af:GetChild("Rank")
-				
-				nameTxt:settext(DLMAN:GetUsername())
-				local r = DLMAN:GetSkillsetRating("Overall")
-				local showStats = HV.ShowProfileStats()
-				ratingTxt:visible(showStats and HV.ShowMSD()):settextf("%.2f", r):diffuse(HVColor.GetMSDRatingColor(r))
-				
-				if rankTxt then
-					local rank = DLMAN:GetSkillsetRank("Overall")
-					rankTxt:visible(showStats and HV.ShowMSD() and rank > 0):settextf("#%d", rank):diffuse(HVColor.GetSkillsetRankColor(rank))
-				end
-			end)
-		end,
-		
-		Def.Quad {
-			InitCommand = function(self)
-				self:halign(0):zoomto(pBtnW, compactRowH):diffuse(color("0.08,0.22,0.1,0.85")):diffuseleftedge(accentColor)
-			end
-		},
-		LoadFont("Common Normal") .. {
-			Name = "Name",
-			InitCommand = function(self) self:xy(10, -6):halign(0):zoom(0.4):diffuse(brightText) end
-		},
-		LoadFont("Common Large") .. {
-			Name = "Rating",
-			InitCommand = function(self) self:xy(8, 8):halign(0):zoom(0.50):diffuse(dimText) end
-		},
-		LoadFont("Common Normal") .. {
-			Name = "Rank",
-			InitCommand = function(self) self:xy(72, 10):halign(0):zoom(0.45):diffuse(dimText) end
-		}
-	}
 }
-
+	
 -- Profile chip (Top right) + Inline Profile List
 local compactRowW = pBtnW
 

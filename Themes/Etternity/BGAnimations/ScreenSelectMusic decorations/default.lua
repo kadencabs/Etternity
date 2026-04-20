@@ -61,7 +61,7 @@ local loginBtnCY = SCREEN_BOTTOM - 24
 local function GetOnlineStatus()
 	local connected = DLMAN:IsLoggedIn()
 	if connected then
-		return true, "EtternaOnline", "Online"
+		return true, "", "Offline"
 	end
 	return false, "", "Offline"
 end
@@ -1725,10 +1725,6 @@ t[#t + 1] = Def.ActorFrame {
 			if profile then
 				local name = profile:GetDisplayName()
 				if name == "" then name = "Player" end
-				if DLMAN:IsLoggedIn() then
-					local onlineName = DLMAN:GetUsername()
-					if onlineName ~= "" then name = onlineName end
-				end
 				self:settext(name)
 			else
 				self:settext("No Profile"):diffuse(dimText)
@@ -1736,7 +1732,6 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
@@ -1780,7 +1775,6 @@ t[#t + 1] = Def.ActorFrame {
 		},
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1831,7 +1825,6 @@ t[#t + 1] = Def.ActorFrame {
 		},
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1867,7 +1860,6 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1900,7 +1892,6 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1930,7 +1921,6 @@ t[#t + 1] = Def.ActorFrame {
 		end,
 		LoginMessageCommand = function(self) self:playcommand("Set") end,
 		LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 

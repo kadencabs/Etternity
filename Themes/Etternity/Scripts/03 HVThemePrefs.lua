@@ -174,7 +174,7 @@ end
 local HVPrefs = {
 	-- Visual: Background animation intensity (0 = off, 1 = subtle, 2 = full)
 	HV_BGAnimIntensity = {
-		Default = 1,
+		Default = 0,
 		Choices = {"Off", "Subtle", "Full"},
 		Values = {0, 1, 2}
 	},
@@ -196,7 +196,7 @@ local HVPrefs = {
 
 	-- Gameplay: Song Preview Mode (1: SM, 2: osu! New, 3: osu! Old)
 	HV_SongPreview = {
-		Default = 1,
+		Default = 2,
 		Choices = {"SM Style", "osu! Style (New)", "osu! Style (Old)"},
 		Values = {1, 2, 3}
 	},
@@ -356,7 +356,7 @@ local HVPrefs = {
 
 	-- Visual: Background/Menu particles
 	HV_Particles = {
-		Default = true,
+		Default = false,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
@@ -380,10 +380,6 @@ local HVPrefs = {
 
 	-- Visual: Accent color hex
 	HV_AccentColor = { Default = "#5ABAFF" },
-
-	-- Auth: Saved EtternaOnline username and login token
-	HV_Username = { Default = "" },
-	HV_PasswordToken = { Default = "" },
 
 	-- Custom Grades
 	HV_UseCustomGrades = {
@@ -429,7 +425,7 @@ local HVPrefs = {
 
 	-- Visual: Show scrolling quotes/tips on Title Screen
 	HV_QuotesMode = {
-		Default = "Quotes",
+		Default = "Off",
 		Choices = {"Off", "Quotes", "Tips"},
 		Values = {"Off", "Quotes", "Tips"}
 	},
@@ -437,7 +433,7 @@ local HVPrefs = {
 	-- Alarm System Preferences
 	HV_AlarmActive = { Default = false },
 	HV_AlarmType = {
-		Default = "Timer",
+		Default = "Time",
 		Choices = {"Time", "Timer"},
 		Values = {"Time", "Timer"}
 	},
@@ -477,9 +473,9 @@ local HVPrefs = {
 		Values = {"Top", "Bottom", "Off"}
 	},
 	HV_ShowInGameLeaderboard = {
-		Default = "Off",
-		Choices = {"Off", "Local", "Online"},
-		Values = {"Off", "Local", "Online"}
+		Default = "Local",
+		Choices = {"Off", "Local"},
+		Values = {"Off", "Local"}
 	},
 	HV_ShowNPSGraph = {
 		Default = true,
@@ -521,21 +517,21 @@ local HVPrefs = {
 
 	-- Gameplay: Prioritize Lower Judgements
 	HV_PrioritizeLowerJudgements = {
-		Default = false,
+		Default = true,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
 	
 	-- Visual: Judgment Animation
 	HV_JudgmentAnimation = {
-		Default = false,
+		Default = true,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
 
 	-- Visual: Combo Animation
 	HV_ComboAnimation = {
-		Default = false,
+		Default = true,
 		Choices = {"Off", "On"},
 		Values = {false, true}
 	},
@@ -702,7 +698,7 @@ function HV.GetProgressBarPosition()
 	return ThemePrefs.Get("HV_ProgressBarPosition") or "Bottom"
 end
 
---- Get in-game leaderboard mode ("Off", "Local", or "Online").
+--- Get in-game leaderboard mode ("Off", "Local").
 function HV.ShowInGameLeaderboard()
 	local val = ThemePrefs.Get("HV_ShowInGameLeaderboard")
 	-- Backwards compat: true -> "Local", false/nil -> "Off"

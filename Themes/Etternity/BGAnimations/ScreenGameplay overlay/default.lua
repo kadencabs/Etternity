@@ -1674,7 +1674,6 @@ if not isSync then
 		}
 	}
 	t[#t + 1] = LoadActor("npscalc")
-	t[#t + 1] = LoadActor("multiplayer")
 	t[#t + 1] = LoadActor("leaderboard")
 	t[#t + 1] = LoadActor("avatar")
 end

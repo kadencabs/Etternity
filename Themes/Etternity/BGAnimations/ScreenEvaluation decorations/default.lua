@@ -2,7 +2,7 @@
 -- Full-featured evaluation screen ported from spawncamping-wallhack.
 -- Features: Life/Combo graphs, Avatar+Player info, Grade+Score with rescoring (needs testing to ensure nothing breaks),
 --   ClearType comparison, Tap/Hold/Mine judgments, Timing stats (mean/sd),
---   CB L/R breakdown, Paginated Local/Online Scoreboard, Full Offset Plot.
+--   CB L/R breakdown, Paginated Local Scoreboard, Full Offset Plot.
 
 local song = GAMESTATE:GetCurrentSong()
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
@@ -462,9 +462,6 @@ local function scoreBoard(pn)
 			end)
 		end,
 		ToggleCustomWindowsMessageCommand = function(self)
-			if inMulti then return end
-			usingCustomWindows = not usingCustomWindows
-
 			if not usingCustomWindows then
 				unloadCustomWindowConfig()
 				MESSAGEMAN:Broadcast("UnloadedCustomWindow")
@@ -1553,7 +1550,6 @@ t[#t + 1] = scoreBoard(PLAYER_1)
 ------------------------------------------------------------
 -- RIGHT PANEL: OFFSET PLOT + SCOREBOARD
 ------------------------------------------------------------
-local inMulti = Var("LoadingScreen") == "ScreenNetEvaluation"
 local rightX = SCREEN_CENTER_X + 10
 local rightW = SCREEN_CENTER_X - 20
 local offsetPlotHeight = 160
@@ -1839,12 +1835,6 @@ local scoreboardFrame = Def.ActorFrame {
 	Name = "ScoreboardContainer",
 	InitCommand = function(self) self:xy(rightX + 10, offsetPlotHeight + 110) end,
 }
-
-if inMulti then
-	scoreboardFrame[#scoreboardFrame + 1] = LoadActor("MPscoreboard")
-else
-	scoreboardFrame[#scoreboardFrame + 1] = LoadActor("online_leaderboard")
-end
 
 t[#t + 1] = scoreboardFrame
 t[#t + 1] = LoadActor("../_cursor")

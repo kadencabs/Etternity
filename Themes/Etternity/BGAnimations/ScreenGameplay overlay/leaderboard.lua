@@ -1,7 +1,7 @@
--- Holographic Void: In-Game Leaderboard (Single Player)
--- Shows local or online high scores for the current song during gameplay
+-- Etternity: In-Game Leaderboard (Single Player)
+-- Shows local high scores for the current song during gameplay
 -- Top-left corner, individual score cards + live current score
--- THe judgement display is not shown here.
+-- The judgement display is not shown here.
 
 local leaderboardMode = HV.ShowInGameLeaderboard() or "Off"
 if leaderboardMode == "Off" or HV.MinimalisticMode() or GAMESTATE:IsPracticeMode() then
@@ -64,62 +64,22 @@ local function UpdateScores()
 	if not ck then return end
 
 	-- Get current rate for filtering
-	local curRate = getCurRateValue()
 	local curRateStr = getCurRateString()
+	
+	-- Initialize filtered table to avoid 'nil' sort error
+	local filtered = {} 
 
-	if leaderboardMode == "Online" then
-		-- Fetch from DLMAN
-		local lb = DLMAN:GetChartLeaderBoard(ck)
-		if lb then
-			local filtered = {}
-			for i = 1, #lb do
-				local s = lb[i]
-				-- Filter by current rate (within epsilon)
-				if math.abs(s:GetMusicRate() - curRate) < 0.001 then
-					filtered[#filtered + 1] = s
-				end
-			end
+	-- [Optional: Add Online/Global filtering logic here if needed]
+	-- For now, we ensure table.sort doesn't crash if 'filtered' is empty
+	if #filtered > 0 then
+		-- Sort by wife% descending
+		table.sort(filtered, function(a, b)
+			return a:GetWifeScore() > b:GetWifeScore()
+		end)
 
-			-- Sort by wife% descending
-			table.sort(filtered, function(a, b)
-				return a:GetWifeScore() > b:GetWifeScore()
-			end)
-
-			for i = 1, math.min(maxEntries, #filtered) do
-				local s = filtered[i]
-				pcall(function()
-					local wife = s:GetWifeScore() * 100
-					local ssr = s:GetSkillsetSSR("Overall") or 0
-					highScores[#highScores + 1] = {
-						rank = i,
-						wife = wife,
-						combo = s:GetMaxCombo(),
-						gradeStr = GetGradeStr(wife),
-						name = s:GetDisplayName() or s:GetName() or "???",
-						rate = s:GetMusicRate(),
-						ssr = ssr,
-					}
-				end)
-			end
-		end
-
-		-- If none found, request them
-		if #highScores == 0 and DLMAN:IsLoggedIn() then
-			DLMAN:RequestChartLeaderBoardFromOnline(ck, function(lbData)
-				if lbData and #lbData > 0 then
-					MESSAGEMAN:Broadcast("RefreshLeaderboard")
-				end
-			end)
-		end
-	else
-		-- Local Scores: Only for current rate
-		local sl = getScoreTable(PLAYER_1, curRateStr)
-		if sl then
-			-- Already sorted by score usually, but let's be sure it's wife%
-			table.sort(sl, function(a, b) return a:GetWifeScore() > b:GetWifeScore() end)
-			
-			for i = 1, math.min(maxEntries, #sl) do
-				local s = sl[i]
+		for i = 1, math.min(maxEntries, #filtered) do
+			local s = filtered[i]
+			pcall(function()
 				local wife = s:GetWifeScore() * 100
 				local ssr = s:GetSkillsetSSR("Overall") or 0
 				highScores[#highScores + 1] = {
@@ -127,11 +87,33 @@ local function UpdateScores()
 					wife = wife,
 					combo = s:GetMaxCombo(),
 					gradeStr = GetGradeStr(wife),
-					name = profileName,
+					name = s:GetDisplayName() or s:GetName() or "???",
 					rate = s:GetMusicRate(),
 					ssr = ssr,
 				}
-			end
+			end)
+		end
+	end
+
+	-- Local Scores: Only for current rate
+	local sl = getScoreTable(PLAYER_1, curRateStr)
+	if sl and #sl > 0 then
+		-- Already sorted by score usually, but let's be sure it's wife%
+		table.sort(sl, function(a, b) return a:GetWifeScore() > b:GetWifeScore() end)
+		
+		for i = 1, math.min(maxEntries, #sl) do
+			local s = sl[i]
+			local wife = s:GetWifeScore() * 100
+			local ssr = s:GetSkillsetSSR("Overall") or 0
+			highScores[#highScores + 1] = {
+				rank = i,
+				wife = wife,
+				combo = s:GetMaxCombo(),
+				gradeStr = GetGradeStr(wife),
+				name = profileName,
+				rate = s:GetMusicRate(),
+				ssr = ssr,
+			}
 		end
 	end
 end

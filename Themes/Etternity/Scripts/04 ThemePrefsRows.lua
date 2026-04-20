@@ -264,8 +264,8 @@ local HVPrefRows = {
 	},
 	HV_ShowInGameLeaderboard = {
 		Default = "Off",
-		Choices = {"Off", "Local", "Online"},
-		Values = {"Off", "Local", "Online"},
+		Choices = {"Off", "Local"},
+		Values = {"Off", "Local"},
 	},
 	HV_ShowNPSGraph = {
 		Default = true,
