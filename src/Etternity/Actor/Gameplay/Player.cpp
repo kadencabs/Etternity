@@ -2183,7 +2183,8 @@ Player::Step(int col,
 				}
 
 				if (score > TNS_W4) {
-					score = TNS_W2; // sentinel
+					//score = TNS_W2; // sentinel
+					score = TNS_W1; // sentinel
 				}
 
 				/* AI will generate misses here. Don't handle a miss like a

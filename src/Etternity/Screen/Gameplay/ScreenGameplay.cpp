@@ -1,3 +1,4 @@
+#include <array>
 #include "Etternity/Globals/global.h"
 #include "Etternity/Actor/Base/ActorUtil.h"
 #include "Etternity/Models/Misc/AdjustSync.h"

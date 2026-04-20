@@ -211,7 +211,7 @@ PrefsManager::PrefsManager()
   , m_bEnableScoreboard("EnableScoreboard", true)
   , m_bEnableCrashUpload("EnableMinidumpUpload", false)
   , m_bAllowSongDeletion("AllowSongDeletion", false)
-  , m_bShowMinidumpUploadDialogue("ShowMinidumpUploadDialogue", false)
+  , m_bShowMinidumpUploadDialogue("ShowMinidumpUploadDialogue", false, nullptr)
 
 {
 	Init();
