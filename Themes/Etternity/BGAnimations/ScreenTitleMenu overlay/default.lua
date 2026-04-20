@@ -1,4 +1,4 @@
---- Holographic Void: ScreenTitleMenu Overlay
+--- Etternity: ScreenTitleMenu Overlay
 -- Rebuilt to focus only on custom cursor and jukebox shortcuts.
 local choiceNames = {"Start", "ColorTheme", "Options", "Exit"}
 

@@ -1,4 +1,4 @@
---- Holographic Void: ScreenEvaluation Background
+--- Etternity: ScreenEvaluation Background
 
 local t = Def.ActorFrame {}
 

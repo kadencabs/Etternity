@@ -1,4 +1,4 @@
--- Holographic Void: Practice Mode Input Handler
+-- Etternity: Practice Mode Input Handler
 -- Using CodeMessageCommands for maximum reliability (from metrics.ini)
 
 local function getSongPos()

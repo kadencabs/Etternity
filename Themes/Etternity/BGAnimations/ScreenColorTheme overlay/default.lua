@@ -1,4 +1,4 @@
---- Holographic Void: ScreenColorTheme Overlay
+--- Etternity: ScreenColorTheme Overlay
 -- Custom Lua UI for selecting the theme's accent color.
 -- Features clickable swatches with a live preview panel that updates in real time.
 -- We use color presets for now. the proper color config screen will be here at some point.
@@ -307,7 +307,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:y(24):zoom(0.28):diffuse(color("0.45,0.45,0.45,1"))
-			self:settext("Select an accent color for the Holographic Void experience")
+			self:settext("Select an accent color for the Etternity experience")
 		end
 	},
 	Def.Quad {

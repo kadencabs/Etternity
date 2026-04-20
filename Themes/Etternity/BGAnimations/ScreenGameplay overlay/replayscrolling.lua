@@ -1,4 +1,4 @@
--- Holographic Void: Replay Control Overlay
+-- Etternity: Replay Control Overlay
 -- Ported from 'Til Death with HV-style visuals and simplified logic
 -- Supports mouse interaction and keyboard shortcuts
 

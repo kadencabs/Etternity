@@ -1,4 +1,4 @@
---- Etternity: Etterna Utility Functions
+--- Etternity: Etternity Utility Functions
 -- Consolidates grade calculation, clear types, score retrieval,
 -- rate management, timing stats, and judge rescoring.
 -- Ported with adaptation from spawncamping-wallhack.
@@ -161,7 +161,7 @@ function gradeFamilyToBetterGrade(grade)
 	end
 end
 
-function getEtternaGrade(wifePct)
+function getEtternityGrade(wifePct)
 	if not wifePct then return "Failed" end
 	local pct = wifePct / 100
 	if pct >= 0.999935 then return "Tier01"
@@ -892,7 +892,7 @@ end
 function getJ4NormalizedPercentage(score)
 	if not score then return 0 end
 	
-	-- 1. Engine method (Fastest, most reliable for newer Etterna)
+	-- 1. Engine method (Fastest, most reliable for newer Etternity)
 	if type(score.GetRescoredWifeScore) == "function" then
 		return score:GetRescoredWifeScore(4) * 100
 	end
@@ -1157,4 +1157,4 @@ end
 HV.LastTotalXP = 0
 HV.GameplaySessionValid = false
 
-Trace("Etternity: 08 EtternaUtils.lua loaded (expanded).")
+Trace("Etternity: 08 EtternityUtils.lua loaded (expanded).")

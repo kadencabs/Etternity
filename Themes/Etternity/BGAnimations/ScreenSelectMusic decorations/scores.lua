@@ -298,7 +298,7 @@ local t = Def.ActorFrame {
 
 	-- Column headers
 	-- NOTE: :visible() is called on a separate line to avoid chaining after :settext(),
-	-- which returns nil in some Etterna builds and causes a "bad self" crash.
+	-- which returns nil in some Etternity builds and causes a "bad self" crash.
 	Def.ActorFrame {
 		InitCommand = function(self) self:xy(-overlayW/2 + 25, -overlayH/2 + 65) end,
 		LoadFont("Common Normal") .. { InitCommand = function(self) self:halign(0):zoom(0.32):diffuse(dimText):settext("#") end },

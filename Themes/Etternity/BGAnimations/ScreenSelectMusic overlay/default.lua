@@ -1094,7 +1094,7 @@ local profileOverlay = Def.ActorFrame {
 						local bg = af:GetChild("Bg")
 						local score = af.currentScore
 						
-						if score and type(score) ~= "table" and not score:GetEtternaValid() then
+						if score and type(score) ~= "table" and not score:GetEtternityValid() then
 							bg:diffuse(color("0.5,0.2,0.2,0.3"))
 						else
 							bg:diffuse(color("0,0,0,0.3"))
@@ -1123,8 +1123,8 @@ local profileOverlay = Def.ActorFrame {
 						if params.index ~= i then return end
 						local score = self.currentScore
 						if not score or type(score) == "table" then return end
-						score:ToggleEtternaValidation()
-						if score:GetEtternaValid() then
+						score:ToggleEtternityValidation()
+						if score:GetEtternityValid() then
 							ms.ok("Score validated")
 						else
 							ms.ok("Score invalidated")
@@ -1246,7 +1246,7 @@ local profileOverlay = Def.ActorFrame {
 				
 				row:GetChild("Validation"):settext(metadata)
 				
-				local isInvalid = type(score) ~= "table" and not score:GetEtternaValid()
+				local isInvalid = type(score) ~= "table" and not score:GetEtternityValid()
 				row:GetChild("InvalidIndicator"):visible(isInvalid)
 				if isInvalid then
 					row:GetChild("Bg"):diffuse(color("0.5,0.05,0.05,0.4"))

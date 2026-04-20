@@ -1,4 +1,4 @@
---- Holographic Void: ScreenHVDownloadOverlay
+--- Etternity: ScreenHVDownloadOverlay
 -- Custom global download progress overlay visible on ALL screens.
 -- Shows a compact progress bar + text at the bottom of the screen.
 -- Hovering the mouse over the bar expands it to show queued packs.

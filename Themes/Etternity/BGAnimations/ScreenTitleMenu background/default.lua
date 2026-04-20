@@ -518,7 +518,7 @@ t[#t + 1] = Def.ActorFrame {
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
 	-- Persistent Glow Layer
 	LoadFont("Common Large") .. { 
-		Text="HOLOGRAPHIC VOID", 
+		Text="ETTERNITY", 
 		InitCommand=function(self) self:zoom(0.75):diffuse(accentColor):diffusealpha(0) end,
 		RefreshCommand=function(self)
 			self:stopeffect():stoptweening()
@@ -534,7 +534,7 @@ t[#t + 1] = Def.ActorFrame {
 	},
 	-- Main Text
 	LoadFont("Common Large") .. { 
-		Text="HOLOGRAPHIC VOID", 
+		Text="ETTERNITY", 
 		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end 
 	}
 }
@@ -547,7 +547,7 @@ t[#t + 1] = Def.ActorFrame {
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
 	-- Persistent Glow Layer
 	LoadFont("Common Large") .. { 
-		Text="HOLOGRAPHIC VOID", 
+		Text="ETTERNITY", 
 		InitCommand=function(self) self:zoom(0.75):diffuse(accentColor):diffusealpha(0) end,
 		RefreshCommand=function(self)
 			self:stopeffect():stoptweening()
@@ -563,7 +563,7 @@ t[#t + 1] = Def.ActorFrame {
 	},
 	-- Main Text
 	LoadFont("Common Large") .. { 
-		Text="HOLOGRAPHIC VOID", 
+		Text="ETTERNITY", 
 		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end 
 	}
 }
@@ -578,12 +578,12 @@ t[#t + 1] = Def.ActorFrame {
 			af:GetChild("D"):settextf("%04d-%02d-%02d", Year(), MonthOfYear()+1, DayOfMonth())
 			af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
 
-			local srv = af:GetChild("S")
+			--[[local srv = af:GetChild("S")
 			srv:settext(
 				THEME:GetString("ScreenTitleMenu", "Server") ..
 				" · " ..
 				THEME:GetString("ScreenTitleMenu", "Offline")
-			):diffuse(dimText)
+			):diffuse(dimText) ]]--
 
 			local alrm = af:GetChild("A")
 			local active = ThemePrefs.Get("HV_AlarmActive")

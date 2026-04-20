@@ -1,4 +1,4 @@
---- Holographic Void: Goals Tab
+--- Etternity: Goals Tab
 
 local accentColor = HVColor.Accent
 local dimText = color("0.45,0.45,0.45,1")

@@ -1,4 +1,4 @@
---- Holographic Void: ScreenGameplay Underlay (Lane Filter)
+--- Etternity: ScreenGameplay Underlay (Lane Filter)
 -- Localized dimming for the notefield area.
 
 local t = Def.ActorFrame {}

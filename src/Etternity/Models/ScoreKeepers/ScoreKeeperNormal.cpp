@@ -48,9 +48,6 @@ ScoreKeeperNormal::ScoreKeeperNormal(PlayerState* pPlayerState,
 	m_iNumTapsAndHolds = 0;
 	m_iMaxScoreSoFar = 0;
 	m_iPointBonus = 0;
-	m_cur_toasty_combo = 0;
-	m_cur_toasty_level = 0;
-	m_next_toasty_at = 0;
 	m_bIsLastSongInCourse = false;
 	m_bIsBeginner = false;
 	m_iNumNotesHitThisRow = 0;
@@ -71,11 +68,6 @@ ScoreKeeperNormal::Load(const std::vector<Song*>& apSongs,
 	m_MineHitIncrementsMissCombo.Load("Gameplay", "MineHitIncrementsMissCombo");
 	m_AvoidMineIncrementsCombo.Load("Gameplay", "AvoidMineIncrementsCombo");
 	m_UseInternalScoring.Load("Gameplay", "UseInternalScoring");
-
-	// This can be a function or a number, the type is checked when needed.
-	// -Kyz
-	m_toasty_trigger.Load("Gameplay", "ToastyTriggersAt");
-	m_toasty_min_tns.Load("Gameplay", "ToastyMinTNS");
 
 	// Fill in STATSMAN->m_CurStageStats, calculate multiplier
 	auto iTotalPossibleDancePoints = 0;
@@ -132,12 +124,8 @@ ScoreKeeperNormal::Load(const std::vector<Song*>& apSongs,
 	m_pPlayerStageStats->m_iPossibleGradePoints = iTotalPossibleGradePoints;
 
 	m_iScoreRemainder = 0;
-	m_cur_toasty_combo = 0;
-	m_cur_toasty_level = 0;
 	// Initialize m_next_toasty_at to 0 so that CalcNextToastyAt just needs to
 	// add the value. -Kyz
-	m_next_toasty_at = 0;
-	m_next_toasty_at = CalcNextToastyAt(m_cur_toasty_level);
 	m_iMaxScoreSoFar = 0;
 	m_iPointBonus = 0;
 	m_iNumTapsAndHolds = 0;
@@ -332,54 +320,7 @@ ScoreKeeperNormal::AddScoreInternal(TapNoteScore score)
 	}
 }
 
-int
-ScoreKeeperNormal::CalcNextToastyAt(int level)
-{
-	auto L = LUA->Get();
-	m_toasty_trigger.PushSelf(L);
-	const auto default_amount = 250;
-	auto amount = default_amount;
-	auto erred = false;
-	switch (lua_type(L, 1)) {
-		case LUA_TNUMBER:
-			amount = lua_tointeger(L, 1);
-			break;
-		case LUA_TFUNCTION: {
-			std::string err = "Error running ToastyTriggersAt: ";
-			LuaHelpers::Push(L, m_pPlayerState->m_PlayerNumber);
-			lua_pushnumber(L, level);
-			if (LuaHelpers::RunScriptOnStack(L, err, 2, 1, true)) {
-				if (lua_isnumber(L, -1) != 0) {
-					amount = lua_tointeger(L, -1);
-				} else {
-					LuaHelpers::ReportScriptError(
-					  "Gameplay::ToastyTriggersAt "
-					  "function must return a number greater than 0.");
-					erred = true;
-				}
-			} else {
-				erred = true;
-			}
-		} break;
-		default:
-			LuaHelpers::ReportScriptError(
-			  "Gameplay::ToastyTriggersAt metric has "
-			  "a nonsensical type, it must be a number or a function.");
-			erred = true;
-			break;
-	}
-	if (amount <= 0) {
-		if (!erred) {
-			LuaHelpers::ReportScriptError(
-			  "The ToastyTriggersAt value cannot be "
-			  "less than or equal to 0 because that would be silly.");
-		}
-		amount = default_amount;
-	}
-	lua_settop(L, 0);
-	LUA->Release(L);
-	return m_next_toasty_at + amount;
-}
+
 
 void
 ScoreKeeperNormal::HandleTapScore(const TapNote& tn)
@@ -596,41 +537,9 @@ ScoreKeeperNormal::HandleTapRowScore(const NoteData& nd, int iRow)
 #ifndef DEBUG
 	if ((GamePreferences::m_AutoPlay != PC_HUMAN ||
 		 m_pPlayerState->m_PlayerOptions.GetCurrent().m_fPlayerAutoPlay != 0)) {
-		m_cur_toasty_combo = 0;
 		return;
 	}
 #endif // DEBUG
-
-	// Toasty combo
-	if (scoreOfLastTap >= m_toasty_min_tns) {
-		m_cur_toasty_combo += iNumTapsInRow;
-		if (m_cur_toasty_combo >= m_next_toasty_at) {
-			++m_cur_toasty_level;
-			// Broadcast the message before posting the screen message so that
-			// the transition layer can catch the message to know the level and
-			// respond accordingly. -Kyz
-			Message msg("ToastyAchieved");
-			msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
-			msg.SetParam("ToastyCombo", m_cur_toasty_combo);
-			msg.SetParam("Level", m_cur_toasty_level);
-			MESSAGEMAN->Broadcast(msg);
-			SCREENMAN->PostMessageToTopScreen(SM_PlayToasty, 0);
-			// TODO: keep a pointer to the Profile.  Don't index with
-			// m_PlayerNumber
-			// TODO: Make the profile count the level and combo of the toasty.
-			// -Kyz
-			PROFILEMAN->IncrementToastiesCount(m_pPlayerState->m_PlayerNumber);
-			m_next_toasty_at = CalcNextToastyAt(m_cur_toasty_level);
-		}
-	} else {
-		m_cur_toasty_combo = 0;
-		m_cur_toasty_level = 0;
-		m_next_toasty_at = 0;
-		m_next_toasty_at = CalcNextToastyAt(m_cur_toasty_level);
-		Message msg("ToastyDropped");
-		msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
-		MESSAGEMAN->Broadcast(msg);
-	}
 
 	// TODO: Remove indexing with PlayerNumber
 	auto pn = m_pPlayerState->m_PlayerNumber;
@@ -644,8 +553,6 @@ ScoreKeeperNormal::HandleTapRowScore(const NoteData& nd, int iRow)
 					   m_iNumNotesHitThisRow);
 	Message msg("ScoreChanged");
 	msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
-	msg.SetParam("MultiPlayer", m_pPlayerState->m_mp);
-	msg.SetParam("ToastyCombo", m_cur_toasty_combo);
 	MESSAGEMAN->Broadcast(msg);
 }
 

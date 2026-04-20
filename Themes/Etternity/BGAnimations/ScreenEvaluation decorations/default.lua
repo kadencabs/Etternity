@@ -1,4 +1,4 @@
---- Holographic Void: ScreenEvaluation Decorations
+--- Etternity: ScreenEvaluation Decorations
 -- Full-featured evaluation screen ported from spawncamping-wallhack.
 -- Features: Life/Combo graphs, Avatar+Player info, Grade+Score with rescoring (needs testing to ensure nothing breaks),
 --   ClearType comparison, Tap/Hold/Mine judgments, Timing stats (mean/sd),
@@ -177,7 +177,7 @@ local function recountCBs()
 	if not ctt or not dvt then return end
 	for i = 1, #dvt do
 		if ctt[i] then
-			-- Standard Etterna CB threshold is 90ms (J4). Scales with judge.
+			-- Standard Etternity CB threshold is 90ms (J4). Scales with judge.
 			if math.abs(dvt[i]) > tso * 90 then 
 				if ctt[i] < middleCol then cbl = cbl + 1
 				elseif ctt[i] > middleCol then cbr = cbr + 1
@@ -375,7 +375,7 @@ local t = Def.ActorFrame {
 	end
 }
 
--- Rescore data + rescore delegate to the corrected global functions in 08 EtternaUtils.lua.
+-- Rescore data + rescore delegate to the corrected global functions in 08 EtternityUtils.lua.
 
 
 ------------------------------------------------------------

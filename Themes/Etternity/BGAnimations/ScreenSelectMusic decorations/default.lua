@@ -1,4 +1,4 @@
---- Holographic Void: ScreenSelectMusic Decorations
+--- Etternity: ScreenSelectMusic Decorations
 
 -- ============================================================
 -- LAYOUT CONSTANTS
@@ -1205,7 +1205,7 @@ end
 local function getJ4NormalizedPercentage(score)
 	if not score then return 0 end
 	
-	-- 1. Engine method (Fastest, most reliable for newer Etterna)
+	-- 1. Engine method (Fastest, most reliable for newer Etternity)
 	if type(score.GetRescoredWifeScore) == "function" then
 		return score:GetRescoredWifeScore(4) * 100
 	end
@@ -1730,8 +1730,8 @@ t[#t + 1] = Def.ActorFrame {
 				self:settext("No Profile"):diffuse(dimText)
 			end
 		end,
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--LoginMessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		CurrentSongChangedMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
@@ -1773,8 +1773,8 @@ t[#t + 1] = Def.ActorFrame {
 				end
 			end
 		},
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--LoginMessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1823,8 +1823,8 @@ t[#t + 1] = Def.ActorFrame {
 				end
 			end
 		},
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--LoginMessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1858,8 +1858,8 @@ t[#t + 1] = Def.ActorFrame {
 				self:settext("OFFLINE"):diffuse(dimText):visible(true)
 			end
 		end,
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--MessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1890,8 +1890,8 @@ t[#t + 1] = Def.ActorFrame {
 				self:settext("-"):diffuse(dimText)
 			end
 		end,
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--LoginMessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1919,11 +1919,11 @@ t[#t + 1] = Def.ActorFrame {
 				self:visible(false)
 			end
 		end,
-		LoginMessageCommand = function(self) self:playcommand("Set") end,
-		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		--LoginMessageCommand = function(self) self:playcommand("Set") end,
+		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
-
+--[[
 	-- Integrated Login Button Area (Moved Above Profile)
 	Def.ActorFrame {
 		Name = "LoginButtonUI",
@@ -1970,8 +1970,8 @@ t[#t + 1] = Def.ActorFrame {
 		}
 	}
 }
-
-
+]]--
+		}
 -- ============================================================
 -- MUSIC RATE DISPLAY
 -- ============================================================

@@ -1,4 +1,4 @@
---- Holographic Void: MusicWheelItem Song NormalPart
+--- Etternity: MusicWheelItem Song NormalPart
 -- Enhanced song row: MSD for selected difficulty type, local best grade,
 -- artist + subtitle display.
 -- Uses SetMessageCommand with params.Song for reliable song data access.

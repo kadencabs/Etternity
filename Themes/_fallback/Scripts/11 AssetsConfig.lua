@@ -1,4 +1,4 @@
---- Settings system for Assets (Judgments, Toasties, Avatars)
+--- Settings system for Assets (Judgments, Avatars)
 -- @module 11_AssetsConfig
 
 local defaultConfig = {
@@ -7,17 +7,13 @@ local defaultConfig = {
 	},
 	judgment = {
 		default = "Assets/Judgments/default 1x6 (Doubleres).png"
-	},
-	toasty = {
-		default = "Assets/Toasties/default"
 	}
 }
 
 assetsFolder = "Assets/"
 assetFolders = {
 	avatar = assetsFolder .. "Avatars/",
-	judgment = assetsFolder .. "Judgments/",
-	toasty = assetsFolder .. "Toasties/"
+	judgment = assetsFolder .. "Judgments/"
 }
 
 assetsConfig = create_setting("assetsConfig", "assetsConfig.lua", defaultConfig, 1)
@@ -40,28 +36,6 @@ local function isAudio(filename)
 		if extensions[i] == ext then return filename end
 	end
 	return false
-end
-
-function getToastyAssetPath(type)
-	local path = getAssetPath("toasty")
-	local files = FILEMAN:GetDirListing(path.."/")
-	if type == "sound" then
-		for i=1, #files do
-			local status = isAudio(files[i])
-			if status then
-				return path .. "/" .. status
-			end
-		end
-	end
-	if type == "image" then
-		for i=1, #files do
-			local status = isImage(files[i])
-			if status then
-				return path .. "/" .. status
-			end
-		end
-	end
-	return path
 end
 
 function findAssetsForPath(path)

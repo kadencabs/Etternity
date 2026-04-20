@@ -1,4 +1,4 @@
---- Holographic Void: Local Scoreboard (ported from spawncamping-wallhack)
+--- Etternity: Local Scoreboard (ported from spawncamping-wallhack)
 -- Displays paginated local high-scores for the chart at the current rate.
 -- Features: SSR, Judgment tally (no labels), ClearType lamp, sort by SSR.
 -- NEW: Clickable score cards to view different score data

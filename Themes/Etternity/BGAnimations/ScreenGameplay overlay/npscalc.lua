@@ -1,4 +1,4 @@
--- Holographic Void: NPS Calculator
+-- Etternity: NPS Calculator
 -- Ported from spawncamping-wallhack
 -- Time-based moving average with ActorMultiVertex graph display
 

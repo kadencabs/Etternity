@@ -1,4 +1,4 @@
--- Holographic Void: Avatar / Profile Display (adapted from Fatigue)
+-- Etternity: Avatar / Profile Display (adapted from Fatigue)
 -- Shows player avatar, name, MSD, difficulty, mods, judge/scoring info,
 -- life bar, and real-time DP / Wife% during gameplay.
 

@@ -316,7 +316,7 @@ function HVColor.GetGradeColor(grade)
 	if not grade then return palette.None end
 	local s = tostring(grade):upper():gsub("GRADE_", "")
 	
-	-- Handle Tier specific matches first (Etterna Tiers)
+	-- Handle Tier specific matches first (Etternity Tiers)
 	if s:find("TIER01") then return palette.AAAAA end
 	if s:find("TIER02") or s:find("TIER03") or s:find("TIER04") then return palette.AAAA end
 	if s:find("TIER05") or s:find("TIER06") or s:find("TIER07") then return palette.AAA end

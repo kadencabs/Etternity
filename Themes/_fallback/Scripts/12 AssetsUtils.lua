@@ -1,4 +1,4 @@
---- Utilities for the Assets system (Judgments, Toasties, Avatars)
+--- Utilities for the Assets system (Judgments, Avatars)
 -- @module 12_AssetUtils
 
 local update = {
@@ -19,11 +19,16 @@ end
 
 --use global prefs instead of playerprefs as the playerprefs can't be grabbed when the profileslots aren't loaded.
 local function addProfileAssetFromGUID(GUID, asset)
-	if not asset then
-		asset = "avatar"
+	if not asset then asset = "avatar" end
+
+	local data = assetsConfig:get_data()
+
+	if data[asset] == nil then
+		data[asset] = {}
 	end
-	if not tableContains(assetsConfig:get_data().avatar, GUID) then
-		assetsConfig:get_data()[asset][GUID] = getDefaultAssetByType(asset)
+
+	if data[asset][GUID] == nil then
+		data[asset][GUID] = getDefaultAssetByType(asset)
 		assetsConfig:set_dirty()
 		assetsConfig:save()
 	end
@@ -32,12 +37,18 @@ end
 -- returns the image path relative to the theme folder for the specified player.
 function getAssetPath(asset)
 	local pn = PLAYER_1
-	local fileName = getDefaultAssetByType(asset)
-
 	local profile = PROFILEMAN:GetProfile(pn)
 	local GUID = profile:GetGUID()
 
-	fileName = assetsConfig:get_data()[asset][GUID]
+	local data = assetsConfig:get_data()
+
+	-- ensure base table exists
+	if data[asset] == nil then
+		data[asset] = {}
+	end
+
+	local fileName = data[asset][GUID]
+
 	if fileName == nil then
 		fileName = getDefaultAssetByType(asset)
 		addProfileAssetFromGUID(GUID, asset)

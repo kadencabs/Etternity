@@ -206,9 +206,6 @@ ScreenGameplayPractice::Update(const float fDeltaTime)
 		if (rowStart < rowEnd) {
 			SetupNoteDataFromRow(GAMESTATE->m_pCurSteps, rowStart, rowEnd);
 		}
-		if (PREFSMAN->m_bEasterEggs) {
-			m_Toasty.Reset();
-		}
 
 		// Reset the wife/judge counter related visible stuff
 		auto* pl = dynamic_cast<PlayerPractice*>(m_vPlayerInfo.m_pPlayer);
@@ -421,10 +418,6 @@ ScreenGameplayPractice::SetSongPosition(float newSongPositionSeconds,
 			 "Dynamic cast in ScreenGameplayPractice::SetSongPosition failed.");
 	pl->RenderAllNotesIgnoreScores();
 	pl->PositionReset();
-
-	if (PREFSMAN->m_bEasterEggs) {
-		m_Toasty.Reset();
-	}
 
 	// just having a message we can respond to directly is probably the best way
 	// to reset lua elements

@@ -1,4 +1,4 @@
---- Holographic Void: ScreenPlayerOptions Overlay
+--- Etternity: ScreenPlayerOptions Overlay
 -- Shows tab bar (Player Options / Quick Theme Options / Effect Options),
 -- effective scroll speed display, and noteskin preview.
 -- Uses SpeedChoiceChangedMessage to update in real-time like Til Death.

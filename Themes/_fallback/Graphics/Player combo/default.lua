@@ -45,11 +45,6 @@ local t =
 	TwentyFiveMilestoneCommand = function(self, parent)
 		self:skewy(-0.125):decelerate(0.325):skewy(0)
 	end,
-	ToastyAchievedMessageCommand = function(self, params)
-		if params.PlayerNumber == player then
-			self:thump(2):effectclock("beat")
-		end
-	end,
 	ComboCommand = function(self, param)
 		local iCombo = param.Misses or param.Combo
 		if not iCombo or iCombo < ShowComboAt then

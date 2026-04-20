@@ -1,4 +1,4 @@
---- Holographic Void: ScreenTitleMenu scroll element
+--- Etternity: ScreenTitleMenu scroll element
 -- Each scroller item uses this actor. GainFocus/LoseFocus control
 -- selected vs unselected appearance while keeping ALL items visible.
 -- NOTE: GainFocusCommand fires BEFORE OnCommand, so visual state

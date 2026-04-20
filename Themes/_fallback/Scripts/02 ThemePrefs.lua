@@ -39,36 +39,41 @@ end
 -- Given a preference name, returns the table it's in. Checks the current
 -- theme first, then _fallback, then all other sections, in that order.
 local function ResolveTable(pref)
-	-- check the section for this theme
-	local name = GetThemeName()
-	local val = PrefsTable[name][pref]
-
-	if val ~= nil then
-		--Trace( ("ResolveTable(%s): found in %s"):format(pref,name) )
-		return PrefsTable[name]
+	-- Check if the table even exists yet
+	if not PrefsTable then 
+		Trace("ResolveTable: PrefsTable is nil")
+		return nil 
 	end
 
-	-- not in the current theme; check the fallback if it exists
-	if PrefsTable[FallbackTheme] then
-		val = PrefsTable[FallbackTheme][pref]
+	-- check the section for this theme
+	local name = GetThemeName()
+	
+	-- Guard against nil theme sections
+	if PrefsTable[name] then
+		local val = PrefsTable[name][pref]
 		if val ~= nil then
-			--Trace( ("ResolveTable(%s): found in fallback"):format(pref) )
+			return PrefsTable[name]
+		end
+	end
+
+	-- check the fallback if it exists
+	if PrefsTable[FallbackTheme] then
+		local val = PrefsTable[FallbackTheme][pref]
+		if val ~= nil then
 			return PrefsTable[FallbackTheme]
 		end
 	end
 
-	-- not there either. check every section.
-	-- XXX: we should do this less redundantly.
+	-- check every other section
 	for section, _ in pairs(PrefsTable) do
-		val = PrefsTable[section][pref]
-		if val ~= nil then
-			--Trace( ("ResolveTable(%s): found in section %s"):format(pref,section) )
-			return PrefsTable[section]
+		if PrefsTable[section] then
+			local val = PrefsTable[section][pref]
+			if val ~= nil then
+				return PrefsTable[section]
+			end
 		end
 	end
 
-	-- not found at all
-	Trace(("ResolveTable(%s): pref not found"):format(pref))
 	return nil
 end
 

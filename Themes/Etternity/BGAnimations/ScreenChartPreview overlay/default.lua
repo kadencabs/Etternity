@@ -1,4 +1,4 @@
--- Holographic Void: ScreenChartPreview Overlay
+-- Etternity: ScreenChartPreview Overlay
 -- Integrated sc-wh logic with HV Aesthetics (Glassmorphism, Accents, OLED Blacks).
 -- oh yea the hovering on CDgraph is broken. i might or might not fix it
 

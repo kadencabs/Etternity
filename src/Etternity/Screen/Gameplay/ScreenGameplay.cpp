@@ -195,8 +195,6 @@ ScreenGameplay::Init()
 		this->AddChild(m_pSongForeground);
 	}
 
-	m_Toasty.Load(THEME->GetPathB(m_sName, "toasty"));
-	this->AddChild(&m_Toasty);
 
 	// //
 	// Start a bunch of stuff to make sure the Notefield is placed correctly
@@ -1802,13 +1800,6 @@ ScreenGameplay::HandleScreenMessage(const ScreenMessage& SM)
 		m_NextSong.StartTransitioning(SM_None);
 
 		StartPlayingSong(MIN_SECONDS_TO_STEP_NEXT_SONG, 0);
-	} else if (SM == SM_PlayToasty) {
-		if (PREFSMAN->m_bEasterEggs) {
-			if (m_Toasty.IsWaiting() || PREFSMAN->m_AllowMultipleToasties) {
-				m_Toasty.Reset();
-				m_Toasty.StartTransitioning();
-			}
-		}
 	} else if (ScreenMessageHelpers::ScreenMessageToString(SM).find("0Combo") !=
 			   std::string::npos) {
 		int iCombo;

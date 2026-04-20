@@ -62,15 +62,7 @@ Branch = {
 		end
 	end,
 	MultiScreen = function()
-		if IsNetSMOnline() then
-			if not IsSMOnlineLoggedIn() then
-				return "ScreenNetSelectProfile"
-			else
-				return "ScreenNetSelectProfile"
-			end
-		else
-			return "ScreenNetworkOptions"
-		end
+		return "ScreenSelectProfile"
 	end,
 	OptionsEdit = function()
 		return "ScreenOptionsEdit"
@@ -149,15 +141,6 @@ Branch = {
 		else
 			return "ScreenProfileSave"
 		end
-	end,
-	AfterNetEvaluation = function()
-		return "ScreenNetProfileSave"
-	end,
-	Network = function()
-		return IsNetConnected() and Branch.MultiScreen() or "ScreenTitleMenu"
-	end,
-	BackOutOfNetwork = function()
-		return "ScreenTitleMenu"
 	end,
 	AfterContinue = function()
 

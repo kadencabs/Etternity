@@ -1,4 +1,4 @@
---- Holographic Void: ScreenSelectMusic Background
+--- Etternity: ScreenSelectMusic Background
 -- OLED black with subtle animated scan lines.
 
 local t = Def.ActorFrame {}

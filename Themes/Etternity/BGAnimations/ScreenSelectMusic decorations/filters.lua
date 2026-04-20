@@ -1,4 +1,4 @@
---- Holographic Void: Filters Tab
+--- Etternity: Filters Tab
 -- Rebuilt from Til Death's implementation using UIElements for proper mouse/keyboard input.
 -- Uses FILTERMAN singleton for per-skillset MSD filtering, rate bounds, filter mode, and wheel refresh.
 
