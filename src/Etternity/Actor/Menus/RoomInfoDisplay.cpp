@@ -145,12 +145,6 @@ RoomInfoDisplay::Update(float fDeltaTime)
 }
 
 void
-RoomInfoDisplay::RequestRoomInfo(const std::string& name)
-{
-	NSMAN->RequestRoomInfo(name);
-}
-
-void
 RoomInfoDisplay::SetRoomInfo(const RoomInfo& info)
 {
 	m_songTitle.SetText(SONG_TITLE.GetValue() + info.songTitle);

@@ -524,10 +524,6 @@ ScreenSelectMusic::Input(const InputEventPlus& input)
 				   input.type == IET_FIRST_PRESS) {
 			auto opposite = !GAMESTATE->IsPracticeMode();
 			// don't allow changing practice mode if online
-			auto online =
-			  NSMAN->isSMOnline && NSMAN->loggedIn && NSMAN->IsETTP();
-			opposite = opposite && !online;
-			// this function handles the same above logic for online toggling
 			GAMESTATE->TogglePracticeMode(opposite);
 
 			if (opposite)

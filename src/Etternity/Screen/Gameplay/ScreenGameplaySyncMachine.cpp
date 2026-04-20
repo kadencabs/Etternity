@@ -19,7 +19,6 @@ ScreenGameplaySyncMachine::Init()
 {
 	GAMESTATE->m_bPlayingMulti = false;
 	// The server crashes if syncing is attempted while connected to SMO. -Kyz
-	NSMAN->ReportSongOver();
 
 	GAMESTATE->SetCurrentStyle(
 	  GAMEMAN->GetHowToPlayStyleForGame(GAMESTATE->m_pCurGame), PLAYER_INVALID);

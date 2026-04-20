@@ -49,7 +49,6 @@ local isGameplay = false
 local isInSinglePlayer = false
 local currentScreen
 local show = true
-local online = IsNetSMOnline() and IsSMOnlineLoggedIn() and NSMAN:IsETTP()
 local function changeTab(tabName, tabType)
 	currentTabName = tabName
 	currentTabType = tabType
@@ -66,58 +65,34 @@ local function changeTab(tabName, tabType)
 	end
 	messages = chats[tabType][tabName]
 end
+
 local chat = Def.ActorFrame {
 	BeginCommand = function(self)
 		currentScreen = SCREENMAN:GetTopScreen()
+
 		local updf = function(self)
 			local s = SCREENMAN:GetTopScreen()
-			if not s then
-				return
-			end
-			local oldScreen = currentScreen
+			if not s then return end
+
 			currentScreen = s:GetName()
-			if currentScreen == oldScreen then return end
-		
-			-- prevent the chat from showing in singleplayer because it can be annoying
-			if
-				oldScreen ~= currentScreen and
-					(currentScreen == "ScreenSelectMusic" or currentScreen == "ScreenTitleMenu" or
-						currentScreen == "ScreenOptionsService" or currentScreen == "ScreenInit" or
-						currentScreen == "ScreenPackDownloader")
-			then
-				isInSinglePlayer = true
-			end
-			if string.sub(currentScreen, 1, 9) == "ScreenNet" and currentScreen ~= "ScreenNetSelectProfile" then
-				isInSinglePlayer = false
-			end
-		
-			online = IsNetSMOnline() and IsSMOnlineLoggedIn() and NSMAN:IsETTP()
-			isGameplay = (currentScreen:find("Gameplay") ~= nil or currentScreen:find("StageInformation") ~= nil
-							or currentScreen:find("PlayerOptions") ~= nil)
-		
-			if isGameplay or isInSinglePlayer then
+
+			-- always treat as singleplayer offline mode
+			isInSinglePlayer = true
+			isGameplay = (currentScreen:find("Gameplay") ~= nil
+				or currentScreen:find("StageInformation") ~= nil
+				or currentScreen:find("PlayerOptions") ~= nil)
+
+			-- chat always disabled in gameplay/offline mode
+			self:visible(false)
+			show = false
+			typing = false
+			s:setTimeout(function()
 				self:visible(false)
-				show = false
-				typing = false
-				s:setTimeout(
-					function()
-						self:visible(false)
-					end,
-					0.025
-				)
-			else
-				self:visible(online and not isInSinglePlayer)
-				show = true
-			end
-			if currentScreen == "ScreenNetSelectMusic" then
-				for i = 1, #tabs do
-					if tabs[i] and tabs[i][2] == NSMAN:GetCurrentRoomName() then
-						changeTab(tabs[i][2], tabs[i][1])
-					end
-				end
-			end
+			end, 0.025)
+
 			MESSAGEMAN:Broadcast("UpdateChatOverlay")
 		end
+
 		self:SetUpdateFunction(updf)
 		updf(self)
 		self:SetUpdateFunctionInterval(0.1)
@@ -131,7 +106,6 @@ chat.MinimiseMessageCommand = function(self)
 end
 local i = 0
 chat.InitCommand = function(self)
-	online = IsNetSMOnline() and IsSMOnlineLoggedIn() and NSMAN:IsETTP()
 	self:visible(false)
 	MESSAGEMAN:Broadcast("Minimise")
 end
@@ -319,97 +293,6 @@ chatWindow[#chatWindow + 1] = LoadColorFont("Common Normal") .. {
 	end
 }
 
-local tabWidth = width / maxTabs
-for i = 0, maxTabs - 1 do
-	chatWindow[#chatWindow + 1] = Def.ActorFrame {
-		Name = "Tab" .. i + 1,
-		UpdateChatOverlayMessageCommand = function(self)
-			self:visible(not (not tabs[i + 1]))
-		end,
-		Def.Quad {
-			InitCommand = function(self)
-				self:diffuse(Colors.tab)
-				self:diffusealpha(transparency)
-			end,
-			UpdateChatOverlayMessageCommand = function(self)
-				self:diffuse(
-					(tabs[i + 1] and currentTabName == tabs[i + 1][2] and currentTabType == tabs[i + 1][1]) and Colors.activeTab or
-						Colors.tab
-				)
-				self:stretchto(x + tabWidth * i, y + height, x + tabWidth * (i + 1), y + height * (1 + tabHeight))
-			end,
-			ChatMessageCommand = function(self, params)
-				if params.tab == self:GetParent():GetChild("TabName"):GetText() and params.tab ~= currentTabName
-					and not (params.msg:find("System:") and not params.msg:find("The room is now")
-					and not params.msg:find("Can't start") and not params.msg:find("room operator")
-					and not params.msg:find("You're not in a room") and not params.msg:find("Starting in")) then
-					self:decelerate(0.2):diffuse(Colors.chatSent)
-				end
-			end,
-		},
-		Def.Quad {
-			InitCommand = function(self)
-				self:diffuse(Color.Black)
-				self:diffusealpha(transparency)
-				self:halign(0.5)
-				self:stretchto(x + tabWidth * (i + 1) - 1, y + height,x + tabWidth * (i + 1), y + height * (1 + tabHeight))
-			end,
-		},
-		LoadFont("Common Normal") .. {
-			Name = "TabName",
-			InitCommand = function(self)
-				self:halign(0):valign(0.5)
-				self:maxwidth((tabWidth - 5) / scale)
-				self:zoom(scale)
-				self:diffuse(color("#000000"))
-				self:xy(x + tabWidth * i + 4 - 1.5, y + height * (1 + (tabHeight / 2.3)))
-			end,
-			UpdateChatOverlayMessageCommand = function(self)
-				if not tabs[i + 1] then
-					self:settext("")
-					return
-				end
-				if tabs[i + 1][1] == 0 and tabs[i + 1][2] == "" then
-					self:settext(translated_info["LobbyTab"])
-				elseif tabs[i + 1][1] ~= 0 and tabs[i + 1][2] == "" then
-					self:settext(translated_info["ServerTab"])
-				else
-					self:settext(tabs[i + 1][2] or "")
-				end
-				if
-					tabs[i + 1] and
-						((tabs[i + 1][1] == 0 and tabs[i + 1][2] == "") or
-							(tabs[i + 1][1] == 1 and tabs[i + 1][2] ~= nil and tabs[i + 1][2] == NSMAN:GetCurrentRoomName()))
-					then
-					self:maxwidth((tabWidth - 5) / scale)
-				else
-					self:maxwidth((tabWidth - 15) / scale)
-				end
-			end
-		},
-		Def.Sprite {
-			Texture = THEME:GetPathG("","X.png"),
-			InitCommand = function(self)
-				self:halign(0):valign(0.5)
-				self:zoom(scale - 0.1)
-				self:diffuse(Color.Red)
-				self:xy(x + tabWidth * (i + 1) - closeTabSize, y + height * (1 + (tabHeight / 2.1)))
-			end,
-			UpdateChatOverlayMessageCommand = function(self)
-				if
-					tabs[i + 1] and
-						((tabs[i + 1][1] == 0 and tabs[i + 1][2] == "") or
-							(tabs[i + 1][1] == 1 and tabs[i + 1][2] ~= nil and tabs[i + 1][2] == NSMAN:GetCurrentRoomName()))
-					then
-					self:visible(false)
-				else
-					self:visible(true)
-				end
-			end
-		}
-	}
-end
-
 local inbg
 chatWindow[#chatWindow + 1] = Def.Quad {
 	Name = "ChatBox",
@@ -506,7 +389,7 @@ function MPinput(event)
 					else
 						local tabT = tabs[tabButton][1]
 						local tabN = tabs[tabButton][2]
-						if (tabT == 0 and tabN == "") or (tabT == 1 and tabN ~= nil and tabN == NSMAN:GetCurrentRoomName()) then
+						if tabT == 0 and tabN == "" then
 							return false
 						end
 						tabs[tabButton] = nil
@@ -560,10 +443,7 @@ function MPinput(event)
 	if typing then
 		if event.type == "InputEventType_Release" then
 			if event.DeviceInput.button == "DeviceButton_enter" then
-				if typingText:len() > 0 then
-					NSMAN:SendChatMsg(typingText, currentTabType, currentTabName)
-					typingText = ""
-				elseif typingText == "" then
+				if typingText == "" then
 					typing = false -- pressing enter when text is empty to deactive chat is expected behavior -mina
 				end
 				update = true

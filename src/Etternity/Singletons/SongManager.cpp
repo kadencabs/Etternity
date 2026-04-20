@@ -304,8 +304,6 @@ SongManager::DifferentialReloadDir(string dir) -> int
 			SONGMAN->AddKeyedPointers(pNewSong);
 			index_entry.emplace_back(pNewSong);
 
-			// Update nsman to keep us from getting disconnected
-			NSMAN->Update(0.0F);
 
 			Message msg("DFRUpdate");
 			msg.SetParam("txt",

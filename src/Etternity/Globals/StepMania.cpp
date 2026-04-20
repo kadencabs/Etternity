@@ -1181,10 +1181,6 @@ sm_main(int argc, char* argv[])
 	CodeDetector::RefreshCacheItems();
 
 	if (GetCommandlineArgument("netip"))
-		NSMAN->DisplayStartupStatus(); // If we're using networking show what
-									   // happened
-
-	// Run the main loop.
 	GameLoop::RunGameLoop();
 
 	PREFSMAN->SavePrefsToDisk();

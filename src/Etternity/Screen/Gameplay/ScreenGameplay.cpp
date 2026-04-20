@@ -257,11 +257,6 @@ ScreenGameplay::Init()
 	m_NextSong.SetDrawOrder(DRAW_ORDER_TRANSITIONS - 1);
 	this->AddChild(&m_NextSong);
 
-	// Multiplayer-specific gameplay check
-	if (GAMESTATE->m_bPlayingMulti) {
-		NSMAN->StartRequest(0);
-	}
-
 	// Add individual life meter, when not in sync mode
 	if (m_sName != "ScreenGameplaySyncMachine") {
 		m_vPlayerInfo.m_pLifeMeter =
@@ -396,11 +391,6 @@ ScreenGameplay::~ScreenGameplay()
 
 	// If we didn't just restart gameplay...
 	if (!GAMESTATE->m_bRestartedGameplay) {
-		// Tell Multiplayer we ended the song
-		if (GAMESTATE->m_bPlayingMulti) {
-			NSMAN->ReportSongOver();
-		}
-
 		// Tell DownloadManager we aren't in Gameplay
 		DLMAN->UpdateGameplayState(false);
 
@@ -832,7 +822,8 @@ ScreenGameplay::UpdateSongPosition()
 void
 ScreenGameplay::BeginScreen()
 {
-	if (GAMESTATE->m_pCurSong == nullptr) {
+	if (GAMESTATE->m_pCurSong == nullptr)
+	{
 		return;
 	}
 
@@ -840,39 +831,33 @@ ScreenGameplay::BeginScreen()
 
 	SOUND->PlayOnceFromAnnouncer("gameplay intro"); // crowd cheer
 
-	// Tell multi to do its thing (this really does nothing right now) -poco
-	if (GAMESTATE->m_bPlayingMulti && NSMAN->useSMserver) {
-		NSMAN->StartRequest(1);
-	}
-
-	// Then go
 	StartPlayingSong(MIN_SECONDS_TO_STEP, MIN_SECONDS_TO_MUSIC);
 
-	if (GAMESTATE->m_bPlayingMulti) {
+	if (GAMESTATE->m_bPlayingMulti)
+	{
 		this->SetInterval(
-		  [this]() {
-			  auto& ptns = this->GetPlayerInfo(PLAYER_1)
+			[this]()
+			{
+				auto& ptns = this->GetPlayerInfo(PLAYER_1)
 							 ->GetPlayerStageStats()
 							 ->m_iTapNoteScores;
 
-			  auto doot = ssprintf("%d I %d I %d I %d I %d I %d  x%d",
-								   ptns[TNS_W1],
-								   ptns[TNS_W2],
-								   ptns[TNS_W3],
-								   ptns[TNS_W4],
-								   ptns[TNS_W5],
-								   ptns[TNS_Miss],
-								   this->GetPlayerInfo(PLAYER_1)
-									 ->GetPlayerStageStats()
-									 ->m_iCurCombo);
-			  auto* player = this->GetPlayerInfo(PLAYER_1)->m_pPlayer;
-			  if (player->maxwifescore > 0) {
-				  NSMAN->SendMPLeaderboardUpdate(
-					player->curwifescore / player->maxwifescore, doot);
-			  }
-		  },
-		  0.25F,
-		  -1);
+				auto doot = ssprintf("%d I %d I %d I %d I %d I %d  x%d",
+					ptns[TNS_W1],
+					ptns[TNS_W2],
+					ptns[TNS_W3],
+					ptns[TNS_W4],
+					ptns[TNS_W5],
+					ptns[TNS_Miss],
+					this->GetPlayerInfo(PLAYER_1)
+						->GetPlayerStageStats()
+						->m_iCurCombo);
+
+				// networking removed: leaderboard update disabled
+				// NSMAN->SendMPLeaderboardUpdate(...);
+			},
+			0.25F,
+			-1);
 	}
 }
 

@@ -326,12 +326,16 @@ ScoreKeeperNormal::HandleTapScore(const TapNote& tn)
 {
 	auto tns = tn.result.tns;
 
-	if (tn.type == TapNoteType_Mine) {
-		if (tns == TNS_HitMine) {
+	if (tn.type == TapNoteType_Mine)
+	{
+		if (tns == TNS_HitMine)
+		{
 			if (!m_pPlayerStageStats->m_bFailed)
 				m_pPlayerStageStats->m_iActualDancePoints +=
-				  TapNoteScoreToDancePoints(TNS_HitMine);
+					TapNoteScoreToDancePoints(TNS_HitMine);
+
 			m_pPlayerStageStats->m_iTapNoteScores[TNS_HitMine] += 1;
+
 			if (m_MineHitIncrementsMissCombo)
 				HandleComboInternal(0, 0, 1);
 		}
@@ -339,11 +343,9 @@ ScoreKeeperNormal::HandleTapScore(const TapNote& tn)
 		if (tns == TNS_AvoidMine && m_AvoidMineIncrementsCombo)
 			HandleComboInternal(1, 0, 0);
 
-		NSMAN->ReportScore(m_pPlayerState->m_PlayerNumber,
-						   tns,
-						   m_pPlayerStageStats->m_iScore,
-						   m_pPlayerStageStats->m_iCurCombo,
-						   tn.result.fTapNoteOffset);
+		// networking removed: score reporting disabled
+		// NSMAN->ReportScore(...);
+
 		Message msg("ScoreChanged");
 		msg.SetParam("PlayerNumber", m_pPlayerState->m_PlayerNumber);
 		msg.SetParam("MultiPlayer", m_pPlayerState->m_mp);

@@ -753,24 +753,6 @@ MusicWheel::BuildWheelItemDatas(
 		Message msg("FilterResults");
 		msg.SetParam("Total", static_cast<int>(arraySongs.size()));
 
-		if (FILTERMAN->filteringCommonPacks && NSMAN->IsETTP() &&
-			!NSMAN->commonpacks.empty()) {
-			std::vector<Song*> tmp;
-			for (auto& song : arraySongs) {
-				auto& group = song->m_sGroupName;
-				for (auto& pack : NSMAN->commonpacks) {
-					// If song pack is in packlist
-					if (group == pack) {
-						// Add and continue with next song
-						tmp.emplace_back(song);
-						goto continueOuterLoop;
-					}
-				}
-			continueOuterLoop:;
-			}
-			arraySongs.swap(tmp);
-		}
-
 		if (searching) {
 			FilterBySearch(arraySongs, findme);
 		}

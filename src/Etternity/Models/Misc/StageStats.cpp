@@ -731,10 +731,6 @@ StageStats::FinalizeScores()
 		hs.timeStamps.shrink_to_fit();
 	}
 
-	// tell multiplayer a score was set
-	if (NSMAN->loggedIn) {
-		NSMAN->ReportHighScore(&hs, m_player);
-	}
 
 	// write replays
 	{

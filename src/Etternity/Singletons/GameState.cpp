@@ -1318,11 +1318,6 @@ GameState::TogglePracticeModeSafe(bool set)
 void
 GameState::TogglePracticeMode(bool set)
 {
-	// If we are online, never allow turning practice mode on.
-	if (NSMAN != nullptr && NSMAN->isSMOnline && NSMAN->loggedIn &&
-		NSMAN->IsETTP())
-		set = false;
-
 	m_pPlayerState->m_PlayerOptions.GetCurrent().m_bPractice = set;
 	m_pPlayerState->m_PlayerOptions.GetPreferred().m_bPractice = set;
 	m_pPlayerState->m_PlayerOptions.GetSong().m_bPractice = set;
