@@ -1430,19 +1430,6 @@ class DebugLineUptime : public IDebugLine
 	void DoAndLog(std::string& sMessageOut) override {}
 };
 
-class DebugLineEasterEggs : public IDebugLine
-{
-	std::string GetDisplayTitle() override { return EASTER_EGGS.GetValue(); }
-	std::string GetPageName() const override { return "Misc"; }
-	bool IsEnabled() override { return PREFSMAN->m_bEasterEggs; }
-
-	void DoAndLog(std::string& sMessageOut) override
-	{
-		PREFSMAN->m_bEasterEggs.Set(!PREFSMAN->m_bEasterEggs);
-		IDebugLine::DoAndLog(sMessageOut);
-	}
-};
-
 class DebugLineOsuLifts : public IDebugLine
 {
 	std::string GetDisplayTitle() override { return OSU_LIFTS.GetValue(); }
