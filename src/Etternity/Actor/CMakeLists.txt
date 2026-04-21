@@ -88,8 +88,7 @@ list(APPEND ACTOR_MENU_SRC
 	"Menus/ScrollBar.cpp"
 	"Menus/TextBanner.cpp"
 	"Menus/WheelBase.cpp"
-	"Menus/WheelItemBase.cpp"
-	"Menus/RoomInfoDisplay.cpp")
+	"Menus/WheelItemBase.cpp")
 
 list(APPEND ACTOR_MENU_HPP
 	"Menus/BPMDisplay.h"
@@ -108,8 +107,7 @@ list(APPEND ACTOR_MENU_HPP
 	"Menus/ScrollBar.h"
 	"Menus/TextBanner.h"
 	"Menus/WheelBase.h"
-	"Menus/WheelItemBase.h"
-	"Menus/RoomInfoDisplay.h")
+	"Menus/WheelItemBase.h")
 
 list(APPEND ACTOR_GAMEPLAY_MENU_SRC
 	"GameplayAndMenus/BGAnimation.cpp"
