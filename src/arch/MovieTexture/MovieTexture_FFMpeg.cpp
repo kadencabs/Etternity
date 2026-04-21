@@ -126,6 +126,7 @@ MovieDecoder_FFMpeg::MovieDecoder_FFMpeg()
 	m_buffer = NULL;
 	m_fctx = NULL;
 	m_pStream = NULL;
+	m_pCodecCtx = NULL;
 	m_iCurrentPacketOffset = -1;
 	m_Frame = avcodec::av_frame_alloc();
 
@@ -141,7 +142,7 @@ void
 MovieDecoder_FFMpeg::Init()
 {
 	if (m_iCurrentPacketOffset != -1) {
-		avcodec::av_free_packet(&m_Packet);
+		avcodec::av_packet_unref(&m_Packet);
 		m_iCurrentPacketOffset = -1;
 	}
 
@@ -227,7 +228,7 @@ MovieDecoder_FFMpeg::ReadPacket()
 	for (;;) {
 		if (m_iCurrentPacketOffset != -1) {
 			m_iCurrentPacketOffset = -1;
-			avcodec::av_free_packet(&m_Packet);
+			avcodec::av_packet_unref(&m_Packet);
 		}
 
 		int ret = avcodec::av_read_frame(m_fctx, &m_Packet);
@@ -246,7 +247,7 @@ MovieDecoder_FFMpeg::ReadPacket()
 		}
 
 		/* It's not for the video stream; ignore it. */
-		avcodec::av_free_packet(&m_Packet);
+		avcodec::av_packet_unref(&m_Packet);
 	}
 }
 
@@ -258,48 +259,52 @@ MovieDecoder_FFMpeg::DecodePacket(float fTargetTime)
 	if (m_iEOF == 0 && m_iCurrentPacketOffset == -1)
 		return 0; /* no packet */
 
-	while (m_iEOF == 1 ||
-		   (m_iEOF == 0 && m_iCurrentPacketOffset < m_Packet.size)) {
-		/* If we have no data on the first frame, just return EOF; passing an
-		 * empty packet to avcodec_decode_video in this case is crashing it.
-		 * However, passing an empty packet is normal with B-frames, to flush.
-		 * This may be unnecessary in newer versions of avcodec, but I'm waiting
-		 * until a new stable release to upgrade. */
-		if (m_Packet.size == 0 && m_iFrameNumber == -1)
-			return 0; /* eof */
+	/* If we have no data on the first frame, just return EOF. */
+	if (m_Packet.size == 0 && m_iFrameNumber == -1)
+		return 0; /* eof */
 
+	/* Send packet to the decoder (only when we haven't sent it yet). */
+	if (m_iCurrentPacketOffset == 0) {
+		avcodec::AVPacket* pkt = (m_iEOF == 1) ? NULL : &m_Packet;
+		int ret = avcodec::avcodec_send_packet(m_pCodecCtx, pkt);
+		if (ret < 0 && ret != AVERROR(EAGAIN)) {
+			if (ret == AVERROR_EOF) {
+				m_iEOF = 2;
+				return 0;
+			}
+			Locator::getLogger()->warn("avcodec_send_packet: {}", ret);
+			return -1;
+		}
+		/* Mark packet as sent */
+		m_iCurrentPacketOffset = m_Packet.size > 0 ? m_Packet.size : 1;
+		if (m_iEOF == 1)
+			m_iEOF = 2;
+	}
+
+	/* Receive decoded frames. */
+	for (;;) {
+		int ret = avcodec::avcodec_receive_frame(m_pCodecCtx, m_Frame);
+		if (ret == AVERROR(EAGAIN)) {
+			return 0; /* need more input */
+		} else if (ret == AVERROR_EOF) {
+			if (m_iEOF >= 1)
+				m_iEOF = 2;
+			return 0;
+		} else if (ret < 0) {
+			Locator::getLogger()->warn("avcodec_receive_frame: {}", ret);
+			return -1;
+		}
+
+		/* Got a frame. */
 		bool bSkipThisFrame =
 		  fTargetTime != -1 &&
 		  GetTimestamp() + GetFrameDuration() < fTargetTime &&
-		  (m_pStream->codec->frame_number % 2) == 0;
-
-		int iGotFrame;
-		/* Hack: we need to send size = 0 to flush frames at the end, but we
-		 * have to give it a buffer to read from since it tries to read anyway.
-		 */
-		m_Packet.data = m_Packet.size ? m_Packet.data : NULL;
-		int len = avcodec::avcodec_decode_video2(
-		  m_pStream->codec, m_Frame, &iGotFrame, &m_Packet);
-
-		if (len < 0) {
-			Locator::getLogger()->warn("avcodec_decode_video2: {}    ", len);
-			return -1; // XXX
-		}
-
-		m_iCurrentPacketOffset += len;
-
-		if (!iGotFrame) {
-			if (m_iEOF == 1)
-				m_iEOF = 2;
-			continue;
-		}
+		  (m_pCodecCtx->frame_number % 2) == 0;
 
 		if (m_Frame->pkt_dts != AV_NOPTS_VALUE) {
 			m_fTimestamp = static_cast<float>(m_Frame->pkt_dts *
 											  av_q2d(m_pStream->time_base));
 		} else {
-			/* If the timestamp is zero, this frame is to be played at the
-			 * time of the last frame plus the length of the last frame. */
 			m_fTimestamp += m_fLastFrameDelay;
 		}
 
@@ -310,10 +315,6 @@ MovieDecoder_FFMpeg::DecodePacket(float fTargetTime)
 		++m_iFrameNumber;
 
 		if (m_iFrameNumber == 0) {
-			/* Some videos start with a timestamp other than 0.  I think this is
-			 * used when audio starts before the video.  We don't want to honor
-			 * that, since the DShow renderer doesn't and we don't want to break
-			 * sync compatibility. */
 			const float expect = 0;
 			const float actual = m_fTimestamp;
 			if (actual - expect > 0) {
@@ -327,26 +328,19 @@ MovieDecoder_FFMpeg::DecodePacket(float fTargetTime)
 
 		return 1;
 	}
-
-	return 0; /* packet done */
 }
 
 void
 MovieDecoder_FFMpeg::GetFrame(RageSurface* pSurface)
 {
-	avcodec::AVPicture pict;
-	pict.data[0] = (unsigned char*)pSurface->pixels;
-	pict.linesize[0] = pSurface->pitch;
+	uint8_t* data[4] = { (uint8_t*)pSurface->pixels, NULL, NULL, NULL };
+	int linesize[4] = { pSurface->pitch, 0, 0, 0 };
 
-	/* XXX 1: Do this in one of the Open() methods instead?
-	 * XXX 2: The problem of doing this in Open() is that m_AVTexfmt is not
-	 * already initialized with its correct value.
-	 */
 	if (m_swsctx == NULL) {
 		m_swsctx = avcodec::sws_getCachedContext(m_swsctx,
 												 GetWidth(),
 												 GetHeight(),
-												 m_pStream->codec->pix_fmt,
+												 m_pCodecCtx->pix_fmt,
 												 GetWidth(),
 												 GetHeight(),
 												 m_AVTexfmt,
@@ -358,7 +352,7 @@ MovieDecoder_FFMpeg::GetFrame(RageSurface* pSurface)
 			Locator::getLogger()->warn("Cannot initialize sws conversion context for ({},{}) {}->{}",
 			  GetWidth(),
 			  GetHeight(),
-			  m_pStream->codec->pix_fmt,
+			  m_pCodecCtx->pix_fmt,
 			  m_AVTexfmt);
 			return;
 		}
@@ -369,8 +363,8 @@ MovieDecoder_FFMpeg::GetFrame(RageSurface* pSurface)
 					   m_Frame->linesize,
 					   0,
 					   GetHeight(),
-					   pict.data,
-					   pict.linesize);
+					   data,
+					   linesize);
 }
 
 static std::string
@@ -400,8 +394,10 @@ MovieTexture_FFMpeg::RegisterProtocols()
 		return;
 	Done = true;
 
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec::avcodec_register_all();
 	avcodec::av_register_all();
+#endif
 }
 
 static int
@@ -476,16 +472,16 @@ MovieDecoder_FFMpeg::Open(const std::string& sFile)
 		return "Couldn't find any video streams";
 	m_pStream = m_fctx->streams[stream_idx];
 
-	if (m_pStream->codec->codec_id == avcodec::CODEC_ID_NONE)
-		return ssprintf("Unsupported codec %08x", m_pStream->codec->codec_tag);
+	if (m_pStream->codecpar->codec_id == avcodec::AV_CODEC_ID_NONE)
+		return ssprintf("Unsupported codec %08x", m_pStream->codecpar->codec_tag);
 
 	std::string sError = OpenCodec();
 	if (!sError.empty())
 		return ssprintf("AVCodec (%s): %s", sFile.c_str(), sError.c_str());
 
-	Locator::getLogger()->debug("Bitrate: {}", m_pStream->codec->bit_rate);
+	Locator::getLogger()->debug("Bitrate: {}", m_pCodecCtx->bit_rate);
 	Locator::getLogger()->debug("Codec pixel format: {}",
-			   avcodec::av_get_pix_fmt_name(m_pStream->codec->pix_fmt));
+			   avcodec::av_get_pix_fmt_name(m_pCodecCtx->pix_fmt));
 
 	return std::string();
 }
@@ -494,7 +490,7 @@ std::string
 MovieDecoder_FFMpeg::OpenCodec()
 {
 	if (m_iCurrentPacketOffset != -1) {
-		avcodec::av_free_packet(&m_Packet);
+		avcodec::av_packet_unref(&m_Packet);
 		m_iCurrentPacketOffset = -1;
 	}
 
@@ -506,28 +502,35 @@ MovieDecoder_FFMpeg::OpenCodec()
 	m_fLastFrame = 0;
 
 	ASSERT(m_pStream != NULL);
-	if (m_pStream->codec->codec)
-		avcodec::avcodec_close(m_pStream->codec);
 
-	avcodec::AVCodec* pCodec =
-	  avcodec::avcodec_find_decoder(m_pStream->codec->codec_id);
+	/* Free any existing codec context. */
+	if (m_pCodecCtx) {
+		avcodec::avcodec_free_context(&m_pCodecCtx);
+		m_pCodecCtx = NULL;
+	}
+
+	const avcodec::AVCodec* pCodec =
+	  avcodec::avcodec_find_decoder(m_pStream->codecpar->codec_id);
 	if (pCodec == NULL)
-		return ssprintf("Couldn't find decoder %i", m_pStream->codec->codec_id);
+		return ssprintf("Couldn't find decoder %i", m_pStream->codecpar->codec_id);
 
-	m_pStream->codec->workaround_bugs = 1;
-	m_pStream->codec->idct_algo = FF_IDCT_AUTO;
-	m_pStream->codec->error_concealment = 3;
+	m_pCodecCtx = avcodec::avcodec_alloc_context3(pCodec);
+	if (!m_pCodecCtx)
+		return "Couldn't allocate codec context";
 
-	if (pCodec->capabilities & CODEC_CAP_DR1)
-		m_pStream->codec->flags |= CODEC_FLAG_EMU_EDGE;
+	int ret = avcodec::avcodec_parameters_to_context(m_pCodecCtx, m_pStream->codecpar);
+	if (ret < 0)
+		return std::string(averr_ssprintf(ret, "Couldn't copy codec parameters"));
+
+	m_pCodecCtx->workaround_bugs = FF_BUG_AUTODETECT;
 
 	Locator::getLogger()->trace("Opening codec {}", pCodec->name);
 
-	int ret = avcodec::avcodec_open2(m_pStream->codec, pCodec, NULL);
+	ret = avcodec::avcodec_open2(m_pCodecCtx, pCodec, NULL);
 	if (ret < 0)
 		return std::string(
 		  averr_ssprintf(ret, "Couldn't open codec \"%s\"", pCodec->name));
-	ASSERT(m_pStream->codec->codec != NULL);
+	ASSERT(m_pCodecCtx->codec != NULL);
 
 	return std::string();
 }
@@ -535,10 +538,11 @@ MovieDecoder_FFMpeg::OpenCodec()
 void
 MovieDecoder_FFMpeg::Close()
 {
-	if (m_pStream && m_pStream->codec->codec) {
-		avcodec::avcodec_close(m_pStream->codec);
-		m_pStream = NULL;
+	if (m_pCodecCtx) {
+		avcodec::avcodec_free_context(&m_pCodecCtx);
+		m_pCodecCtx = NULL;
 	}
+	m_pStream = NULL;
 
 	if (m_fctx) {
 		avcodec::avformat_close_input(&m_fctx);
@@ -577,7 +581,7 @@ MovieTexture_FFMpeg::MovieTexture_FFMpeg(const RageTextureID& ID)
 
 RageMovieTexture*
 RageMovieTextureDriver_FFMpeg::Create(const RageTextureID& ID,
-									  std::string& sError)
+										  std::string& sError)
 {
 	MovieTexture_FFMpeg* pRet = new MovieTexture_FFMpeg(ID);
 	sError = pRet->Init();
@@ -597,18 +601,9 @@ REGISTER_MOVIE_TEXTURE_CLASS(FFMpeg);
  * "Software"), to deal in the Software without restriction, including
  * without limitation the rights to use, copy, modify, merge, publish,
  * distribute, and/or sell copies of the Software, and to permit persons to
- * whom the Software is furnished to do so, provided that the above
- * copyright notice(s) and this permission notice appear in all copies of
- * the Software and that both the above copyright notice(s) and this
- * permission notice appear in supporting documentation.
+ * whom the Software is furnished to do so, subject to the following
+ * conditions:
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
- * THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS
- * INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT
- * OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
- * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
- * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
- * PERFORMANCE OF THIS SOFTWARE.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  */
