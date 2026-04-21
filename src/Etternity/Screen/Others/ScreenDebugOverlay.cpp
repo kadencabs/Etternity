@@ -1666,7 +1666,6 @@ DECLARE_ONE(DebugLineUptime);
 DECLARE_ONE(DebugLineResetKeyMapping);
 DECLARE_ONE(DebugLineMuteActions);
 DECLARE_ONE(DebugLineSkips);
-DECLARE_ONE(DebugLineEasterEggs);
 DECLARE_ONE(DebugLineOsuLifts);
 DECLARE_ONE(DebugLinePitchRates);
 DECLARE_ONE(DebugLineFullscreen);
