@@ -137,96 +137,96 @@ jobs:
         with:
           files: ${{github.workspace}}/main/build/*.tar.gz
 
-  macos_aarch64:
-    name: macOS aarch64 ${{matrix.cfg.name}}
-    runs-on: ${{matrix.cfg.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        cfg:
-          - { os: macos-14,     name: "Sonoma", dist: true }
+#  macos_aarch64:
+#    name: macOS aarch64 ${{matrix.cfg.name}}
+#    runs-on: ${{matrix.cfg.os}}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        cfg:
+#          - { os: macos-14,     name: "Sonoma", dist: true }
 
-    steps:
+#    steps:
 
-      - name: Checkout Etternity
-        uses: actions/checkout@v3
-        with:
-          path: main
-          fetch-depth: 0
+#      - name: Checkout Etternity
+#        uses: actions/checkout@v3
+#        with:
+#          path: main
+#          fetch-depth: 0
 
-      - name: Checkout CrashpadTools
-        uses: actions/checkout@v3
-        with:
-          repository: etternagame/CrashpadTools
-          path: tools
-          fetch-depth: 0
+#      - name: Checkout CrashpadTools
+#        uses: actions/checkout@v3
+#        with:
+#          repository: etternagame/CrashpadTools
+#          path: tools
+#          fetch-depth: 0
 
-      - name: Install homebrew packages
-        run: brew install cmake nasm ninja openssl
+#      - name: Install homebrew packages
+#        run: brew install cmake nasm ninja openssl
 
-      - name: Setup Python 3
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
+#      - name: Setup Python 3
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
 
-      - name: Update CPack Environment
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "ETT_MAC_SYS_NAME=M1" >> $GITHUB_ENV
+#      - name: Update CPack Environment
+#        if: ${{matrix.cfg.dist}}
+#       run: |
+#          echo "ETT_MAC_SYS_NAME=M1" >> $GITHUB_ENV
 
-      - name: Generate CMake
-        run: mkdir main/build && cd main/build && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_CRASHPAD=OFF -G Ninja ..
+#      - name: Generate CMake
+#        run: mkdir main/build && cd main/build && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_CRASHPAD=OFF -G Ninja ..
 
-      - name: Build Project
-        run: cd main/build && ninja
+#      - name: Build Project
+#        run: cd main/build && ninja
 
-      - name: Generate binary
-        if: ${{matrix.cfg.dist}}
-        run: |
-          chmod +x main/CMake/Helpers/hdiutil_repeat.sh
-          cd main/build && cpack
+#      - name: Generate binary
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          chmod +x main/CMake/Helpers/hdiutil_repeat.sh
+#          cd main/build && cpack
 
-      - name: Upload Binary
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: "Etternity - macOS aarch64"
-          path: '${{github.workspace}}/main/build/*.dmg'
+#      - name: Upload Binary
+#        if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: "Etternity - macOS aarch64"
+#          path: '${{github.workspace}}/main/build/*.dmg'
 
-      - name: Update Environment Variables
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
-          echo "Etternity_ARCH=aarch64" >> $GITHUB_ENV
+#    - name: Update Environment Variables
+#      if: ${{matrix.cfg.dist}}
+#       run: |
+#          echo "${{github.workspace}}/tools/mac" >> $GITHUB_PATH
+#          echo "Etternity_ARCH=aarch64" >> $GITHUB_ENV
 
-      - name: Generate Symbols
-        if: ${{matrix.cfg.dist}}
-        run: |
-          echo "Running dsymutil..."
-          dsymutil -o ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > /dev/null
-          echo "Dumping Symbols..."
-          dump_syms ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > ${{github.workspace}}/main/Etternity.sym
-          echo "Stripping debug symbols from binary..."
-          strip main/Etternity.app/Contents/MacOS/Etternity
+#      - name: Generate Symbols
+#        if: ${{matrix.cfg.dist}}
+#        run: |
+#          echo "Running dsymutil..."
+#          dsymutil -o ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > /dev/null
+#          echo "Dumping Symbols..."
+#          dump_syms ${{github.workspace}}/main/Etternity.dsym main/Etternity.app/Contents/MacOS/Etternity > ${{github.workspace}}/main/Etternity.sym
+#          echo "Stripping debug symbols from binary..."
+#          strip main/Etternity.app/Contents/MacOS/Etternity
 
-      - name: Prepare symbols for upload artifacts
-        if: ${{matrix.cfg.dist}}
-        run: |
-          chmod +x main/.ci/prepare_symbols.py
-          cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
+#      - name: Prepare symbols for upload artifacts
+#       if: ${{matrix.cfg.dist}}
+#        run: |
+#          chmod +x main/.ci/prepare_symbols.py
+#          cd main && ${{github.workspace}}/main/.ci/prepare_symbols.py
 
-      - name: Upload Symbols to action artifacts
-        if: ${{matrix.cfg.dist}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: Etternity Symbols Mac aarch64 - ${{github.sha}}
-          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
+#      - name: Upload Symbols to action artifacts
+#       if: ${{matrix.cfg.dist}}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Etternity Symbols Mac aarch64 - ${{github.sha}}
+#          path: '${{github.workspace}}/main/EtternitySymbolsUploadDir'
 
-      - name: Upload files to Release
-        uses: softprops/action-gh-release@v1
-        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
-        with:
-          files: ${{github.workspace}}/main/build/*.dmg
+#      - name: Upload files to Release
+#        uses: softprops/action-gh-release@v1
+#        if: ${{ matrix.cfg.dist && github.event_name == 'release' && github.event.action == 'published' }}
+#        with:
+#          files: ${{github.workspace}}/main/build/*.dmg
 
 #  macos:
 #    name: macOS x64 ${{matrix.cfg.name}}

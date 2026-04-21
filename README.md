@@ -17,8 +17,7 @@
 
 
 - [Installing](#Installing)
-  - [Windows and macOS](#Windows-and-macOS)
-  - [macOS](#macOS)
+  - [Windows and Linux](#Windows-and-Linux)
 - [Special Thanks](#Special-Thanks)
 
 
@@ -53,7 +52,7 @@
 
 
 
-### Windows, macOS, and Linux
+### Windows and Linux
 
 
 
@@ -104,7 +103,6 @@ For Windows, run the installer, and you should be ready to go.
 
 
 
-For macOS, first follow the below instructions. *After* doing them, mount the DMG and copy the Etterna folder to a location of your choice. Run the executable, and you are ready to go.
 
 
 
@@ -125,54 +123,6 @@ For Linux, there should be no extra steps. If it does not work, try to install t
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-### macOS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-This macOS binary is not signed, so before it can be installed it must be de-quarantined by executing this command in the same directory (likely your downloads folder) as the Etterna dmg.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-`xattr -d com.apple.quarantine ./Etterna*.dmg`
 
 
 
