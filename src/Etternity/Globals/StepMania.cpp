@@ -1049,7 +1049,6 @@ sm_main(int argc, char* argv[])
 
     // Setup options that require preference variables
     // Used to be contents of ApplyLogPreferences
-    Core::Crash::setShouldUpload(PREFSMAN->m_bEnableCrashUpload);
     Core::Platform::setConsoleEnabled(PREFSMAN->m_bShowLogOutput);
 	Locator::getLogger()->info("Logging level {} (0 - TRACE | 5 - FATAL)",
 							   PREFSMAN->m_logging_level.Get());

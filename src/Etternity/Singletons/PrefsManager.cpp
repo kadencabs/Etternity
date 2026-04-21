@@ -209,9 +209,7 @@ PrefsManager::PrefsManager()
   , m_UnfocusedSleepMillisecs("UnfocusedSleepMilliseconds", 10)
   , m_logging_level("LoggingLevel", 3)
   , m_bEnableScoreboard("EnableScoreboard", true)
-  , m_bEnableCrashUpload("EnableMinidumpUpload", false)
   , m_bAllowSongDeletion("AllowSongDeletion", false)
-  , m_bShowMinidumpUploadDialogue("ShowMinidumpUploadDialogue", false, nullptr)
 
 {
 	Init();

@@ -240,8 +240,6 @@ class PrefsManager
 	Preference<bool>
 	  m_bEnableScoreboard; // Alows disabling of scoreboard in network play
 
-	Preference<bool> m_bEnableCrashUpload;
-	Preference<bool> m_bShowMinidumpUploadDialogue;
 
 	Preference<bool> m_bAllowSongDeletion;
 
