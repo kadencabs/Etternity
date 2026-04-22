@@ -1178,7 +1178,7 @@ sm_main(int argc, char* argv[])
 
 	CodeDetector::RefreshCacheItems();
 
-	if (GetCommandlineArgument("netip"))
+	/* if (GetCommandlineArgument("netip")) */
 	GameLoop::RunGameLoop();
 
 	PREFSMAN->SavePrefsToDisk();
