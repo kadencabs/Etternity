@@ -2,7 +2,8 @@ local pn = GAMESTATE:GetEnabledPlayers()[1] or PLAYER_1
 local lScreen = Var "LoadingScreen" or ""
 local isSync = lScreen:find("Sync") ~= nil
 local HV_PointsLost = 0
-local HV_MaxPoints = 1 -- Placeholder, will be set in BeginCommand
+local HV_MaxPoints = 0
+local HV_TotalMaxPoints = 1
 local HV_PBThreshold = 0
 local HV_JudgeScale = 1.0
 
@@ -22,37 +23,13 @@ local t = Def.ActorFrame {
 		if curScreen and curScreen:GetName():find("Sync") then
 			isSync = true
 		end
-		-- Apply Mini mod (Receptor Size)
-		local miniValue = tonumber(ThemePrefs.Get("HV_Mini")) or 100
-		local miniPct = 100 - miniValue
-		local modStr = miniPct .. "% mini"
-		
-		-- Apply Measure Lines (Beat Bars) mod
-		local beatBarMod = HV.ShowMeasureLines() and "beatbars" or "nobeatbars"
-		
-		-- Apply mods to all enabled players
-		for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-			local ps = GAMESTATE:GetPlayerState(pn)
-			local po = ps:GetPlayerOptions("ModsLevel_Preferred")
-			po:FromString(modStr)
-			po:FromString(beatBarMod)
 
-			-- Sync Mode overrides
-			if isSync then
-				po:CMod(400)
-				po:Reverse(0) -- Upscroll
-				-- Apply to Current level as well
-				local co = ps:GetPlayerOptions("ModsLevel_Current")
-				co:CMod(400)
-				co:Reverse(0)
-			end
-		end
-		
 		HV.LastGameplayTime = os.time()
 		HV.GameplaySessionValid = true
 
-		-- Properly initialize total chart points once song/steps are loaded
-		HV_MaxPoints = (getMaxNotes(PLAYER_1) or 1) * 2
+		-- Initialize total chart points for subtractive mode
+		HV_TotalMaxPoints = (getMaxNotes(PLAYER_1) or 1) * 2
+		HV_MaxPoints = 0
 		HV_PointsLost = 0
 		HV_JudgeScale = PREFSMAN:GetPreference("TimingWindowScale") or 1.0
 
@@ -73,7 +50,36 @@ local t = Def.ActorFrame {
 		setMovableKeymode(km)
 	end,
 	OnCommand = function(self)
-		-- Double check mods on OnCommand just in case
+		-- Apply Mini mod (Receptor Size)
+		local miniValue = tonumber(ThemePrefs.Get("HV_Mini")) or 100
+		local miniPct = 100 - miniValue
+		local modStr = miniPct .. "% mini"
+
+		-- Apply Measure Lines (Beat Bars) mod
+		local beatBarMod = HV.ShowMeasureLines() and "beatbars" or "nobeatbars"
+
+		-- Apply mods to all enabled players
+		for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
+			local ps = GAMESTATE:GetPlayerState(pn)
+			local po = ps:GetPlayerOptions("ModsLevel_Preferred")
+			po:FromString(modStr)
+			po:FromString(beatBarMod)
+			-- Also apply to Current so it takes effect immediately on first load
+			local co = ps:GetPlayerOptions("ModsLevel_Current")
+			co:FromString(modStr)
+			co:FromString(beatBarMod)
+
+			-- Sync Mode overrides
+			if isSync then
+				po:CMod(400)
+				po:Reverse(0)
+				local co2 = ps:GetPlayerOptions("ModsLevel_Current")
+				co2:CMod(400)
+				co2:Reverse(0)
+			end
+		end
+
+		-- Double check sync mods on OnCommand just in case
 		if isSync then
 			for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 				local ps = GAMESTATE:GetPlayerState(pn)
@@ -89,7 +95,6 @@ local t = Def.ActorFrame {
 				if event.type == "InputEventType_Release" then return end
 				if event.type == "InputEventType_FirstPress" then
 					local b = event.button
-					-- Filter for common gameplay buttons to avoid menu buttons triggering HUD animations
 					if b == "Left" or b == "Down" or b == "Up" or b == "Right" or
 					   b == "Key 1" or b == "Key 2" or b == "Key 3" or b == "Key 4" or
 					   b == "Key 5" or b == "Key 6" or b == "Key 7" then
@@ -118,12 +123,13 @@ local t = Def.ActorFrame {
 	-- Shared PointsLost Accumulator (Wife3 Adherent)
 	JudgmentMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
-		
 		local s = params.TapNoteScore
-		if params.HoldNoteScore or not s or s == "TapNoteScore_None" or s == "TapNoteScore_AvoidMine" or 
+		if params.HoldNoteScore or not s or s == "TapNoteScore_None" or s == "TapNoteScore_AvoidMine" or
 		   s == "TapNoteScore_CheckpointHit" or s == "TapNoteScore_CheckpointMiss" then
-			return 
+			return
 		end
+
+		HV_MaxPoints = HV_MaxPoints + 2  -- increment as notes are scored
 
 		if s == "TapNoteScore_HitMine" then
 			HV_PointsLost = HV_PointsLost + 7.0
@@ -134,7 +140,7 @@ local t = Def.ActorFrame {
 		elseif s == "TapNoteScore_Miss" then
 			HV_PointsLost = HV_PointsLost + 7.5
 		end
-		
+
 		MESSAGEMAN:Broadcast("HV_PointsUpdate")
 	end,
 
@@ -426,7 +432,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "LifePct",
 		InitCommand = function(self)
-			self:y(-lifeBarH / 2 - 10):zoom(0.25):diffuse(subText)
+			self:xy(-lifeBarW - 4, -lifeBarH / 2 - 10):zoom(0.25):halign(1):diffuse(subText)
 		end,
 		BeginCommand = function(self)
 			self:playcommand("RefreshLifePct")
@@ -483,26 +489,17 @@ t[#t + 1] = Def.ActorFrame {
 			self:playcommand("Update")
 		end,
 		UpdateCommand = function(self)
-			local wifePct
 			local scoreMode = ThemePrefs.Get("HV_ScoreDisplayMode") or "Normal"
-			
+			local wifePct
 			if scoreMode == "Subtractive" then
-				wifePct = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
+				if HV_TotalMaxPoints <= 0 then return end
+				wifePct = ((HV_TotalMaxPoints - HV_PointsLost) / HV_TotalMaxPoints) * 100
 			else
-				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-				if pss then
-					local totalTaps = pss:GetTotalTaps()
-					if totalTaps > 0 then
-						wifePct = (pss:GetWifeScore() / (totalTaps * 2)) * 100
-					else
-						wifePct = 0
-					end
-				end
+				if HV_MaxPoints <= 0 then return end
+				wifePct = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
 			end
-			
 			if not wifePct then return end
 			self:settext(string.format("%.4f%%", wifePct))
-			
 			local tier = getEtternityGrade(wifePct)
 			self:diffuse(HVColor.GetGradeColor(tier)):diffusealpha(0.7)
 		end
@@ -672,7 +669,6 @@ t[#t + 1] = Def.ActorFrame {
 			self:y(16)
 		end,
 
-		-- Graphic for "Combo"
 		Def.Sprite {
 			Name = "ComboGraphic",
 			Texture = THEME:GetPathG("", "combo_label.png"),
@@ -681,7 +677,6 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		},
 
-		-- Text for "Misses" (fallback if no graphic, or for text-specific label)
 		LoadFont("Common Normal") .. {
 			Name = "MissesText",
 			InitCommand = function(self)
@@ -696,8 +691,6 @@ t[#t + 1] = Def.ActorFrame {
 		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 		if not pss then return end
 
-		-- Synchronously calculate consecutive combo breaks 
-		-- This prevents C++ CNote jumps from overwriting 'Update' queue params resulting in total missed sums
 		if not params.HoldNoteScore and params.TapNoteScore then
 			local tns = params.TapNoteScore
 			if tns == "TapNoteScore_Miss" or tns == "TapNoteScore_W5" or tns == "TapNoteScore_W4" then
@@ -707,10 +700,7 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end
 
-		-- Apply Combo Animation if enabled
-		-- Triggering here avoids Engine race conditions on key release
 		if HV.ComboAnimation and HV.ComboAnimation() then
-			-- Avoid 1.3 zoom mistakenly triggering on hold releases
 			if not params.HoldNoteScore then
 				local tns = params.TapNoteScore
 				if tns and tns ~= "TapNoteScore_None" and tns ~= "TapNoteScore_Miss" and tns ~= "TapNoteScore_HitMine" and tns ~= "TapNoteScore_AvoidMine" and tns ~= "TapNoteScore_CheckpointHit" and tns ~= "TapNoteScore_CheckpointMiss" then
@@ -722,7 +712,6 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end
 		
-		-- Redraw miss UI if combo is 0 (as combo=0 judgments don't reliably trigger ComboChanged per C++ implementation)
 		if pss:GetCurrentCombo() == 0 then
 			local numActor = self:GetChild("ComboNumber")
 			local labelContainer = self:GetChild("ComboLabel")
@@ -759,12 +748,11 @@ t[#t + 1] = Def.ActorFrame {
 			
 			numActor:settext(tostring(combo)):diffuse(brightText)
 			
-			-- Shadow display logic: 25% threshold + No combo breaks (FC status so far)
 			local isFC = (ct ~= "MF" and ct ~= "SDCB" and ct ~= "Clear" and ct ~= "Failed")
 			
 			if combo >= threshold and isFC then
 				numActor:shadowcolor(ctColor)
-				numActor:shadowlength(1.5) -- Improved visibility
+				numActor:shadowlength(1.5)
 			else
 				numActor:shadowlength(0)
 			end
@@ -780,7 +768,6 @@ t[#t + 1] = Def.ActorFrame {
 
 	GhostTapMessageCommand = function(self)
 		if HV.ComboAnimation and HV.ComboAnimation() then
-			-- Prevent Ghost Tap from overriding the 1.3 zoom from a valid hit
 			if self.lastHitTime and GetTimeSinceStart() - self.lastHitTime < 0.05 then return end
 			self:stoptweening():zoom(1.08):linear(0.05):zoom(1.0)
 		end
@@ -788,6 +775,7 @@ t[#t + 1] = Def.ActorFrame {
 
 }
 end -- End combo visibility check
+
 -- ============================================================
 -- COMBO BREAK LANE HIGHLIGHT
 -- ============================================================
@@ -907,11 +895,9 @@ t[#t + 1] = Def.ActorFrame {
 		local coords, sizes = getCoords()
 		local ebMode = ThemePrefs.Get("HV_ErrorBarMode") or "Standard"
 		self:xy(coords.ErrorBarX, coords.ErrorBarY - 265):visible(ebMode ~= "Off" and not isSync)
-		-- store width for children to use
 		self.ebW = sizes.ErrorBarWidth or 280
 	end,
 
-	-- Background line
 	Def.Quad {
 		InitCommand = function(self)
 			local ebW = self:GetParent().ebW or 280
@@ -919,7 +905,6 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 
-	-- Center Line (0ms)
 	Def.Quad {
 		Name = "CenterLine",
 		InitCommand = function(self)
@@ -927,7 +912,6 @@ t[#t + 1] = Def.ActorFrame {
 		end
 	},
 	
-	-- Early Indicator (Left)
 	LoadFont("Common Normal") .. {
 		Text = "EARLY",
 		InitCommand = function(self)
@@ -938,7 +922,6 @@ t[#t + 1] = Def.ActorFrame {
 			self:sleep(0.5):linear(0.2):diffusealpha(0.6):sleep(1.2):linear(0.2):diffusealpha(0)
 		end
 	},
-	-- Late Indicator (Right)
 	LoadFont("Common Normal") .. {
 		Text = "LATE",
 		InitCommand = function(self)
@@ -1031,7 +1014,6 @@ t[#t + 1] = Def.ActorFrame {
 		self:xy(coords.JudgeCounterX - 45, coords.JudgeCounterY - 45):diffusealpha(0.8)
 	end,
 
-	-- COLUMN 1: Judgments + OK/NG
 	Def.ActorFrame {
 		Name = "Column1_Judgments",
 		
@@ -1040,7 +1022,7 @@ t[#t + 1] = Def.ActorFrame {
 			for i, label in ipairs(judgmentLabels) do
 				g[#g+1] = Def.ActorFrame {
 					InitCommand = function(self)
-						self:y((i - 1) * 16)
+						self:y((i - 1) * 13)
 					end,
 
 					LoadFont("Common Normal") .. {
@@ -1133,7 +1115,6 @@ t[#t + 1] = Def.ActorFrame {
 		}
 	},
 
-	-- COLUMN 2: Performance Metrics
 	Def.ActorFrame {
 		Name = "Column2_Metrics",
 		InitCommand = function(self)
@@ -1350,15 +1331,27 @@ if not HV.MinimalisticMode() and not isSync then
 t[#t + 1] = Def.ActorFrame {
 	Name = "SongInfoHUD",
 	InitCommand = function(self)
-		self:xy(SCREEN_CENTER_X, SCREEN_BOTTOM - 14)
+		self:xy(SCREEN_CENTER_X, barY + 22)
 	end,
 	OnCommand = function(self)
 		self:diffusealpha(0.6)
 	end,
-	
+
+	LoadFont("_open sans 48px") .. {
+		InitCommand = function(self)
+			self:y(0):zoom(0.25):diffuse(mainText):maxwidth(SCREEN_WIDTH * 0.6 / 0.25)
+		end,
+		BeginCommand = function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				self:settext(song:GetDisplayMainTitle())
+			end
+		end
+	},
+
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
-			self:y(-18):zoom(0.35):diffuse(subText):maxwidth(SCREEN_WIDTH / 0.35)
+			self:y(14):zoom(0.28):diffuse(subText):maxwidth(SCREEN_WIDTH / 0.28)
 		end,
 		PlayingUpdateMessageCommand = function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -1367,18 +1360,6 @@ t[#t + 1] = Def.ActorFrame {
 				local bpm = bps * 60 * getCurRateValue()
 				local rate = getCurRateString()
 				self:settextf("%d BPM    %s Rate", math.floor(bpm + 0.5), rate)
-			end
-		end
-	},
-
-	LoadFont("_open sans 48px") .. {
-		InitCommand = function(self)
-			self:zoom(0.35):diffuse(mainText):maxwidth(SCREEN_WIDTH * 0.5 / 0.35)
-		end,
-		BeginCommand = function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			if song then
-				self:settext(song:GetDisplayMainTitle())
 			end
 		end
 	}
@@ -1797,12 +1778,12 @@ t[#t + 1] = Def.Actor {
 
 		if condition == "Wife Percent" then
 			local threshold = tonumber(ThemePrefs.Get("HV_AutoFailThreshold_Wife")) or 93.00
-			local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
+			local subtractiveWife = ((HV_TotalMaxPoints - HV_PointsLost) / HV_TotalMaxPoints) * 100
 			if subtractiveWife < threshold then 
 				triggered = true 
 			end
 		elseif condition == "Personal Best" then
-			local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
+			local subtractiveWife = ((HV_TotalMaxPoints - HV_PointsLost) / HV_TotalMaxPoints) * 100
 			if subtractiveWife < HV_PBThreshold then
 				triggered = true
 			end

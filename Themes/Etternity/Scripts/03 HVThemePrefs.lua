@@ -16,8 +16,12 @@ local OldIniPath = "Save/ThemePrefs.ini"
 local PrefsTable = {}
 local FallbackTheme = "_fallback"
 
+local _cachedThemeName = nil
 local function GetThemeName()
-	return (themeInfo and themeInfo.Name) or THEME:GetThemeDisplayName()
+	if not _cachedThemeName then
+		_cachedThemeName = (themeInfo and themeInfo.Name) or THEME:GetThemeDisplayName()
+	end
+	return _cachedThemeName
 end
 
 -- Resolve which section a preference belongs to
@@ -376,7 +380,7 @@ local HVPrefs = {
 	},
 
 	-- Gameplay: Mini (Receptor Size)
-	HV_Mini = { Default = 100 },
+	HV_Mini = { Default = 130 },
 
 	-- Visual: Accent color hex
 	HV_AccentColor = { Default = "#5ABAFF" },
@@ -545,7 +549,7 @@ local HVPrefs = {
 
 	-- Gameplay: Score Display Mode
 	HV_ScoreDisplayMode = {
-		Default = "Subtractive",
+		Default = "Normal",
 		Choices = {"Normal", "Subtractive"},
 		Values = {"Normal", "Subtractive"}
 	},

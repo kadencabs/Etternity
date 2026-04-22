@@ -87,14 +87,14 @@ end
 
 -- Judgment colors (kept distinct but desaturated to fit the theme)
 HVColor.JudgmentEtternity = {
-	W1   = color("#f1ffff"),    -- Marvelous: pure white
-	W2   = color("#FFFFB7"),    -- Perfect: warm off-white
-	W3   = color("#A0E0A0"),    -- Great: pale green
-	W4   = color("#A0C8E0"),    -- Good: pale blue
-	W5   = color("#C8A0E0"),    -- Bad: pale purple
-	Miss = color("#E0A0A0"),    -- Miss: pale red
-	Held = color("#8fbb84ff"),    -- OK (Held)
-	LetGo = color("#E0A0A0"),   -- NG (LetGo)
+	W1   = color("#FFFFFF"),    -- Marvelous: pure white
+	W2   = color("#FFFF66"),    -- Perfect: bright yellow
+	W3   = color("#66EE88"),    -- Great: bright green
+	W4   = color("#66BBFF"),    -- Good: bright blue
+	W5   = color("#CC88FF"),    -- Bad: bright purple
+	Miss = color("#FF5555"),    -- Miss: bright red
+	Held = color("#66EE88"),    -- OK (Held)
+	LetGo = color("#FF5555"),   -- NG (LetGo)
 }
 
 HVColor.JudgmentClassic = {
@@ -276,14 +276,14 @@ end
 -- Grade colors (muted, matching the theme aesthetic)
 HVColor.Grade = {
 	AAAAA = color("#FFFFFF"),    -- Pure White
-	AAAA  = color("#80C0CF"),    -- Muted Cyan
-	AAA   = color("#CFD198"),    -- Muted Yellow
-	AA    = color("#A0CFAB"),    -- Muted Green
-	A     = color("#CF9898"),    -- Muted Red
-	B     = color("#98B8CF"),    -- Muted Blue-Gray
-	C     = color("#B898CF"),    -- Muted Purple
-	D     = color("#CF98B8"),    -- Muted Pink
-	F     = color("#606060"),    -- Dim Gray
+	AAAA  = color("#55CCFF"),    -- Bright Cyan
+	AAA   = color("#FFE033"),    -- Bright Yellow
+	AA    = color("#55DD77"),    -- Bright Green
+	A     = color("#FF5555"),    -- Bright Red
+	B     = color("#6699FF"),    -- Bright Blue
+	C     = color("#CC66FF"),    -- Bright Purple
+	D     = color("#FF88BB"),    -- Bright Pink
+	F     = color("#888888"),    -- Gray
 	None  = color("#454545"),    -- Dim Gray
 }
 

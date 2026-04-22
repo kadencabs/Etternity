@@ -203,7 +203,7 @@ RageSoundManager::AddLoadedSound(const std::string& sPath_,
 	m_mapPreloadedSounds[sPath] = pSound->Copy();
 }
 
-static Preference<float> g_fSoundVolume("SoundVolume", 1.0f);
+static Preference<float> g_fSoundVolume("SoundVolume", 0.4f);
 
 void
 RageSoundManager::SetMixVolume()
