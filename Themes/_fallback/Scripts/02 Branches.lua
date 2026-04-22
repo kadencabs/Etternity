@@ -8,16 +8,6 @@ in the metrics as Branch.keyname.
 For functions in the Branch table, you'll have to use Branch.keyname() instead.
 --]]
 
-function SMOnlineScreen() -- used for various SMOnline-enabled screens:
-	if not IsNetSMOnline() then
-		return "ScreenSelectMusic"
-	end
-	if not IsSMOnlineLoggedIn() then
-		return "ScreenSMOnlineLogin"
-	end
-	return "ScreenNetRoom"
-end
-
 function ToGameplay()
 	local mode = GAMESTATE:GetGameplayMode()
 	if mode == "GameplayMode_Practice" then
@@ -30,11 +20,7 @@ function ToGameplay()
 end
 
 function ToStageInformation()
-	if not IsSMOnlineLoggedIn() then
-		return "ScreenStageInformation"
-	else
-		return "ScreenNetStageInformation"
-	end
+	return "ScreenStageInformation"
 end
 
 Branch = {
@@ -89,21 +75,11 @@ Branch = {
 	AfterProfileLoad = function()
 		return "ScreenSelectMusic"
 	end,
-	AfterNetProfileSave = function()
-		return "ScreenNetSelectMusic"
-	end,
-	AfterSMOLogin = SMOnlineScreen,
 	BackOutOfPlayerOptions = function()
 		return "ScreenSelectMusic"
 	end,
-	BackOutOfNetPlayerOptions = function()
-		return "ScreenNetSelectMusic"
-	end,
 	BackOutOfStageInformation = function()
 		return "ScreenSelectMusic"
-	end,
-	BackOutOfNetStageInformation = function()
-		return "ScreenNetSelectMusic"
 	end,
 	AfterSelectMusic = function()
 		if SCREENMAN:GetTopScreen():GetGoToOptions() then
@@ -128,9 +104,6 @@ Branch = {
 	end,
 	AfterGameplay = function()
 		return "ScreenEvaluationNormal"
-	end,
-	AfterNetGameplay = function()
-		return "ScreenNetEvaluation"
 	end,
 	AfterEvaluation = function()
 		local Failed = STATSMAN:GetCurStageStats():Failed()

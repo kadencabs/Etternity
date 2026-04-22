@@ -7,7 +7,7 @@ t[#t + 1] = Def.ActorFrame {
 		BeginCommand = function(self)
 			self:zoomto(32, 32):valign(0.634522134234)
 			screname = SCREENMAN:GetTopScreen():GetName()
-			if screname == "ScreenSelectMusic" or screname == "ScreenNetSelectMusic" then
+			if screname == "ScreenSelectMusic" then
 				whee = SCREENMAN:GetTopScreen():GetMusicWheel()
 			end
 		end,
