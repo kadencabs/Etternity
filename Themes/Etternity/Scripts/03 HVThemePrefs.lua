@@ -1,4 +1,4 @@
---- Holographic Void: Theme Preferences
+--- Etternity: Theme Preferences
 -- @module 03_ThemePrefs
 
 -- ==========================================================================
@@ -8,8 +8,8 @@
 -- This prevents settings from being overwritten by other themes and 
 -- allows for better organization.
 
-local HVThemePrefsPath = "Save/Holographic Void_settings/themeConfig.lua"
-local NewIniPath = "Save/Holographic Void_settings/ThemePrefs.ini"
+local HVThemePrefsPath = "Save/Etternity_settings/themeConfig.lua"
+local NewIniPath = "Save/Etternity_settings/ThemePrefs.ini"
 local OldIniPath = "Save/ThemePrefs.ini"
 
 -- Internal storage for preferences (since _fallback's table is local to its script)
@@ -17,8 +17,12 @@ local PrefsTable = {}
 local PrefDefinitions = {}
 local FallbackTheme = "_fallback"
 
+local _cachedThemeName = nil
 local function GetThemeName()
-	return (themeInfo and themeInfo.Name) or THEME:GetThemeDisplayName()
+	if not _cachedThemeName then
+		_cachedThemeName = (themeInfo and themeInfo.Name) or THEME:GetThemeDisplayName()
+	end
+	return _cachedThemeName
 end
 
 local function coerce_pref_value(pref, value)
@@ -125,7 +129,7 @@ ThemePrefs = {
 		-- 2. Fall back to theme-specific .ini for migration
 		if FILEMAN:DoesFileExist(NewIniPath) then
 			if IniFile then
-				Trace("Holographic Void: Migrating settings from " .. NewIniPath)
+				Trace("Etternity: Migrating settings from " .. NewIniPath)
 				PrefsTable = IniFile.ReadFile(NewIniPath)
 				ThemePrefs.NeedsSaved = true
 				ThemePrefs.Save()
@@ -136,7 +140,7 @@ ThemePrefs = {
 		-- 3. Fall back to legacy .ini for migration
 		if FILEMAN:DoesFileExist(OldIniPath) then
 			if IniFile then
-				Trace("Holographic Void: Migrating legacy settings from " .. OldIniPath)
+				Trace("Etternity: Migrating legacy settings from " .. OldIniPath)
 				PrefsTable = IniFile.ReadFile(OldIniPath)
 				ThemePrefs.NeedsSaved = true
 				ThemePrefs.Save()
@@ -156,7 +160,7 @@ ThemePrefs = {
 				file:Close()
 				ThemePrefs.NeedsSaved = false
 			else
-				Warn("Holographic Void: Could not open '" .. HVThemePrefsPath .. "' for writing.")
+				Warn("Etternity: Could not open '" .. HVThemePrefsPath .. "' for writing.")
 			end
 			file:destroy()
 		end
@@ -218,11 +222,46 @@ end
 -- Preference definitions: each key maps to a table with a Default value.
 -- These are registered with the _Fallback ThemePrefs.Init system.
 local HVPrefs = {
+	-- Offset Graph: Hover mode (Point or Slice)
+	HV_OffsetGraphHoverMode = {
+		Default = "point",
+		Choices = {"Point", "Slice"},
+		Values = {"point", "slice"}
+	},
+
+	-- Offset Graph: Slice width percent (1-100)
+	HV_OffsetGraphSlicePercent = {
+		Default = 25,
+		Choices = (function() local c={}; for i=1,100 do c[i]=tostring(i).."%" end return c end)(),
+		Values = (function() local v={}; for i=1,100 do v[i]=i end return v end)()
+	},
+
+	-- Offset Graph: Trend metric mode
+	HV_OffsetGraphTrendMetric = {
+		Default = "wife",
+		Choices = {"Wife%", "Grade", "Clear Type", "Mean", "Std Dev", "MA", "PA"},
+		Values = {"wife", "grade", "clear", "mean", "sd", "ma", "pa"}
+	},
+
+	-- Offset Graph: Trend color mode
+	HV_OffsetGraphTrendColor = {
+		Default = "none",
+		Choices = {"None", "Grade", "Clear Type"},
+		Values = {"none", "grade", "clear"}
+	},
+
 	-- Visual: Background animation intensity (0 = off, 1 = subtle, 2 = full)
 	HV_BGAnimIntensity = {
 		Default = 1,
 		Choices = {"Off", "Subtle", "Full"},
 		Values = {0, 1, 2}
+	},
+
+	-- Visual: Enable mouse parallax effects
+	HV_Parallax = {
+		Default = true,
+		Choices = {"Off", "On"},
+		Values = {false, true}
 	},
 
 	-- Gameplay: Show MSD ratings on music wheel
@@ -250,8 +289,8 @@ local HVPrefs = {
 	-- Gameplay: MSD Color Scale (HolographicVoid or TilDeath)
 	HV_MSDColorScaleV3 = {
 		Default = "Holographic",
-		Choices = {"Holographic", "Classic", "None", "Monochrome"},
-		Values = {"Holographic", "Classic", "None", "Monochrome"}
+		Choices = {"Holographic", "Classic", "None", "Monochrome", "Accent Color"},
+		Values = {"Holographic", "Classic", "None", "Monochrome", "Accent"}
 	},
 
 	-- Visual: Enable glow/bloom effects on active elements
@@ -410,15 +449,15 @@ local HVPrefs = {
 	-- Gameplay: Show Hit Mean Display
 	HV_ShowHitMean = {
 		Default = "Mean",
-		Choices = {"Off", "Mean", "Std Dev", "J4 Score"},
-		Values = {"Off", "Mean", "StdDev", "J4"}
+		Choices = {"Off", "Mean", "Std Dev", "J4 Score", "MA Ratio", "Delta Hand"},
+		Values = {"Off", "Mean", "StdDev", "J4", "MARatio", "DeltaHand"}
 	},
 
 	-- Gameplay: Show Hit Mean Display (Legacy compatibility)
 	HV_ShowMean = {
 		Default = "Mean",
-		Choices = {"Off", "Mean", "Std Dev", "J4 Score"},
-		Values = {"Off", "Mean", "StdDev", "J4"}
+		Choices = {"Off", "Mean", "Std Dev", "J4 Score", "MA Ratio", "Delta Hand"},
+		Values = {"Off", "Mean", "StdDev", "J4", "MARatio", "DeltaHand"}
 	},
 
 	-- Gameplay: Mini (Receptor Size)
@@ -426,6 +465,7 @@ local HVPrefs = {
 
 	-- Visual: Accent color hex
 	HV_AccentColor = { Default = "#5ABAFF" },
+	HV_ColorEditSyncAccent = { Default = false },
 
 	-- Auth: Saved EtternaOnline username and login token
 	HV_Username = { Default = "" },
@@ -441,29 +481,36 @@ local HVPrefs = {
 	-- Visual: Grade Coloring Style
 	HV_GradeColorStyle = {
 		Default = "Holographic",
-		Choices = {"Holographic", "Classic"},
-		Values = {"Holographic", "Classic"}
+		Choices = {"Holographic", "Classic", "Custom"},
+		Values = {"Holographic", "Classic", "Custom"}
 	},
 	
 	-- Judgment Color Style
 	HV_JudgmentColorStyle = {
 		Default = "Holographic",
-		Choices = {"Holographic", "Classic"},
-		Values = {"Holographic", "Classic"}
+		Choices = {"Holographic", "Classic", "Custom"},
+		Values = {"Holographic", "Classic", "Custom"}
 	},
 
 	-- Difficulty Color Style
 	HV_DifficultyColorStyle = {
 		Default = "Holographic",
-		Choices = {"Holographic", "Classic"},
-		Values = {"Holographic", "Classic"}
+		Choices = {"Holographic", "Classic", "Custom"},
+		Values = {"Holographic", "Classic", "Custom"}
 	},
 
 	-- Clear Type Color Style
 	HV_ClearTypeColorStyle = {
 		Default = "Holographic",
-		Choices = {"Holographic", "Classic"},
-		Values = {"Holographic", "Classic"}
+		Choices = {"Holographic", "Classic", "Custom"},
+		Values = {"Holographic", "Classic", "Custom"}
+	},
+
+	-- Goal Tracker Color Style
+	HV_GoalTrackerColorStyle = {
+		Default = "Custom",
+		Choices = {"Custom"},
+		Values = {"Custom"}
 	},
 
 	-- Visual: Background Effect Style
@@ -526,6 +573,11 @@ local HVPrefs = {
 		Default = "Off",
 		Choices = {"Off", "Local", "Online"},
 		Values = {"Off", "Local", "Online"}
+	},
+	HV_LastInGameLeaderboardMode = {
+		Default = "Local",
+		Choices = {"Local", "Online"},
+		Values = {"Local", "Online"}
 	},
 	HV_ShowNPSGraph = {
 		Default = true,
@@ -697,6 +749,7 @@ if HVColor then
 	if HVColor.RefreshJudgmentColors then HVColor.RefreshJudgmentColors() end
 	if HVColor.RefreshClearTypeColors then HVColor.RefreshClearTypeColors() end
 	if HVColor.RefreshGradeColors then HVColor.RefreshGradeColors() end
+	if HVColor.RefreshGoalTrackerColors then HVColor.RefreshGoalTrackerColors() end
 end
 
 -- ==========================================================================
@@ -891,9 +944,14 @@ function HV.GetSongBackgroundBrightness()
 	return tonumber(ThemePrefs.Get("HV_SongBackgroundBrightness")) or 0.5
 end
 
+--- Check if mouse parallax effects are enabled.
+function HV.ParallaxEnabled()
+	return isTrue(ThemePrefs.Get("HV_Parallax"))
+end
+
 --- Get screen filter / lane cover opacity (0.0-1.0).
 function HV.GetScreenFilter()
 	return tonumber(ThemePrefs.Get("HV_ScreenFilter")) or 0.0
 end
 
-Trace("Holographic Void: 03 HVThemePrefs.lua loaded.")
+Trace("Etternity: 03 HVThemePrefs.lua loaded.")

@@ -1,10 +1,12 @@
--- Holographic Void: In-Game Leaderboard (Single Player)
+-- Etternity: In-Game Leaderboard (Single Player)
 -- Shows local or online high scores for the current song during gameplay
 -- Top-left corner, individual score cards + live current score
 -- THe judgement display is not shown here.
 
 local leaderboardMode = HV.ShowInGameLeaderboard() or "Off"
-if leaderboardMode == "Off" or HV.MinimalisticMode() or GAMESTATE:IsPracticeMode() then
+local topScreen = SCREENMAN:GetTopScreen()
+local isNetMultiplayer = NSMAN and NSMAN.IsETTP and NSMAN:IsETTP() and topScreen and topScreen:GetName() and topScreen:GetName():find("Net") ~= nil or false
+if GAMESTATE:IsPracticeMode() then
 	return Def.ActorFrame {}
 end
 
@@ -51,6 +53,19 @@ end
 -- Score data storage (shared between logic and commands)
 local highScores = {}
 
+local function leaderboardVisible()
+	return (isNetMultiplayer or leaderboardMode ~= "Off") and not HV.MinimalisticMode()
+end
+
+local function animateLeaderboardVisibility(self, visible)
+	self:stoptweening()
+	if visible then
+		self:visible(true):diffusealpha(0):decelerate(0.18):diffusealpha(1)
+	else
+		self:accelerate(0.14):diffusealpha(0)
+	end
+end
+
 -- ============================================================
 -- Data Fetching Logic
 -- ============================================================
@@ -63,7 +78,25 @@ local function UpdateScores()
 	local curRate = getCurRateValue()
 	local curRateStr = getCurRateString()
 
-	if leaderboardMode == "Online" then
+	if isNetMultiplayer then
+		local lb = NSMAN:GetMPLeaderboard() or {}
+		table.sort(lb, function(a, b)
+			return (a.wife or -1) > (b.wife or -1)
+		end)
+		for i = 1, math.min(maxEntries, #lb) do
+			local s = lb[i]
+			local wife = (s.wife or 0) * 100
+			highScores[#highScores + 1] = {
+				rank = i,
+				wife = wife,
+				combo = 0,
+				gradeStr = GetGradeStr(wife),
+				name = s.user or "???",
+				rate = curRate,
+				ssr = -1,
+			}
+		end
+	elseif leaderboardMode == "Online" then
 		-- Fetch from DLMAN
 		local lb = DLMAN:GetChartLeaderBoard(ck)
 		if lb then
@@ -142,21 +175,42 @@ local t = Def.ActorFrame {
 	Name = "InGameLeaderboard",
 	InitCommand = function(self)
 		self:xy((MovableValues and MovableValues.LeaderboardX) or getDefaultGameplayCoordinate("LeaderboardX") or startX, (MovableValues and MovableValues.LeaderboardY) or getDefaultGameplayCoordinate("LeaderboardY") or startY):zoomtowidth((MovableValues and MovableValues.LeaderboardWidth) or getDefaultGameplaySize("LeaderboardWidth") or 1):zoomtoheight((MovableValues and MovableValues.LeaderboardHeight) or getDefaultGameplaySize("LeaderboardHeight") or 1)
+		self:visible(leaderboardVisible())
+		self:diffusealpha(leaderboardVisible() and 1 or 0)
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_a", "DeviceButton_s"}, self, self:GetChild("Border"))
+	end,
+	HV_InGameLeaderboardModeChangedMessageCommand = function(self, params)
+		leaderboardMode = params and params.Mode or HV.ShowInGameLeaderboard() or "Off"
+		animateLeaderboardVisibility(self, leaderboardVisible())
+		UpdateScores()
+		self:playcommand("RefreshScores")
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self)
+		animateLeaderboardVisibility(self, leaderboardVisible())
 	end,
 	RefreshLeaderboardMessageCommand = function(self)
 		UpdateScores()
 		self:playcommand("RefreshScores")
 	end,
+	JudgmentMessageCommand = function(self)
+		if isNetMultiplayer then
+			UpdateScores()
+			self:playcommand("RefreshScores")
+		end
+	end,
 
 	-- Mode Tag
 	LoadFont("Common Normal") .. {
+		Name = "ModeTag",
 		InitCommand = function(self)
 			self:halign(0):valign(0):xy(4, -12):zoom(0.24)
 				:diffuse(accentColor):diffusealpha(0.6)
-				:settext(leaderboardMode:upper())
+				:settext((isNetMultiplayer and "MULTI") or leaderboardMode:upper())
+		end,
+		HV_InGameLeaderboardModeChangedMessageCommand = function(self)
+			self:settext((isNetMultiplayer and "MULTI") or leaderboardMode:upper())
 		end
 	}
 }
@@ -295,6 +349,17 @@ t[#t + 1] = Def.ActorFrame {
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1)
 			if not pss then return end
 			local wife = pss:GetWifeScore() * 100
+			
+			local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
+							   pss:GetTapNoteScores("TapNoteScore_W2") +
+							   pss:GetTapNoteScores("TapNoteScore_W3") +
+							   pss:GetTapNoteScores("TapNoteScore_W4") +
+							   pss:GetTapNoteScores("TapNoteScore_W5") +
+							   pss:GetTapNoteScores("TapNoteScore_Miss")
+			if notesPassed == 0 then
+				wife = 100.0000
+			end
+			
 			if wife >= 99.7 then self:settextf("%.4f%%", wife)
 			else self:settextf("%.2f%%", wife) end
 			local g = GetGradeStr(wife)

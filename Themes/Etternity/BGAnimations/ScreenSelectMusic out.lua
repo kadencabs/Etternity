@@ -1,4 +1,4 @@
---- Holographic Void: ScreenSelectMusic Out Transition
+--- Etternity: ScreenSelectMusic Out Transition
 -- Shows "Press Start again for Options" prompt when a song is selected,
 -- and "Entering Options..." when Start is pressed a second time.
 -- Engine broadcasts: ShowPressStartForOptionsCommand, ShowEnteringOptionsCommand,

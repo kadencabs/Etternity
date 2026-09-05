@@ -1,4 +1,4 @@
---- Holographic Void: Custom Mouse Cursor
+--- Etternity: Custom Mouse Cursor
 -- Adapted from Til Death's _cursor.lua pattern.
 -- Should be loaded from screen overlays via LoadActor("_cursor").
 -- Integrates with the _fallback BUTTON system for UIElements click support.
@@ -46,7 +46,7 @@ local t = Def.ActorFrame {
 	end,
 	OffCommand = function(self)
 		BUTTON:ResetButtonTable(screenName)
-		TOOLTIP:Hide()
+		pcall(function() TOOLTIP:Hide() end)
 	end,
 	CancelCommand = function(self)
 		self:playcommand("Off")

@@ -6,7 +6,7 @@ Branch.AfterInit = function()
 	if SONGMAN:GetNumSongs() == 0 and SONGMAN:GetNumAdditionalSongs() == 0 and #DLMAN:GetDownloads() == 0 then
 		return "ScreenCoreBundleSelect"
 	end
-	
+
 	-- Normal flow
 	return "ScreenTitleMenu"
 end
@@ -16,10 +16,21 @@ Branch.TitleMenu = function()
 end
 
 Branch.AfterTitleMenu = function()
+	if PROFILEMAN:GetNumLocalProfiles() == 0 then
+		return "ScreenSelectMusic"
+	end
 	return "ScreenSelectProfile"
 end
 
 Branch.AfterSelectProfile = function()
+	return "ScreenSelectMusic"
+end
+
+Branch.LeavePackDownloader = function()
+	return "ScreenTitleMenu"
+end
+
+Branch.LeaveAssets = function()
 	return "ScreenSelectMusic"
 end
 

@@ -16,10 +16,122 @@ local headerH = 40
 local footerH = 40
 
 local profileOverlayActor = nil
+local IsMouseInSelectMusicInteractiveArea
 
-local t = Def.ActorFrame {
+local function styleModeSupportsSingleDoubleToggle()
+	local game = GAMESTATE:GetCurrentGame()
+	local gameName = game and game.GetName and game:GetName() or ""
+	gameName = tostring(gameName):lower()
+	return gameName == "dance" or gameName == "beat"
+end
+
+local function getPBJudgeRows(score, rst)
+	local ridic = nil
+	local w1 = 0
+	local w2 = 0
+	local w3 = 0
+	local w4 = 0
+	local w5 = 0
+	local miss = 0
+
+	if rst then
+		local judgeScale = ms.JudgeScalers[4] or 1
+		w1 = getRescoredJudge(rst.dvt, 4, 1)
+		w2 = getRescoredJudge(rst.dvt, 4, 2)
+		w3 = getRescoredJudge(rst.dvt, 4, 3)
+		w4 = getRescoredJudge(rst.dvt, 4, 4)
+		w5 = getRescoredJudge(rst.dvt, 4, 5)
+		miss = getRescoredJudge(rst.dvt, 4, 6)
+		ridic = HV.EmulateRidiculousEnabled() and HV.GetRidiculousCountFromOffsets(rst.dvt, judgeScale) or nil
+	elseif score then
+		w1 = score:GetTapNoteScore("TapNoteScore_W1")
+		w2 = score:GetTapNoteScore("TapNoteScore_W2")
+		w3 = score:GetTapNoteScore("TapNoteScore_W3")
+		w4 = score:GetTapNoteScore("TapNoteScore_W4")
+		w5 = score:GetTapNoteScore("TapNoteScore_W5")
+		miss = score:GetTapNoteScore("TapNoteScore_Miss")
+		ridic = HV.GetRidiculousCountFromScore(score)
+	end
+
+	if ridic then
+		return {
+			{name = "Ridiculous", label = "RID", val = ridic},
+			{name = "W1", label = "MARV", val = w1 - ridic},
+			{name = "W2", label = "PERF", val = w2},
+			{name = "W3", label = "GREAT", val = w3},
+			{name = "W4", label = "GOOD", val = w4},
+			{name = "W5", label = "BAD", val = w5},
+			{name = "Miss", label = "MISS", val = miss}
+		}
+	end
+
+	return {
+		{name = "W1", label = "MARV", val = w1},
+		{name = "W2", label = "PERF", val = w2},
+		{name = "W3", label = "GREAT", val = w3},
+		{name = "W4", label = "GOOD", val = w4},
+		{name = "W5", label = "BAD", val = w5},
+		{name = "Miss", label = "MISS", val = miss}
+	}
+end
+
+local function getPBRescoredClearType(rst)
+	local w1 = getRescoredJudge(rst.dvt, 4, 1)
+	local w2 = getRescoredJudge(rst.dvt, 4, 2)
+	local w3 = getRescoredJudge(rst.dvt, 4, 3)
+	local w4 = getRescoredJudge(rst.dvt, 4, 4)
+	local w5 = getRescoredJudge(rst.dvt, 4, 5)
+	local miss = getRescoredJudge(rst.dvt, 4, 6)
+	local pct = getRescoredWife3Judge(3, 4, rst) or 0
+	if pct <= 0 then return "Failed" end
+
+	local cb = miss + w5 + w4
+	if cb > 0 then
+		if cb == 1 then return "MF"
+		elseif cb < 10 then return "SDCB"
+		else return "Clear" end
+	elseif w3 > 0 then
+		if w3 == 1 then return "BF"
+		elseif w3 < 10 then return "SDG"
+		else return "FC" end
+	elseif w2 > 0 then
+		if w2 == 1 then return "WF"
+		elseif w2 < 10 then return "SDP"
+		else return "PFC" end
+	end
+
+	local ridic = HV.EmulateRidiculousEnabled() and HV.GetRidiculousCountFromOffsets(rst.dvt, ms.JudgeScalers[4] or 1) or nil
+	if ridic and ridic == w1 then return "RFC"
+	elseif ridic and w1 - ridic == 1 then return "RF"
+	elseif ridic and w1 - ridic < 10 then return "SDM" end
+	return "MFC"
+end
+
+local root = Def.ActorFrame {
 	Name = "SelectMusicDecorations"
 }
+
+local t = Def.ActorFrame {
+	Name = "SelectMusicContent",
+	InitCommand = function(self)
+		self.hv_holdLerp = 0
+		self.hv_holdTarget = 0
+	end,
+	OnCommand = function(self)
+		self:SetUpdateFunction(function(actor)
+			actor.hv_holdLerp = actor.hv_holdLerp + (actor.hv_holdTarget - actor.hv_holdLerp) * 0.16
+			local p = actor.hv_holdLerp
+			actor:x(-SCREEN_WIDTH * 0.28 * p)
+			actor:zoom(1 + 0.18 * p)
+			actor:diffusealpha(1 - p)
+		end)
+	end,
+	HVLeftMousePeekHoldChangedMessageCommand = function(self, params)
+		local held = params and params.Held and params.Allowed
+		self.hv_holdTarget = held and 1 or 0
+	end
+}
+root[#root + 1] = t
 
 
 HV.LoginState = HV.LoginState or {
@@ -58,10 +170,20 @@ local loginBtnH = 28
 local loginBtnCX = panelX + panelW / 2
 local loginBtnCY = SCREEN_BOTTOM - 24
 
+function IsMouseInSelectMusicInteractiveArea()
+	local mx = INPUTFILTER:GetMouseX() or SCREEN_CENTER_X
+	local my = INPUTFILTER:GetMouseY() or SCREEN_CENTER_Y
+	if HV.ActiveTab and HV.ActiveTab ~= "" then return true end
+	if mx <= panelX + panelW + 95 then return true end
+	if my >= SCREEN_HEIGHT - footerH then return true end
+	if my <= headerH then return true end
+	return false
+end
+
 local function GetOnlineStatus()
 	local connected = DLMAN:IsLoggedIn()
 	if connected then
-		return true, "", "Offline"
+		return true, "EtternaOnline", "Online"
 	end
 	return false, "", "Offline"
 end
@@ -79,6 +201,7 @@ local function GetPlayableChartSeconds(song, steps)
 	end
 	return 0
 end
+
 
 
 -- ============================================================
@@ -245,20 +368,21 @@ t[#t + 1] = Def.Actor {
 		HV.CurrentSongData.chartOffset = 0
 		self:playcommand("UpdateData")
 		-- Throttle InstantChartUpdate to avoid CPU spikes during fast scrolling
-		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
+		-- 0.04s is roughly 1-2 frames at high refresh rates, enough to skip redundant zips
+		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
 		
 		-- Deferred update for heavy elements
-		self:sleep(0.08):queuecommand("TriggerDelayedUpdate")
+		self:sleep(0.25):queuecommand("TriggerDelayedUpdate")
 	end,
 	CurrentStepsChangedMessageCommand = function(self)
 		self:playcommand("UpdateData")
-		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
-		self:sleep(0.05):queuecommand("TriggerDelayedUpdate")
+		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
+		self:sleep(0.15):queuecommand("TriggerDelayedUpdate")
 	end,
 	CurrentRateChangedMessageCommand = function(self)
 		self:playcommand("UpdateData")
-		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
-		self:sleep(0.05):queuecommand("TriggerDelayedUpdate")
+		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
+		self:sleep(0.15):queuecommand("TriggerDelayedUpdate")
 	end,
 	TriggerInstantUpdateCommand = function(self)
 		MESSAGEMAN:Broadcast("InstantChartUpdate")
@@ -267,7 +391,7 @@ t[#t + 1] = Def.Actor {
 		self:playcommand("UpdateHeavyData")
 		MESSAGEMAN:Broadcast("DelayedChartUpdate")
 	end,
-
+	
 	-- Permamirror Sync Logic
 	SyncPermamirrorCommand = function(self)
 		local st = GAMESTATE:GetCurrentSteps()
@@ -278,7 +402,7 @@ t[#t + 1] = Def.Actor {
 			local prof = (GetPlayerOrMachineProfile and GetPlayerOrMachineProfile(PLAYER_1)) or PROFILEMAN:GetProfile(PLAYER_1)
 			isPM = prof and prof:IsCurrentChartPermamirror() or false
 		end
-
+		
 		local po = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptions("ModsLevel_Preferred")
 
 		if isPM then
@@ -287,7 +411,7 @@ t[#t + 1] = Def.Actor {
 			po:Mirror(false)
 		end
 	end,
-
+	
 	ReportPermamirrorCommand = function(self)
 		local st = GAMESTATE:GetCurrentSteps()
 		local isPM = false
@@ -299,12 +423,40 @@ t[#t + 1] = Def.Actor {
 		end
 		ms.ok("Permamirror: " .. (isPM and "ON" or "OFF"))
 	end,
-
+	
 	PermamirrorChangedMessageCommand = function(self) 
 		self:stoptweening():sleep(0.05):queuecommand("SyncPermamirror"):queuecommand("ReportPermamirror")
 	end,
 	DelayedChartUpdateMessageCommand = function(self) self:playcommand("SyncPermamirror") end
 }
+
+local function GetCurrentBannerPath()
+	local song = HV.CurrentSongData.song
+	local group = HV.CurrentSongData.group
+	local bnpath = ""
+	if song then
+		bnpath = song:GetBannerPath()
+	elseif group then
+		bnpath = SONGMAN:GetSongGroupBannerPath(group)
+	end
+
+	if not bnpath or bnpath == "" then
+		bnpath = THEME:GetPathG("Common", "fallback banner")
+	end
+
+	return bnpath
+end
+
+local function GetCurrentSongBackgroundPath()
+	local song = HV.CurrentSongData.song
+	if song and song.GetBackgroundPath then
+		local bgPath = song:GetBackgroundPath()
+		if bgPath and bgPath ~= "" then
+			return bgPath
+		end
+	end
+	return nil
+end
 
 -- ============================================================
 -- BANNER AREA
@@ -331,14 +483,7 @@ t[#t + 1] = Def.ActorFrame {
 			self.lastPath = ""
 		end,
 		SetCommand = function(self)
-			local song = HV.CurrentSongData.song
-			local group = HV.CurrentSongData.group
-			local bnpath = ""
-			if song then
-				bnpath = song:GetBannerPath()
-			elseif group then
-				bnpath = SONGMAN:GetSongGroupBannerPath(group)
-			end
+			local bnpath = GetCurrentBannerPath()
 
 			if bnpath and bnpath ~= "" then
 				if bnpath ~= self.lastPath then
@@ -375,14 +520,14 @@ local infoY = panelY + 12 + bannerH + 16
 t[#t + 1] = Def.ActorFrame {
 	Name = "SongInfoFrame",
 	InitCommand = function(self)
-		self:xy(panelX + 16, infoY - 4)
+		self:xy(panelX + 16, infoY)
 	end,
 
 	-- Song Title
-	LoadFont("_open sans 48px") .. {
+	LoadFont("Zpix Normal") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
-			self:halign(0):valign(0):zoom(0.7):y(-7)
+			self:halign(0):valign(0):zoom(0.7)
 				:maxwidth((panelW - 32) / 0.7)
 				:diffuse(brightText)
 		end,
@@ -448,7 +593,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "GroupName",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(37):zoom(0.35)
+			self:halign(0):valign(0):y(40):zoom(0.35)
 				:maxwidth((panelW - 32 - 50) / 0.35) -- Leave space for CDTitle
 				:diffuse(dimText)
 		end,
@@ -590,11 +735,17 @@ t[#t + 1] = Def.ActorFrame {
 			self:settext(THEME:GetString("ScreenSelectMusic", "BPM"))
 		end
 	},
-	-- BPM Value
+	-- BPM Value (positioned dynamically based on BPMLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "BPMValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(17):y(-0.5):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			local label = self:GetParent():GetChild("BPMLabel")
+			if label then
+				self:x(label:GetX() + label:GetZoomedWidth() + 2)
+			else
+				self:x(40)
+			end
 		end,
 		SetCommand = function(self)
 			local song = HV.CurrentSongData.song
@@ -624,14 +775,21 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "LengthLabel",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.35):y(0.5):zoom(0.35):diffuse(dimText)
+			self:halign(0):valign(0):x(panelW * 0.35):zoom(0.35):diffuse(dimText)
 			self:settext(THEME:GetString("ScreenSelectMusic", "Length"))
 		end
 	},
+	-- Length Value (positioned dynamically based on LengthLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "LengthValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.35 + 30):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			local label = self:GetParent():GetChild("LengthLabel")
+			if label then
+				self:x(label:GetX() + label:GetZoomedWidth() + 2)
+			else
+				self:x(panelW * 0.35 + 56)
+			end
 		end,
 		SetCommand = function(self)
 			local song = HV.CurrentSongData.song
@@ -681,13 +839,20 @@ t[#t + 1] = Def.ActorFrame {
 		Name = "NPSLabel",
 		InitCommand = function(self)
 			self:halign(0):valign(0):x(panelW * 0.65):zoom(0.35):diffuse(dimText)
-			self:settext("NPS:")
+			self:settext("NPS")
 		end
 	},
+	-- NPS Value (positioned dynamically based on NPSLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "NPSValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.65 + 17):y(-0.5):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			local label = self:GetParent():GetChild("NPSLabel")
+			if label then
+				self:x(label:GetX() + label:GetZoomedWidth() + 2)
+			else
+				self:x(panelW * 0.65 + 28)
+			end
 		end,
 		SetCommand = function(self)
 			local data = HV.CurrentSongData
@@ -770,7 +935,7 @@ t[#t + 1] = Def.ActorFrame {
 t[#t + 1] = Def.ActorFrame {
 	Name = "MSDRow_Overall",
 	InitCommand = function(self)
-		self:xy(panelX + 13, msdY + 18)
+		self:xy(panelX + 16, msdY + 18)
 		local show = ThemePrefs.Get("HV_ShowMSD")
 		self:visible(show == "true" or show == true)
 	end,
@@ -1004,7 +1169,7 @@ t[#t + 1] = Def.ActorFrame {
 		InitCommand = function(self) self:xy(diffTabW - 25, 0) end,
 		SetCommand = function(self)
 			local data = HV.CurrentSongData
-			self:visible(data.hasSingle and data.hasDouble)
+			self:visible(styleModeSupportsSingleDoubleToggle() and data.hasSingle and data.hasDouble)
 		end,
 		DelayedChartUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		
@@ -1062,7 +1227,10 @@ for i = 1, maxVisibleCharts do
 					local curSteps = data.steps
 					if curSteps == entry.steps then
 						local dname = entry.difficulty
-						self:diffuse(HVColor.Difficulty[dname] or accentColor):diffusealpha(0.4)
+						local dcolor = (HVColor and HVColor.GetDifficultyColor and HVColor.GetDifficultyColor(dname))
+							or (HVColor and HVColor.Difficulty and HVColor.Difficulty[dname])
+							or accentColor
+						self:diffuse(dcolor):diffusealpha(0.4)
 					else
 						self:diffuse(color("0.08,0.08,0.08,1")):diffusealpha(1)
 					end
@@ -1206,7 +1374,6 @@ t[#t + 1] = Def.ActorFrame {
 		screen:AddInputCallback(HV.DiffSelectorInputCallback)
 	end
 }
-
 
 local function GetDisplayScore()
 	local pn = PLAYER_1
@@ -1431,19 +1598,15 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "PBGrade",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(125):y(28):zoom(0.5)
+			self:halign(0):valign(0):x(115):y(28):zoom(0.5)
 		end,
 		SetCommand = function(self)
 			local score = HV.CurrentSongData.pbScore
 			if score then
 				local gradeStr = score:GetWifeGrade()
 				local wifePct = score:GetWifeScore() * 100
-				if self:GetParent().isHovering and score:HasReplayData() then
-					local rst = getRescoreElementsFromScore(score)
-					wifePct = rst and getRescoredWife3Judge(3, 4, rst) or wifePct
-					gradeStr = GetGradeFromPercent(wifePct / 100)
-				elseif self:GetParent().isHovering and type(score.GetRescoredWifeScore) == "function" then
-					wifePct = score:GetRescoredWifeScore(4) * 100
+				if self:GetParent().isHovering then
+					wifePct = getJ4NormalizedPercentage(score)
 					gradeStr = GetGradeFromPercent(wifePct / 100)
 				end
 				
@@ -1473,36 +1636,7 @@ t[#t + 1] = Def.ActorFrame {
 				if self:GetParent().isHovering then
 					local rst = getRescoreElementsFromScore(score)
 					if rst then
-						local w1 = getRescoredJudge(rst.dvt, 4, 1)
-						local w2 = getRescoredJudge(rst.dvt, 4, 2)
-						local w3 = getRescoredJudge(rst.dvt, 4, 3)
-						local w4 = getRescoredJudge(rst.dvt, 4, 4)
-						local w5 = getRescoredJudge(rst.dvt, 4, 5)
-						local miss = getRescoredJudge(rst.dvt, 4, 6)
-						
-						local pct = getRescoredWife3Judge(3, 4, rst) or 0
-						if pct <= 0 then
-							ct = "Failed"
-						elseif pct < 83 then
-							ct = "SoftInvalid"
-						else
-							local cb = miss + w5 + w4
-							if cb > 0 then
-								if cb == 1 then ct = "MF"
-								elseif cb < 10 then ct = "SDCB"
-								else ct = "Clear" end
-							elseif w3 > 0 then
-								if w3 == 1 then ct = "BF"
-								elseif w3 < 10 then ct = "SDG"
-								else ct = "FC" end
-							elseif w2 > 0 then
-								if w2 == 1 then ct = "WF"
-								elseif w2 < 10 then ct = "SDP"
-								else ct = "PFC" end
-							else
-								ct = "MFC"
-							end
-						end
+						ct = getPBRescoredClearType(rst)
 					end
 				end
 				
@@ -1565,26 +1699,24 @@ t[#t + 1] = Def.ActorFrame {
 				return
 			end
 			self:visible(true)
-			local judges = {
-				{name = "W1", label = "MARV", val = score:GetTapNoteScore("TapNoteScore_W1")},
-				{name = "W2", label = "PERF", val = score:GetTapNoteScore("TapNoteScore_W2")},
-				{name = "W3", label = "GREAT", val = score:GetTapNoteScore("TapNoteScore_W3")},
-				{name = "W4", label = "GOOD", val = score:GetTapNoteScore("TapNoteScore_W4")},
-				{name = "W5", label = "BAD", val = score:GetTapNoteScore("TapNoteScore_W5")},
-				{name = "Miss", label = "MISS", val = score:GetTapNoteScore("TapNoteScore_Miss")}
-			}
+			local judges = getPBJudgeRows(score)
 			
 			if self:GetParent().isHovering then
 				local rst = getRescoreElementsFromScore(score)
 				if rst then
-					for i=1, 6 do
-						judges[i].val = getRescoredJudge(rst.dvt, 4, i)
-					end
+					judges = getPBJudgeRows(score, rst)
 				end
 			end
 			
-			for i, j in ipairs(judges) do
-				local block = self:GetChild("Blocks"):GetChild("Block_" .. i)
+			local blocks = self:GetChild("Blocks")
+			local gap = 2
+			local blockW = (panelW - 32 - (gap * (#judges - 1))) / #judges
+			for i = 1, 7 do
+				local block = blocks:GetChild("Block_" .. i)
+				local j = judges[i]
+				block:visible(j ~= nil)
+				if j then block:playcommand("SetLayout", {x = (i - 1) * (blockW + gap), width = blockW}) end
+				if not j then break end
 				local bg = block:GetChild("Bg")
 				local lbl = block:GetChild("Lbl")
 				local valTxt = block:GetChild("Val")
@@ -1592,7 +1724,7 @@ t[#t + 1] = Def.ActorFrame {
 				if bg and lbl and valTxt then
 					valTxt:settext(tostring(j.val))
 					
-					local c = HVColor.Judgment and HVColor.Judgment[j.name] or color("0.5,0.5,0.5,1")
+					local c = HVColor.GetJudgmentColor(j.name)
 					bg:diffuse(c):diffusealpha(0.2) -- translucent colored quad
 					lbl:settext(j.label):diffuse(c):zoom(0.2)
 					valTxt:diffuse(c):zoom(0.45)
@@ -1600,9 +1732,19 @@ t[#t + 1] = Def.ActorFrame {
 			end
 		end,
 		DelayedChartUpdateMessageCommand = function(self) self:playcommand("Set") end,
+		ThemePrefChangedMessageCommand = function(self, params)
+			if params and params.Name == "HV_JudgmentColorStyle" then
+				self:playcommand("Set")
+			end
+		end,
+		CustomColorChangedMessageCommand = function(self, params)
+			if params and params.Category == "judgment" then
+				self:playcommand("Set")
+			end
+		end,
 		(function()
 			local blocks = Def.ActorFrame{ Name = "Blocks" }
-			local numBlocks = 6
+			local numBlocks = 7
 			local panelWConst = SCREEN_WIDTH * 0.36
 			local gap = 2
 			local blockW = (panelWConst - 32 - (gap * (numBlocks - 1))) / numBlocks
@@ -1612,6 +1754,12 @@ t[#t + 1] = Def.ActorFrame {
 					Name = "Block_" .. i,
 					InitCommand = function(self)
 						self:x((i - 1) * (blockW + gap))
+					end,
+					SetLayoutCommand = function(self, params)
+						self:x(params.x)
+						self:GetChild("Bg"):zoomto(params.width, 22)
+						self:GetChild("Val"):x(params.width / 2)
+						self:GetChild("Lbl"):x(params.width / 2)
 					end,
 					Def.Quad {
 						Name = "Bg",
@@ -1650,6 +1798,8 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "SmallProfileFrame",
 	InitCommand = function(self)
 		self:xy(compactProfileX, compactProfileY)
+		self.hv_nameCycling = false
+		self.hv_showingLocalName = false
 		local profile = PROFILEMAN:GetProfile(PLAYER_1)
 		if profile then
 			HV.LastTotalXP = HV.GetXP(profile)
@@ -1702,12 +1852,68 @@ t[#t + 1] = Def.ActorFrame {
 		Name = "ProfileName",
 		InitCommand = function(self)
 			self:halign(0):valign(0):x(56):y(-4):zoom(0.40):diffuse(mainText)
+			self.showOnline = true
+			self.transitionDuration = 0.25
+			self.displayDuration = 3
 		end,
 		SetCommand = function(self)
-			self:settext(HV.GetPlayerName())
-		--LoginMessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		OnCommand = function(self) self:playcommand("Set") end
+			self:stoptweening():diffusealpha(1)
+			local parent = self:GetParent()
+			local profile = PROFILEMAN:GetProfile(PLAYER_1)
+			self.onlineName = DLMAN:IsLoggedIn() and DLMAN:GetUsername() or nil
+			self.offlineName = profile and profile:GetDisplayName() or nil
+			if self.onlineName == "" then self.onlineName = nil end
+			if self.offlineName == "" then self.offlineName = nil end
+
+			if parent then
+				parent.hv_nameCycling = false
+				parent.hv_showingLocalName = false
+			end
+
+			if not self.onlineName then
+				self:settext(self.offlineName or "Player 1")
+			elseif not self.offlineName or self.onlineName == self.offlineName then
+				self:settext(self.onlineName)
+			else
+				self.showOnline = true
+				if parent then parent.hv_nameCycling = true end
+				self:playcommand("SwapName")
+				return
+			end
+
+			if parent then
+				local rank = parent:GetChild("Rank")
+				if rank then rank:playcommand("Set") end
+			end
+		end,
+		UpdateNameCommand = function(self)
+			local parent = self:GetParent()
+			if not parent or not parent.hv_nameCycling then return end
+			local rating = parent:GetChild("Rating")
+			if rating then rating:playcommand("FadeOut") end
+			self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(0):queuecommand("SwapName")
+		end,
+		SwapNameCommand = function(self)
+			local parent = self:GetParent()
+			local showingLocal = not self.showOnline
+			local nextName = self.showOnline and self.onlineName or self.offlineName
+			self:settext(nextName)
+			if parent then
+				parent.hv_showingLocalName = showingLocal
+				local rank = parent:GetChild("Rank")
+				if rank then rank:playcommand("Set") end
+				local rating = parent:GetChild("Rating")
+				if rating then
+					rating:stoptweening():playcommand("FadeIn")
+				end
+			end
+			self.showOnline = not self.showOnline
+			self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(1):sleep(self.displayDuration):queuecommand("UpdateName")
+		end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
+		OnCommand = function(self) self:playcommand("Set"):diffusealpha(1) end
 	},
 
 	-- Level Badge
@@ -1747,8 +1953,9 @@ t[#t + 1] = Def.ActorFrame {
 				end
 			end
 		},
-		--LoginMessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1797,8 +2004,9 @@ t[#t + 1] = Def.ActorFrame {
 				end
 			end
 		},
-		--LoginMessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1811,6 +2019,12 @@ t[#t + 1] = Def.ActorFrame {
 		SetCommand = function(self)
 			local showProfileStats = HV.ShowProfileStats()
 			if not (showProfileStats == "true" or showProfileStats == true) then
+				self:visible(false)
+				return
+			end
+
+			local parent = self:GetParent()
+			if parent and parent.hv_nameCycling and parent.hv_showingLocalName then
 				self:visible(false)
 				return
 			end
@@ -1829,11 +2043,12 @@ t[#t + 1] = Def.ActorFrame {
 				end
 				self:settextf("#%d", rank):diffuse(rankColor):visible(true)
 			else
-				self:settext("OFFLINE"):diffuse(dimText):visible(true)
+				self:visible(false)
 			end
 		end,
-		--MessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1841,7 +2056,23 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "Rating",
 		InitCommand = function(self)
-			self:halign(0):valign(1):x(55):y(47):zoom(0.3)
+			self:halign(0):valign(1):x(55):y(46):zoom(0.35)
+			self.transitionDuration = 0.25
+		end,
+		FadeOutCommand = function(self)
+			local parent = self:GetParent()
+			if not parent or not parent.hv_nameCycling then return end
+			self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(0)
+		end,
+		FadeInCommand = function(self)
+			local parent = self:GetParent()
+			if not parent or not parent.hv_nameCycling then
+				self:playcommand("Set")
+				self:diffusealpha(1)
+				return
+			end
+			self:playcommand("Set")
+			self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(1)
 		end,
 		SetCommand = function(self)
 			local showProfileStats = HV.ShowProfileStats()
@@ -1851,21 +2082,26 @@ t[#t + 1] = Def.ActorFrame {
 				return
 			end
 			
-			local rating = 0
-			if DLMAN:IsLoggedIn() then
-				rating = DLMAN:GetSkillsetRating("Overall")
-			else
-				local profile = PROFILEMAN:GetProfile(PLAYER_1)
-				if profile then rating = profile:GetPlayerRating() end
+			local parent = self:GetParent()
+			local profile = PROFILEMAN:GetProfile(PLAYER_1)
+			local onlineRating = DLMAN:IsLoggedIn() and DLMAN:GetSkillsetRating("Overall") or nil
+			local offlineRating = profile and profile:GetPlayerRating() or nil
+
+			local useLocal = parent and parent.hv_nameCycling and parent.hv_showingLocalName
+			local rating = useLocal and (offlineRating or 0) or (onlineRating or 0)
+			if rating <= 0 then
+				rating = useLocal and (onlineRating or 0) or (offlineRating or 0)
 			end
+
 			if rating > 0 then
 				self:settextf("%.2f", rating):diffuse(HVColor.GetMSDRatingColor(rating))
 			else
 				self:settext("-"):diffuse(dimText)
 			end
 		end,
-		--LoginMessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1893,59 +2129,14 @@ t[#t + 1] = Def.ActorFrame {
 				self:visible(false)
 			end
 		end,
-		--LoginMessageCommand = function(self) self:playcommand("Set") end,
-		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		LoginMessageCommand = function(self) self:playcommand("Set") end,
+		LogOutMessageCommand = function(self) self:playcommand("Set") end,
+		OnlineUpdateMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
-	},
---[[
-	-- Integrated Login Button Area (Moved Above Profile)
-	Def.ActorFrame {
-		Name = "LoginButtonUI",
-		InitCommand = function(self)
-			self:xy(0, -22) -- Above the profile picture
-		end,
-		BeginCommand = function(self)
-			if not DLMAN:IsLoggedIn() then
-				local user = ThemePrefs.Get("HV_Username")
-				local token = ThemePrefs.Get("HV_PasswordToken")
-				if user and token and user ~= "" and token ~= "" then
-					DLMAN:LoginWithToken(user, token)
-				end
-			end
-		end,
-		Def.Quad {
-			Name = "Bg",
-			InitCommand = function(self)
-				self:halign(0):zoomto(80, 24):diffuse(accentColor):diffusealpha(0.8)
-			end,
-			SetMessageCommand = function(self)
-				if DLMAN:IsLoggedIn() then
-					self:diffuse(color("0.1,0.28,0.15,0.8"))
-				else
-					self:diffuse(accentColor):diffusealpha(0.8)
-				end
-			end,
-			LoginMessageCommand = function(self) self:playcommand("Set") end,
-			LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		},
-		LoadFont("Common Normal") .. {
-			Name = "Txt",
-			InitCommand = function(self) self:halign(0.5):xy(40, 0):zoom(0.3) end,
-			SetMessageCommand = function(self)
-				if DLMAN:IsLoggedIn() then
-					self:settext(THEME:GetString("ScreenSelectMusic", "LogOut")):diffuse(color("0.65,1,0.72,1"))
-				else
-					self:settext(THEME:GetString("ScreenSelectMusic", "LogIn")):diffuse(brightText)
-				end
-			end,
-			LoginMessageCommand = function(self) self:playcommand("Set") end,
-			LogOutMessageCommand = function(self) self:playcommand("Set") end,
-			OnCommand = function(self) self:playcommand("Set") end
-		}
 	}
 }
-]]--
-		}
+
+
 -- ============================================================
 -- MUSIC RATE DISPLAY
 -- ============================================================
@@ -1956,11 +2147,11 @@ t[#t + 1] = Def.ActorFrame {
 	end,
 	LoadFont("Common Normal") .. {
 		Name = "RateLabel",
-		InitCommand = function(self) self:halign(1):valign(0):x(-232):y(160):zoom(0.35):diffuse(dimText):settext(THEME:GetString("ScreenSelectMusic", "Rate")) end
+		InitCommand = function(self) self:halign(1):valign(0):x(-2):zoom(0.35):diffuse(dimText):settext(THEME:GetString("ScreenSelectMusic", "Rate")) end
 	},
 	LoadFont("Common Normal") .. {
 		Name = "RateValue",
-		InitCommand = function(self) self:halign(0):valign(0):x(-232):y(159.4):zoom(0.4):diffuse(accentColor):playcommand("Set") end,
+		InitCommand = function(self) self:halign(0):valign(0):zoom(0.4):diffuse(accentColor):playcommand("Set") end,
 		SetCommand = function(self)
 			local rate = getCurRateValue() or 1
 			if math.abs(rate - 1.0) < 0.005 then
@@ -2060,4 +2251,91 @@ t[#t + 1] = Def.ActorFrame {
 	end
 }
 
-return t
+root[#root + 1] = Def.ActorFrame {
+	Name = "MouseHoldPeekOverlay",
+	InitCommand = function(self)
+		self:draworder(12000):visible(false)
+		self.hv_holdLerp = 0
+		self.hv_holdTarget = 0
+	end,
+	OnCommand = function(self)
+		self:playcommand("Set")
+		self:SetUpdateFunction(function(actor)
+			actor.hv_holdLerp = actor.hv_holdLerp + (actor.hv_holdTarget - actor.hv_holdLerp) * 0.16
+			local active = actor.hv_holdLerp > 0.01
+			actor:visible(active)
+
+			local cover = actor:GetChild("Cover")
+			if cover then
+				cover:diffusealpha(actor.hv_holdLerp)
+			end
+
+			local bg = actor:GetChild("PeekSongBackground")
+			if bg and bg:GetVisible() then
+				local mx = INPUTFILTER:GetMouseX() or SCREEN_CENTER_X
+				local my = INPUTFILTER:GetMouseY() or SCREEN_CENTER_Y
+				local nx = (mx / SCREEN_WIDTH) - 0.5
+				local ny = (my / SCREEN_HEIGHT) - 0.5
+				local moveScale = 1 - actor.hv_holdLerp
+				local zoom = 1.10 + (0.12 * actor.hv_holdLerp)
+				bg:xy(
+					SCREEN_CENTER_X + (nx * 2 * 40 * moveScale),
+					SCREEN_CENTER_Y + (ny * 2 * 24 * moveScale)
+				)
+				bg:zoomto(SCREEN_WIDTH * zoom, SCREEN_HEIGHT * zoom)
+				bg:diffusealpha(actor.hv_holdLerp)
+			end
+		end)
+	end,
+	SetCommand = function(self)
+		local held = HV.LeftMousePeekHold == true
+		local allowed = held and HV.LeftMousePeekHoldAllowed == true
+		self.hv_holdTarget = allowed and 1 or 0
+		if allowed then
+			self:playcommand("UpdateBanner")
+		end
+	end,
+	UpdateBannerCommand = function(self)
+		local bg = self:GetChild("PeekSongBackground")
+		if not bg then return end
+		local bgPath = GetCurrentSongBackgroundPath()
+		if not bgPath then
+			bg:visible(false)
+			return
+		end
+		if bg.lastPath ~= bgPath then
+			bg:LoadBackground(bgPath)
+			bg.lastPath = bgPath
+		end
+		bg:visible(true):diffuse(color("1,1,1,1")):diffusealpha(self.hv_holdLerp)
+	end,
+	HVLeftMousePeekHoldChangedMessageCommand = function(self)
+		self:playcommand("Set")
+	end,
+	CurrentSongChangedMessageCommand = function(self)
+		if self:GetVisible() then
+			self:playcommand("UpdateBanner")
+		end
+	end,
+	DelayedChartUpdateMessageCommand = function(self)
+		if self:GetVisible() then
+			self:playcommand("UpdateBanner")
+		end
+	end,
+	Def.Quad {
+		Name = "Cover",
+		InitCommand = function(self)
+			self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y):zoomto(SCREEN_WIDTH, SCREEN_HEIGHT):diffuse(color("0,0,0,1")):diffusealpha(0)
+		end
+	},
+	Def.Sprite {
+		Name = "PeekSongBackground",
+		InitCommand = function(self)
+			self.lastPath = ""
+			self:diffusealpha(0)
+		end
+	}
+}
+
+
+return root

@@ -1,4 +1,4 @@
---- Holographic Void: ThemePrefs Option Rows
+--- Etternity: ThemePrefs Option Rows
 -- @module 04_ThemePrefsRows
 -- Defines option row handlers for the in-client ThemePrefs system.
 -- These rows appear in ScreenOptionsService when theme options are accessed.
@@ -32,6 +32,13 @@ local HVPrefRows = {
 		Default = 1,
 		Choices = {"Off", "Subtle", "Full"},
 		Values = {0, 1, 2},
+	},
+
+	-- Mouse Parallax
+	HV_Parallax = {
+		Default = true,
+		Choices = {"Off", "On"},
+		Values = {false, true},
 	},
 
 	-- Song Preview Mode
@@ -197,8 +204,8 @@ local HVPrefRows = {
 	-- Show Mean on Notefield
 	HV_ShowMean = {
 		Default = "Mean",
-		Choices = {"Off", "Mean", "Std Dev", "J4 Score"},
-		Values = {"Off", "Mean", "StdDev", "J4"},
+		Choices = {"Off", "Mean", "Std Dev", "J4 Score", "MA Ratio", "Delta Hand"},
+		Values = {"Off", "Mean", "StdDev", "J4", "MARatio", "DeltaHand"},
 	},
 	
 	-- Accent Color
@@ -479,7 +486,7 @@ function HVThemeOptionsLines()
 	-- Logical grouping of theme options
 	local l = table.concat({
 		-- General / Visual
-		"HV_BGAnimIntensity", "HV_BackgroundEffect", "HV_Particles", "HV_EnableGlow", "HV_QuotesMode",
+		"HV_BGAnimIntensity", "HV_Parallax", "HV_BackgroundEffect", "HV_Particles", "HV_EnableGlow", "HV_QuotesMode",
 		"HV_SongBackgroundBrightness",
 		
 		-- Music Select
@@ -886,6 +893,9 @@ local function OnThemePrefChanged(params)
 		if HVColor and HVColor.RefreshAccent then
 			HVColor.RefreshAccent()
 		end
+		if HVCustomColors and HVCustomColors.SyncAccentLinkedColors then
+			HVCustomColors.SyncAccentLinkedColors(ThemePrefs.Get("HV_AccentColor"))
+		end
 	end
 end
 
@@ -913,4 +923,4 @@ function OptionRowAutoFailThresholdCount()
 	return HVThemePrefRow("HV_AutoFailThreshold_Count", "Judgement Limit")
 end
 
-Trace("Holographic Void: 04 ThemePrefsRows.lua loaded.")
+Trace("Etternity: 04 ThemePrefsRows.lua loaded.")

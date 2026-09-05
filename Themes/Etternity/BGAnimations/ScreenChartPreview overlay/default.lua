@@ -49,8 +49,72 @@ local musicStartTime = 0
 local musicStartOffset = 0
 local isPaused = false
 local pausedPos = 0
+local visualSeekActive = false
+local visualSeekStartTime = 0
+local visualSeekStartPos = 0
 
 local fullSongMode = false
+
+local function syncPreviewSongPosition(pos)
+	local screen = ssm or SCREENMAN:GetTopScreen()
+	if not screen or not screen.SetSongPosition then return end
+
+	local ok = pcall(function()
+		screen:SetSongPosition(pos, 0, false)
+	end)
+	if not ok then
+		pcall(function()
+			screen:SetSongPosition(pos)
+		end)
+	end
+end
+
+local function setPreviewClock(pos)
+	if not song then return end
+	pos = math.max(0, pos or 0)
+	local td = song:GetTimingData()
+	if not td then return end
+
+	local beat = td:GetBeatFromElapsedTime(pos)
+
+	pcall(function()
+		Actor.SetBGMTime(pos, beat, pos, beat)
+	end)
+	pcall(function()
+		Actor.SetPlayerBGMBeat(beat, beat)
+	end)
+end
+
+local function applyPreviewPosition(pos)
+	pos = math.max(0, math.min(pos or 0, musicLength > 0 and musicLength or math.huge))
+	setPreviewClock(pos)
+
+	if progressRef then
+		local p = math.min(pos / math.max(1, musicLength), 1)
+		progressRef:stoptweening():zoomto(p * (SCREEN_WIDTH - 40), 2)
+	end
+
+	if cdgFrameRef then
+		local seek = cdgFrameRef:GetChild("ProgressMarker")
+		if seek then
+			local p = math.min(pos / math.max(1, musicLength), 1)
+			seek:x(p * (SCREEN_WIDTH - 120) - (SCREEN_WIDTH - 120) / 2)
+		end
+	end
+end
+
+local function scheduleVerifiedSeek(pos)
+	pos = math.max(0, pos or 0)
+	if not rootRef then return end
+	rootRef.pendingSeekPos = pos
+	rootRef:stoptweening():sleep(0.04):queuecommand("PerformSeek")
+end
+
+local function startVisualSeekClock(pos)
+	visualSeekActive = true
+	visualSeekStartTime = GetTimeSinceStart()
+	visualSeekStartPos = math.max(0, pos or 0)
+end
 
 local function playFrom(pos, forceRestart, isInitialOpen)
 	if not song then return end
@@ -156,36 +220,24 @@ end
 ------------------------------------------------------------
 local function updateSync(self)
 	if isPaused then
-		-- Brute-force the notefield to the captured position to prevent any sliding
-		if noteFieldRef and noteFieldRef.SetSeconds then
-			noteFieldRef:SetSeconds(pausedPos)
-		end
+		applyPreviewPosition(pausedPos)
 		-- Still update tooltip while paused
 		return
 	end
 	if not ssm then return end
 	
 	local pos = ssm:GetSampleMusicPosition()
-	if pos > musicLength then pos = musicLength end
-	
-	-- Keep NoteField locked to the actual audio clock every frame
-	if noteFieldRef and noteFieldRef.SetSeconds then
-		noteFieldRef:SetSeconds(pos)
-	end
-	
-	-- Sync Progress Bar / Seek
-	if progressRef then
-		local p = math.min(pos / math.max(1, musicLength), 1)
-		progressRef:stoptweening():zoomto(p * (SCREEN_WIDTH - 40), 2)
-	end
-	
-	if cdgFrameRef then
-		local seek = cdgFrameRef:GetChild("ProgressMarker")
-		if seek then
-			local p = math.min(pos / math.max(1, musicLength), 1)
-			seek:x(p * (SCREEN_WIDTH - 120) - (SCREEN_WIDTH - 120)/2)
+	if visualSeekActive then
+		local visualPos = visualSeekStartPos + ((GetTimeSinceStart() - visualSeekStartTime) * math.max(MIN_MUSIC_RATE, getCurRateValue()))
+		if pos and math.abs(pos - visualPos) < 0.15 then
+			visualSeekActive = false
+		else
+			pos = visualPos
 		end
 	end
+	if pos > musicLength then pos = musicLength end
+
+	applyPreviewPosition(pos)
 
 	-- CDG hover + info bar update
 	local cdgX = SCREEN_CENTER_X - (SCREEN_WIDTH - 120)/2
@@ -375,7 +427,14 @@ local function input(event)
 				local mx = INPUTFILTER:GetMouseX()
 				local fx = cdgFrameRef:GetTrueX() - (SCREEN_WIDTH - 120)/2
 				local p = (mx - fx) / (SCREEN_WIDTH - 120)
-				playFrom(p * musicLength)
+				p = math.max(0, math.min(1, p))
+				local pos = p * musicLength
+				pausedPos = pos
+				startVisualSeekClock(pos)
+				syncPreviewSongPosition(pos)
+				applyPreviewPosition(pos)
+				playFrom(pos)
+				scheduleVerifiedSeek(pos)
 				return true
 			end
 		end
@@ -940,6 +999,7 @@ local t = Def.ActorFrame {
 		if not song or not steps then return end
 		
 		musicLength = song:GetLastSecond()
+		visualSeekActive = false
 		
 		-- Always remove any stale callback first to prevent double-registration
 		-- across repeated open/close cycles (even if RemoveOldCallback hasn't fired yet).
@@ -974,8 +1034,12 @@ local t = Def.ActorFrame {
 		if capturedPos < 0 then capturedPos = 0 end
 		self.pendingSeekPos = capturedPos
 		
-		-- Start the screen-managed audio (isInitialOpen=true skips the immediate seek)
-		playFrom(capturedPos, false, true)
+		-- Try the seek immediately on open so audio can snap to the
+		-- notefield ASAP, then let the deferred seek path verify it.
+		playFrom(capturedPos, false, false)
+		syncPreviewSongPosition(capturedPos)
+		applyPreviewPosition(capturedPos)
+		scheduleVerifiedSeek(capturedPos)
 		
 		SCREENMAN:set_input_redirected(PLAYER_1, true)
 		self:visible(true)
@@ -988,18 +1052,24 @@ local t = Def.ActorFrame {
 	-- to ensure the engine's asynchronous audio start didn't overwrite the initial call.
 	PlayingSampleMusicMessageCommand = function(self)
 		if not HV.ChartPreviewActive then return end
-		if self.pendingSeekPos and self.pendingSeekPos > 0 and ssm and ssm.SetSampleMusicPosition then
+		if self.pendingSeekPos ~= nil and ssm and ssm.SetSampleMusicPosition then
 			-- First attempt: immediate
 			ssm:SetSampleMusicPosition(self.pendingSeekPos)
+			syncPreviewSongPosition(self.pendingSeekPos)
+			applyPreviewPosition(self.pendingSeekPos)
+			startVisualSeekClock(self.pendingSeekPos)
 			-- Second attempt: verification after a short delay to be certain
-			self:stoptweening():sleep(0.04):queuecommand("PerformSeek")
+			scheduleVerifiedSeek(self.pendingSeekPos)
 		end
 	end,
 	
 	PerformSeekCommand = function(self)
 		if not HV.ChartPreviewActive then return end
-		if self.pendingSeekPos and self.pendingSeekPos > 0 and ssm and ssm.SetSampleMusicPosition then
+		if self.pendingSeekPos ~= nil and ssm and ssm.SetSampleMusicPosition then
 			ssm:SetSampleMusicPosition(self.pendingSeekPos)
+			syncPreviewSongPosition(self.pendingSeekPos)
+			applyPreviewPosition(self.pendingSeekPos)
+			startVisualSeekClock(self.pendingSeekPos)
 		end
 		self.pendingSeekPos = nil
 	end,
@@ -1009,6 +1079,7 @@ local t = Def.ActorFrame {
 		SCREENMAN:set_input_redirected(PLAYER_1, false)
 		-- Don't stop music — let the screen handle it naturally
 		fullSongMode = false
+		visualSeekActive = false
 		-- Always clear pause state so re-entry does not inherit a stale flag
 		isPaused = false
 		pausedPos = 0

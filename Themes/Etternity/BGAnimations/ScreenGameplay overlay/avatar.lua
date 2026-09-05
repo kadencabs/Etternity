@@ -18,6 +18,15 @@ local dimText = color("0.5,0.5,0.5,1")
 local fontZoom = 0.55
 local fontZoomSmall = 0.45
 
+local function animateAvatarVisibility(self, visible)
+	self:stoptweening()
+	if visible then
+		self:visible(true):diffusealpha(0):decelerate(0.18):diffusealpha(1)
+	else
+		self:accelerate(0.14):diffusealpha(0)
+	end
+end
+
 -- Life helper
 local function PLife()
 	-- Priority 1: Direct LifeMeter actor polling (Smoothest, most reliable)
@@ -37,6 +46,13 @@ local actual_dp = 0
 local total_max = 0
 
 local function updateDPFromJudgment(msg)
+	if msg.HoldNoteScore or msg.RollNoteScore then
+		if msg.HoldNoteScore == "HoldNoteScore_MissedHold" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
+			actual_dp = actual_dp - 4.5
+		end
+		return
+	end
+
 	if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
 		if msg.TapNoteOffset then
 			local ts = ms.JudgeScalers[GetTimingDifficulty()] or PREFSMAN:GetPreference("TimingWindowScale") or 1.0
@@ -45,12 +61,11 @@ local function updateDPFromJudgment(msg)
 			actual_dp = actual_dp - 5.5
 		elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
 			actual_dp = actual_dp - 7.0
+		elseif msg.TapNoteScore ~= "TapNoteScore_None" then
+			actual_dp = actual_dp + 2.0
 		end
-	elseif msg.HoldNoteScore == "HoldNoteScore_MissedHold" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
-		actual_dp = actual_dp - 4.5
 	end
 end
-
 
 local t = Def.ActorFrame {
 	Name = "AvatarDisplay",
@@ -59,12 +74,16 @@ local t = Def.ActorFrame {
 		-- Check if player info should be shown
 		local showPlayerInfo = HV.ShowPlayerInfo() and not HV.MinimalisticMode()
 		self:visible(showPlayerInfo)
+		self:diffusealpha(showPlayerInfo and 1 or 0)
 		actual_dp = 0
 		total_max = 0
 		local steps = GAMESTATE:GetCurrentSteps()
 		if steps then
 			total_max = steps:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Notes") * 2
 		end
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateAvatarVisibility(self, HV.ShowPlayerInfo() and not (params and params.Enabled))
 	end,
 
 	-- Panel background
@@ -103,8 +122,34 @@ local t = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:xy(avatarSize + 6, 5):zoom(fontZoom):halign(0):maxwidth(130 / fontZoom)
-			self:settext(HV.GetPlayerName())
 			self:diffuse(color("1,1,1,1"))
+			self.cycleState = 0
+			self:playcommand("CycleName")
+		end,
+		CycleNameCommand = function(self)
+			self:stoptweening()
+			local pn = PLAYER_1
+			local onlineName = (DLMAN:IsLoggedIn()) and DLMAN:GetUsername() or ""
+			local localName = ""
+			local profile = PROFILEMAN:GetProfile(pn)
+			if profile then localName = profile:GetDisplayName() end
+			if localName == "" then localName = "Player 1" end
+			
+			if onlineName ~= "" and onlineName ~= localName then
+				if self.cycleState == 0 then
+					self:settext(onlineName)
+				else
+					self:settext(localName)
+				end
+				self.cycleState = 1 - self.cycleState
+				
+				self:diffusealpha(0):linear(0.25):diffusealpha(1)
+				self:sleep(2.5):linear(0.25):diffusealpha(0):queuecommand("CycleName")
+			else
+				self:diffusealpha(1)
+				self:settext(onlineName ~= "" and onlineName or localName)
+				self:sleep(3):queuecommand("CycleName")
+			end
 		end
 	},
 	
@@ -197,20 +242,23 @@ local t = Def.ActorFrame {
 		UpdateLifeCommand = function(self)
 			local life = PLife()
 			self:settextf("%.1f%%", life * 100)
-			
-			-- Coloring based on Life Difficulty (Range 1-7)
+
 			local diff = GetLifeDifficulty()
-			if diff <= 2 then
-				self:diffuse(color("#A0CFAB")) -- Green
-			elseif diff <= 4 then
-				self:diffuse(color("#5ABAFF")) -- Cyan/Blue
+			local lifeKey = "L7"
+			if diff <= 1 then
+				lifeKey = "L1"
+			elseif diff == 2 then
+				lifeKey = "L2"
+			elseif diff == 3 then
+				lifeKey = "L3"
+			elseif diff == 4 then
+				lifeKey = "L4"
 			elseif diff == 5 then
-				self:diffuse(color("#CFD198")) -- Yellow
+				lifeKey = "L5"
 			elseif diff == 6 then
-				self:diffuse(color("#E0B080")) -- Orange
-			else
-				self:diffuse(color("#CF9898")) -- Red
+				lifeKey = "L6"
 			end
+			self:diffuse(HVColor.GetLifeBarColor(lifeKey))
 		end
 	},
 
@@ -250,23 +298,26 @@ local t = Def.ActorFrame {
 			-- Color shift based on Life Difficulty and low life
 			local life = PLife()
 			if life < 0.3 and life > 0 then
-				self:diffuse(color("#FF4444"))
+				self:diffuse(HVColor.GetLifeBarColor("Danger"))
 			elseif life <= 0 then
-				self:diffuse(color("#440000"))
+				self:diffuse(HVColor.GetLifeBarColor("Danger"))
 			else
-				-- Unified Difficulty-based tinting
 				local diff = GetLifeDifficulty()
-				if diff <= 2 then
-					self:diffuse(color("#A0CFAB")) -- Green
-				elseif diff <= 4 then
-					self:diffuse(color("#5ABAFF")) -- Cyan/Blue
+				local lifeKey = "L7"
+				if diff <= 1 then
+					lifeKey = "L1"
+				elseif diff == 2 then
+					lifeKey = "L2"
+				elseif diff == 3 then
+					lifeKey = "L3"
+				elseif diff == 4 then
+					lifeKey = "L4"
 				elseif diff == 5 then
-					self:diffuse(color("#CFD198")) -- Yellow
+					lifeKey = "L5"
 				elseif diff == 6 then
-					self:diffuse(color("#E0B080")) -- Orange
-				else
-					self:diffuse(color("#CF9898")) -- Red
+					lifeKey = "L6"
 				end
+				self:diffuse(HVColor.GetLifeBarColor(lifeKey))
 			end
 		end
 	},
@@ -295,14 +346,14 @@ local t = Def.ActorFrame {
 			end,
 			JudgmentMessageCommand = function(self, msg)
 				self:stoptweening()
-
+				
 				local current_perc = pss:GetWifeScore() * 100
 				if total_max > 0 then
 					current_perc = math.max(0, (actual_dp / total_max) * 100)
 				end
+				
 				self:settextf("%.2f%%", current_perc)
 			end
-			
 		},
 
 		-- Current DP score (larger font)
@@ -317,7 +368,6 @@ local t = Def.ActorFrame {
 				self:stoptweening()
 				self:settextf("%.2f", actual_dp)
 			end
-			
 		},
 
 		-- Max score (smaller font, to the right of DP score)

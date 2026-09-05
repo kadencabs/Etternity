@@ -6,6 +6,50 @@ local HV_PointsLost = 0
 local HV_MaxPoints = 1 -- Placeholder, will be set in BeginCommand
 local HV_PBThreshold = 0
 local HV_JudgeScale = 1.0
+local HV_AutoFailJudgeCounts = { W2 = 0, W3 = 0, W4 = 0, W5 = 0, Miss = 0 }
+local HV_RidiculousCount = 0
+local failSfxPath = THEME:GetPathS("", "ScreenGameplay failed")
+local failSfxPlayed = false
+
+local function PlayFailSfxOnce()
+	if failSfxPlayed then return end
+	failSfxPlayed = true
+	if failSfxPath and failSfxPath ~= "" then
+		SOUND:PlayOnce(failSfxPath)
+	end
+end
+
+local function GetCurrentSongSecond()
+	local pos = GAMESTATE:GetSongPosition()
+	if pos and pos.GetMusicSeconds then
+		return pos:GetMusicSeconds() or 0
+	end
+	return 0
+end
+
+local function HardStopAutofail(top)
+	if not top then return end
+
+	local freezePos = math.max(0, GetCurrentSongSecond())
+
+	if top.SetSongPosition then
+		pcall(function() top:SetSongPosition(freezePos) end)
+	end
+
+	if top.GetPaused and top.TogglePause then
+		local ok, paused = pcall(function() return top:GetPaused() end)
+		if ok and not paused then
+			pcall(function() top:TogglePause() end)
+		end
+	end
+
+	if top.GetLifeMeter then
+		local lifeMeter = top:GetLifeMeter(pn)
+		if lifeMeter and lifeMeter.ChangeLife then
+			pcall(function() lifeMeter:ChangeLife(-10) end)
+		end
+	end
+end
 
 local function gameplayCoord(name)
 	return (MovableValues and MovableValues[name]) or getDefaultGameplayCoordinate(name) or 0
@@ -15,37 +59,126 @@ local function gameplaySize(name)
 	return (MovableValues and MovableValues[name]) or getDefaultGameplaySize(name) or 1
 end
 
+local function minimalisticHUDVisible(baseVisible, enabled)
+	if enabled == nil then enabled = HV.MinimalisticMode() end
+	return baseVisible and not enabled
+end
+
+local function animateGameplayHUDVisibility(self, visible, instant)
+	self:stoptweening()
+	if visible then
+		self:visible(true)
+		if instant then
+			self:diffusealpha(1):zoom(1)
+		else
+			self:diffusealpha(0):zoom(0.96):decelerate(0.18):diffusealpha(1):zoom(1)
+		end
+	else
+		if instant then
+			self:diffusealpha(0):zoom(0.96):visible(false)
+		else
+			self:accelerate(0.14):diffusealpha(0):zoom(0.96):sleep(0):visible(false)
+		end
+	end
+end
+
+local function applyMinimalisticVisibility(self, baseVisible, enabled, instant)
+	animateGameplayHUDVisibility(self, minimalisticHUDVisible(baseVisible, enabled), instant)
+end
+
+local function getChartLastSecond(song, steps)
+	if steps then
+		local ok, len = pcall(function() return steps:GetLastSecond() end)
+		if ok and len and len > 0 then return len end
+	end
+	if song then
+		local ok, len = pcall(function() return song:GetLastSecond() end)
+		if ok and len and len > 0 then return len end
+		ok, len = pcall(function() return song:MusicLengthSeconds() end)
+		if ok and len and len > 0 then return len end
+	end
+	return 0
+end
+
+local function hideFallbackLifeBar()
+	local top = SCREENMAN and SCREENMAN:GetTopScreen()
+	if not top or not top.GetLifeMeter then return end
+	for _, player in ipairs(GAMESTATE:GetEnabledPlayers()) do
+		local lifeMeter = top:GetLifeMeter(player)
+		if lifeMeter then
+			lifeMeter:visible(false)
+			lifeMeter:diffusealpha(0)
+		end
+	end
+end
+
+local function toggleMinimalisticModePreference()
+	local enabled = not HV.MinimalisticMode()
+	ThemePrefs.Set("HV_MinimalisticMode", enabled)
+	local top = SCREENMAN and SCREENMAN:GetTopScreen()
+	if top and top.GetChild then
+		local overlay = top:GetChild("GameplayOverlay")
+		if overlay then
+			overlay:playcommand("ApplyMinimalisticMode", { Enabled = enabled })
+		end
+	end
+	if SCREENMAN then
+		SCREENMAN:SystemMessage("Minimalistic Mode: " .. (enabled and "On" or "Off"))
+	end
+	MESSAGEMAN:Broadcast("HV_MinimalisticModeChanged", { Enabled = enabled })
+end
+
+local function toggleInGameLeaderboardPreference()
+	local mode = HV.ShowInGameLeaderboard()
+	if mode == "Off" then
+		local lastMode = ThemePrefs.Get("HV_LastInGameLeaderboardMode") or "Local"
+		if lastMode ~= "Local" and lastMode ~= "Online" then lastMode = "Local" end
+		ThemePrefs.Set("HV_ShowInGameLeaderboard", lastMode)
+		MESSAGEMAN:Broadcast("HV_InGameLeaderboardModeChanged", { Mode = lastMode })
+	else
+		if mode == "Local" or mode == "Online" then
+			ThemePrefs.Set("HV_LastInGameLeaderboardMode", mode)
+		end
+		ThemePrefs.Set("HV_ShowInGameLeaderboard", "Off")
+		MESSAGEMAN:Broadcast("HV_InGameLeaderboardModeChanged", { Mode = "Off" })
+	end
+end
+
+local function isRidiculousJudgment(params)
+	return HV.EmulateRidiculousEnabled() and params and params.TapNoteScore == "TapNoteScore_W1" and params.TapNoteOffset and math.abs(params.TapNoteOffset) <= 0.01125 * (tonumber(HV_JudgeScale) or 1)
+end
+
 local t = Def.ActorFrame {
 	Name = "GameplayOverlay",
+	ApplyMinimalisticModeCommand = function(self, params)
+		self:playcommand("HV_MinimalisticModeChangedMessage", params)
+	end,
 	BeginCommand = function(self)
+		hideFallbackLifeBar()
+		failSfxPlayed = false
+		HV_AutoFailJudgeCounts = { W2 = 0, W3 = 0, W4 = 0, W5 = 0, Miss = 0 }
 		-- Re-check sync mode via SCREENMAN now that it's safer
 		local curScreen = SCREENMAN:GetTopScreen()
 		if curScreen and curScreen:GetName():find("Sync") then
 			isSync = true
 		end
-		-- Apply Mini mod (Receptor Size)
-		local miniValue = tonumber(ThemePrefs.Get("HV_Mini")) or 100
-		local miniPct = 100 - miniValue
-		local modStr = miniPct .. "% mini"
-		
 		-- Apply Measure Lines (Beat Bars) mod
 		local beatBarMod = HV.ShowMeasureLines() and "beatbars" or "nobeatbars"
 		
 		-- Apply mods to all enabled players
 		for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 			local ps = GAMESTATE:GetPlayerState(pn)
-			local po = ps:GetPlayerOptions("ModsLevel_Preferred")
-			po:FromString(modStr)
-			po:FromString(beatBarMod)
+			for _, level in ipairs({"ModsLevel_Preferred", "ModsLevel_Stage", "ModsLevel_Current"}) do
+				ps:GetPlayerOptions(level):FromString(beatBarMod)
+			end
 
 			-- Sync Mode overrides
 			if isSync then
-				po:CMod(400)
-				po:Reverse(0) -- Upscroll
-				-- Apply to Current level as well
-				local co = ps:GetPlayerOptions("ModsLevel_Current")
-				co:CMod(400)
-				co:Reverse(0)
+				for _, level in ipairs({"ModsLevel_Preferred", "ModsLevel_Stage", "ModsLevel_Current"}) do
+					local po = ps:GetPlayerOptions(level)
+					po:CMod(400)
+					po:Reverse(0) -- Upscroll
+				end
 			end
 		end
 		
@@ -55,6 +188,7 @@ local t = Def.ActorFrame {
 		-- Properly initialize total chart points once song/steps are loaded
 		HV_MaxPoints = (getMaxNotes(PLAYER_1) or 1) * 2
 		HV_PointsLost = 0
+		HV_RidiculousCount = 0
 		HV_JudgeScale = PREFSMAN:GetPreference("TimingWindowScale") or 1.0
 
 		-- Initialize Auto-Fail Personal Best threshold if needed
@@ -70,22 +204,32 @@ local t = Def.ActorFrame {
 		end
 	end,
 	OnCommand = function(self)
+		hideFallbackLifeBar()
 		-- Double check mods on OnCommand just in case
 		if isSync then
-			for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-				local ps = GAMESTATE:GetPlayerState(pn)
+			for _, pn_loop in ipairs(GAMESTATE:GetEnabledPlayers()) do
+				local ps = GAMESTATE:GetPlayerState(pn_loop)
 				ps:GetPlayerOptions("ModsLevel_Current"):CMod(400)
 				ps:GetPlayerOptions("ModsLevel_Current"):Reverse(0)
 			end
 		end
 
-		-- Input Callback for Ghost Tapping feedback
-		local screen = SCREENMAN:GetTopScreen()
-		if screen then
-			screen:AddInputCallback(function(event)
+		-- Notefield Customization
+		local top = SCREENMAN:GetTopScreen()
+		if top then
+			-- Input Callback for Ghost Tapping feedback
+			top:AddInputCallback(function(event)
 				if event.type == "InputEventType_Release" then return end
 				if event.type == "InputEventType_FirstPress" then
 					local b = event.button
+					local db = event.DeviceInput and event.DeviceInput.button or ""
+					if db == "DeviceButton_tab" and INPUTFILTER and INPUTFILTER:IsControlPressed() then
+						toggleMinimalisticModePreference()
+						return true
+					elseif db == "DeviceButton_tab" then
+						toggleInGameLeaderboardPreference()
+						return true
+					end
 					-- Filter for common gameplay buttons to avoid menu buttons triggering HUD animations
 					if b == "Left" or b == "Down" or b == "Up" or b == "Right" or
 					   b == "Key 1" or b == "Key 2" or b == "Key 3" or b == "Key 4" or
@@ -94,12 +238,44 @@ local t = Def.ActorFrame {
 					end
 				end
 			end)
+
+			local player = top:GetChild("PlayerP1")
+			if player then
+				local notefield = player:GetChild("NoteField")
+				if notefield then
+					local nfX = gameplayCoord("NotefieldX")
+					local nfY = gameplayCoord("NotefieldY")
+					local usingReverse = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()
+					
+					notefield:addx(nfX)
+					notefield:addy(nfY * (usingReverse and 1 or -1))
+					
+					local cols = notefield:get_column_actors()
+					local nfW = gameplaySize("NotefieldWidth")
+					local nfH = gameplaySize("NotefieldHeight")
+					local nfS = gameplaySize("NotefieldSpacing")
+					
+					for _, col in ipairs(cols) do
+						col:zoomtowidth(nfW)
+						col:zoomtoheight(nfH)
+					end
+					
+					if setMovableNotefield then
+						setMovableNotefield(notefield, cols)
+						if spaceNotefieldCols then
+							spaceNotefieldCols(nfS)
+						end
+					end
+				end
+			end
 		end
 	end,
 	
 
 	
 	CurrentSongChangedMessageCommand = function(self)
+		hideFallbackLifeBar()
+		HV_RidiculousCount = 0
 		-- Re-apply sync mods on every loop start to prevent engine resets
 		if isSync then
 			for _, pn_loop in ipairs(GAMESTATE:GetEnabledPlayers()) do
@@ -137,12 +313,29 @@ local t = Def.ActorFrame {
 			-- A full miss loses 7.5 points relative to the 2.0 potential max per tap (2.0 - (-5.5) = 7.5)
 			HV_PointsLost = HV_PointsLost + 7.5
 		end
+
+		if isRidiculousJudgment(params) then
+			HV_RidiculousCount = HV_RidiculousCount + 1
+		end
+
+		if s == "TapNoteScore_W2" then
+			HV_AutoFailJudgeCounts.W2 = HV_AutoFailJudgeCounts.W2 + 1
+		elseif s == "TapNoteScore_W3" then
+			HV_AutoFailJudgeCounts.W3 = HV_AutoFailJudgeCounts.W3 + 1
+		elseif s == "TapNoteScore_W4" then
+			HV_AutoFailJudgeCounts.W4 = HV_AutoFailJudgeCounts.W4 + 1
+		elseif s == "TapNoteScore_W5" then
+			HV_AutoFailJudgeCounts.W5 = HV_AutoFailJudgeCounts.W5 + 1
+		elseif s == "TapNoteScore_Miss" then
+			HV_AutoFailJudgeCounts.Miss = HV_AutoFailJudgeCounts.Miss + 1
+		end
 		
 		MESSAGEMAN:Broadcast("HV_PointsUpdate")
 	end,
 
 	HoldNoteScoreMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
+		-- The engine applies the hold penalty even if the head was completely missed
 		if params.HoldNoteScore == "HoldNoteScore_LetGo" or params.HoldNoteScore == "HoldNoteScore_MissedHold" then
 			HV_PointsLost = HV_PointsLost + 4.5
 			MESSAGEMAN:Broadcast("HV_PointsUpdate")
@@ -155,7 +348,30 @@ local t = Def.ActorFrame {
 			HV_PointsLost = HV_PointsLost + 4.5
 			MESSAGEMAN:Broadcast("HV_PointsUpdate")
 		end
+	end,
+	PlayingUpdateMessageCommand = function(self)
+		hideFallbackLifeBar()
 	end
+}
+
+t[#t + 1] = Def.Actor {
+	Name = "FailSoundController",
+	CurrentSongChangedMessageCommand = function(self)
+		failSfxPlayed = false
+		HV_AutoFailJudgeCounts = { W2 = 0, W3 = 0, W4 = 0, W5 = 0, Miss = 0 }
+		HV_RidiculousCount = 0
+	end,
+	PlayingUpdateMessageCommand = function(self)
+		if failSfxPlayed then return end
+		local top = SCREENMAN:GetTopScreen()
+		if not top or not top.GetLifeMeter then return end
+		local lifeMeter = top:GetLifeMeter(pn)
+		if not lifeMeter or not lifeMeter.GetLife then return end
+		local life = lifeMeter:GetLife() or 0
+		if life <= 0 then
+			PlayFailSfxOnce()
+		end
+	end,
 }
 
 local accentColor = HVColor.Accent
@@ -185,6 +401,21 @@ local judgmentTNS = {
 	"TapNoteScore_W1", "TapNoteScore_W2", "TapNoteScore_W3",
 	"TapNoteScore_W4", "TapNoteScore_W5", "TapNoteScore_Miss"
 }
+
+if HV.EmulateRidiculousEnabled() then
+	table.insert(judgmentColors, 1, HVColor.GetJudgmentColor("Ridiculous"))
+	table.insert(judgmentLabels, 1, THEME:GetString("TapNoteScore", "Ridiculous"))
+	table.insert(judgmentTNS, 1, "Ridiculous")
+end
+
+local function getGameplayJudgmentCount(pss, judgeName)
+	if judgeName == "Ridiculous" then return HV_RidiculousCount end
+	local count = pss:GetTapNoteScores(judgeName)
+	if judgeName == "TapNoteScore_W1" and HV.EmulateRidiculousEnabled() then
+		count = count - HV_RidiculousCount
+	end
+	return count
+end
 
 -- ============================================================
 -- FRAME UPDATER (for time-based elements: life bar, progress bar)
@@ -222,7 +453,7 @@ local barW = SCREEN_WIDTH * 0.4
 local barH = 6
 local barY = progressBarPosition == "Top" and 12 or (progressBarPosition == "Bottom" and SCREEN_BOTTOM - 12 or 12)
 
-local showProgressBar = progressBarPosition ~= "Off" and not HV.MinimalisticMode() and not isSync
+local showProgressBar = progressBarPosition ~= "Off" and not isSync
 
 -- Load cursor system for mouse button support (required for practice_input.lua QuadButton)
 t[#t + 1] = LoadActor("../_cursor")
@@ -233,6 +464,10 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "ProgressBarContainer",
 	InitCommand = function(self)
 		self:xy(gameplayCoord("FullProgressBarX"), gameplayCoord("FullProgressBarY"))
+		self:visible(minimalisticHUDVisible(showProgressBar))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(showProgressBar, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_9"}, self, self:GetChild("Border"))
@@ -258,7 +493,8 @@ t[#t + 1] = Def.ActorFrame {
 		UpdateBarsCommand = function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
-				local len = song:MusicLengthSeconds()
+				local steps = GAMESTATE:GetCurrentSteps()
+				local len = getChartLastSecond(song, steps)
 				if len > 0 then
 					local cur = GAMESTATE:GetSongPosition():GetMusicSeconds()
 					local pct = math.max(0, math.min(cur / len, 1))
@@ -277,7 +513,8 @@ t[#t + 1] = Def.ActorFrame {
 		UpdateBarsCommand = function(self)
 			local song = GAMESTATE:GetCurrentSong()
 			if song then
-				local songLen = song:MusicLengthSeconds()
+				local steps = GAMESTATE:GetCurrentSteps()
+				local songLen = getChartLastSecond(song, steps)
 				local curTime = GAMESTATE:GetSongPosition():GetMusicSeconds()
 				local remaining = math.max(0, songLen - curTime) / getCurRateValue()
 				local mins = math.floor(remaining / 60)
@@ -312,122 +549,19 @@ t[#t + 1] = Def.ActorFrame {
 end -- End progress bar visibility check
 
 -- ============================================================
--- VERTICAL LIFE BAR (right edge) with % counter
--- ============================================================
-local lifeBarW = 8
-local lifeBarH = SCREEN_HEIGHT * 0.5
-local lifeBarX = SCREEN_CENTER_X + 220
-local lifeBarY = SCREEN_CENTER_Y
-
-if not HV.MinimalisticMode() and not isSync then
-t[#t + 1] = Def.ActorFrame {
-	Name = "VerticalLifeBar",
-	InitCommand = function(self)
-		self:xy(gameplayCoord("LifeP1X"), gameplayCoord("LifeP1Y")):rotationz(gameplayCoord("LifeP1Rotation")):visible(false)
-	end,
-
-	Def.Quad {
-		InitCommand = function(self)
-			self:zoomto(lifeBarW, lifeBarH):diffuse(color("0.1,0.1,0.1,0.8"))
-		end
-	},
-
-	Def.Quad {
-		Name = "LifeFill",
-		InitCommand = function(self)
-			self:valign(1):y(lifeBarH / 2)
-				:zoomto(lifeBarW, 0)
-				:diffuse(accentColor):diffusealpha(0.8)
-		end,
-		JudgmentMessageCommand = function(self)
-			self:queuecommand("RefreshLife")
-		end,
-		PlayingUpdateMessageCommand = function(self)
-			self:playcommand("RefreshLife")
-		end,
-		RefreshLifeCommand = function(self)
-			local screen = SCREENMAN:GetTopScreen()
-			local lifeVal = 0
-			if screen and screen:GetLifeMeter(pn) then
-				lifeVal = screen:GetLifeMeter(pn):GetLife()
-			else
-				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-				lifeVal = pss:GetCurrentLife() or 0
-			end
-			
-			if lifeVal then
-				local fillH = lifeBarH * lifeVal
-				self:zoomto(lifeBarW, fillH)
-
-				-- Coloring based on Life Difficulty (consistent with avatar.lua)
-				local diff = GetLifeDifficulty()
-				if diff <= 2 then
-					self:diffuse(color("#A0CFAB")) -- Green
-				elseif diff <= 4 then
-					self:diffuse(color("#5ABAFF")) -- Cyan/Blue
-				elseif diff == 5 then
-					self:diffuse(color("#CFD198")) -- Yellow
-				elseif diff == 6 then
-					self:diffuse(color("#E0B080")) -- Orange
-				else
-					self:diffuse(color("#CF9898")) -- Red
-				end
-				self:diffusealpha(0.8)
-			end
-		end
-	},
-
-	Def.Quad {
-		InitCommand = function(self)
-			self:zoomto(lifeBarW + 2, lifeBarH + 2)
-				:diffuse(color("0.2,0.2,0.2,0.3"))
-		end
-	},
-
-	-- Life % counter
-	LoadFont("Common Normal") .. {
-		Name = "LifePct",
-		InitCommand = function(self)
-			self:y(-lifeBarH / 2 - 10):zoom(0.25):diffuse(subText)
-		end,
-		BeginCommand = function(self)
-			self:playcommand("RefreshLifePct")
-		end,
-		JudgmentMessageCommand = function(self)
-			self:queuecommand("RefreshLifePct")
-		end,
-		PlayingUpdateMessageCommand = function(self)
-			self:playcommand("RefreshLifePct")
-		end,
-		RefreshLifePctCommand = function(self)
-			local screen = SCREENMAN:GetTopScreen()
-			local lifeVal = 0
-			if screen and screen:GetLifeMeter(pn) then
-				lifeVal = screen:GetLifeMeter(pn):GetLife()
-			else
-				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-				lifeVal = pss:GetCurrentLife() or 0
-			end
-			
-			if lifeVal then
-				self:settext(string.format("%.1f%%", lifeVal * 100))
-			end
-		end,
-
-	}
-}
-end -- End Vertical Life Bar
-
--- ============================================================
 -- SCORE % (REAL-TIME)
 -- ============================================================
-local showCurrentWife = HV.ShowCurrentWife() and not HV.MinimalisticMode() and not isSync
+local showCurrentWife = HV.ShowCurrentWife() and not isSync
 
 if showCurrentWife then
 t[#t + 1] = Def.ActorFrame {
 	Name = "CenteredScore",
 	InitCommand = function(self)
 		self:xy(gameplayCoord("DisplayPercentX"), gameplayCoord("DisplayPercentY")):zoom(gameplaySize("DisplayPercentZoom")):diffusealpha(0.8)
+		self:visible(minimalisticHUDVisible(showCurrentWife))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(showCurrentWife, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_w", "DeviceButton_e"}, self, self:GetChild("Border"))
@@ -438,6 +572,7 @@ t[#t + 1] = Def.ActorFrame {
 		InitCommand = function(self)
 			self:zoom(0.45):diffuse(brightText):diffusealpha(0.7)
 			self.currWifePoints = 0
+			self.currScoredTaps = 0
 			local scoreMode = ThemePrefs.Get("HV_ScoreDisplayMode") or "Normal"
 			if scoreMode == "Subtractive" then
 				self:settext("100.0000%")
@@ -445,68 +580,85 @@ t[#t + 1] = Def.ActorFrame {
 				self:settext("0.0000%")
 			end
 		end,
+		OnCommand = function(self)
+			self:queuecommand("UpdateAutoplay")
+		end,
+		UpdateAutoplayCommand = function(self)
+			if getAutoplay and getAutoplay() ~= 0 then
+				self:queuecommand("Update")
+			end
+			self:sleep(0.05):queuecommand("UpdateAutoplay")
+		end,
 		JudgmentMessageCommand = function(self, msg)
 			if msg.Player ~= GAMESTATE:GetMasterPlayerNumber() then return end
-			if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
+			if msg.HoldNoteScore then return end -- Skip holds, handled in HoldNoteScoreMessageCommand
+			if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" and msg.TapNoteScore ~= "TapNoteScore_CheckpointMiss" then
 				if msg.TapNoteOffset then
 					self.currWifePoints = self.currWifePoints + wife3(math.abs(msg.TapNoteOffset) * 1000, HV_JudgeScale, "Wife3")
+					self.currScoredTaps = self.currScoredTaps + 1
 				elseif msg.TapNoteScore == "TapNoteScore_Miss" then
 					self.currWifePoints = self.currWifePoints - 5.5
+					self.currScoredTaps = self.currScoredTaps + 1
 				elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
 					self.currWifePoints = self.currWifePoints - 7.0
+				elseif msg.TapNoteScore ~= "TapNoteScore_None" then
+					self.currWifePoints = self.currWifePoints + 2.0
+					self.currScoredTaps = self.currScoredTaps + 1
 				end
 			end
-			self:queuecommand("Update")
+			self:playcommand("Update")
 		end,
 		HoldNoteScoreMessageCommand = function(self, msg)
 			if msg.Player ~= GAMESTATE:GetMasterPlayerNumber() then return end
+			-- The engine applies the hold penalty even if the head was completely missed
 			if msg.HoldNoteScore == "HoldNoteScore_LetGo" or msg.HoldNoteScore == "HoldNoteScore_MissedHold" then
 				self.currWifePoints = self.currWifePoints - 4.5
-				self:queuecommand("Update")
+				self:playcommand("Update")
 			end
 		end,
 		RollNoteScoreMessageCommand = function(self, msg)
 			if msg.Player ~= GAMESTATE:GetMasterPlayerNumber() then return end
 			if msg.RollNoteScore == "RollNoteScore_LetGo" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
 				self.currWifePoints = self.currWifePoints - 4.5
-				self:queuecommand("Update")
+				self:playcommand("Update")
 			end
 		end,
 		HV_PointsUpdateMessageCommand = function(self)
-			self:queuecommand("Update")
+			self:playcommand("Update")
 		end,
 		UpdateCommand = function(self)
 			local wifePct
 			local scoreMode = ThemePrefs.Get("HV_ScoreDisplayMode") or "Normal"
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-			local ps = GAMESTATE:GetPlayerState(pn)
-			local isAuto = false
-			if getAutoplay and getAutoplay() ~= 0 then
-				isAuto = true
-			elseif ps then
-				local modStr = ps:GetPlayerOptionsString("ModsLevel_Current"):lower()
-				isAuto = modStr:find("autoplay") ~= nil
-			end
+			local isAutoplay = getAutoplay and getAutoplay() ~= 0
 			
-			if isAuto and pss then
-				wifePct = 0 -- Actual penaltied score for AutoPlay/Practice is 0%
+			if isAutoplay and pss then
+				local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
+								   pss:GetTapNoteScores("TapNoteScore_W2") +
+								   pss:GetTapNoteScores("TapNoteScore_W3") +
+								   pss:GetTapNoteScores("TapNoteScore_W4") +
+								   pss:GetTapNoteScores("TapNoteScore_W5") +
+								   pss:GetTapNoteScores("TapNoteScore_Miss")
+				local currentMaxPoints = notesPassed * 2
+				if currentMaxPoints > 0 and type(pss.GetWifePoints) == "function" then
+					local ok, value = pcall(pss.GetWifePoints, pss)
+					value = ok and tonumber(value) or nil
+					if value then wifePct = math.min((value / currentMaxPoints) * 100, 100) end
+				end
+				if not wifePct and type(pss.GetWifeScore) == "function" then
+					local ok, value = pcall(pss.GetWifeScore, pss)
+					value = ok and tonumber(value) or nil
+					if value then wifePct = value * 100 end
+				end
 			elseif scoreMode == "Subtractive" then
 				wifePct = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
 			else
 				if pss then
-					local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
-									   pss:GetTapNoteScores("TapNoteScore_W2") +
-									   pss:GetTapNoteScores("TapNoteScore_W3") +
-									   pss:GetTapNoteScores("TapNoteScore_W4") +
-									   pss:GetTapNoteScores("TapNoteScore_W5") +
-									   pss:GetTapNoteScores("TapNoteScore_Miss")
-					local currentMaxPoints = notesPassed * 2
+					local currentMaxPoints = self.currScoredTaps * 2
 					if currentMaxPoints > 0 then
 						local raw = (self.currWifePoints / currentMaxPoints) * 100
 						wifePct = math.min(raw, 100)
 					elseif self.currWifePoints < 0 then
-						-- Handle penalty before any tap notes (e.g. hitting a mine at the start)
-						-- Show the current penaltied score before the first tap note
 						wifePct = (self.currWifePoints / 2) * 100
 					else
 						wifePct = 100.0000
@@ -530,7 +682,7 @@ end
 -- ============================================================
 -- GOAL TRACKER
 -- ============================================================
-local showGoalTrackerText = HV.ShowGoalTrackerText() and not HV.MinimalisticMode() and not isSync
+local showGoalTrackerText = HV.ShowGoalTrackerText() and not isSync
 if showGoalTrackerText then
 	local pacemakerMode = ThemePrefs.Get("HV_PacemakerTargetType")
 	if not pacemakerMode or pacemakerMode == "" then pacemakerMode = "Target" end
@@ -547,6 +699,10 @@ if showGoalTrackerText then
 		Name = "TextPacemaker",
 		InitCommand = function(self)
 			self:xy(gameplayCoord("TargetTrackerX"), gameplayCoord("TargetTrackerY")):zoom(gameplaySize("TargetTrackerZoom"))
+			self:visible(minimalisticHUDVisible(showGoalTrackerText))
+		end,
+		HV_MinimalisticModeChangedMessageCommand = function(self, params)
+			animateGameplayHUDVisibility(self, minimalisticHUDVisible(showGoalTrackerText, params and params.Enabled))
 		end,
 		OnCommand = function(self)
 			setMovableActor({"DeviceButton_7", "DeviceButton_8"}, self, self:GetChild("Border"))
@@ -555,7 +711,7 @@ if showGoalTrackerText then
 			InitCommand = function(self)
 				self:halign(0.5):zoom(0.35)
 				self:settextf("%+5.2f (%5.2f%%)", 0, targetGoalPct)
-				self:diffuse(color("#00ff00"))
+				self:diffuse(HVColor.GetGoalTrackerColor("positive"))
 			end,
 			JudgmentMessageCommand = function(self, msg)
 				self.msg = msg
@@ -574,9 +730,9 @@ if showGoalTrackerText then
 				end
 
 				if tDiff and tDiff >= 0 then
-					self:diffuse(color("#91ff91ff"))
+					self:diffuse(HVColor.GetGoalTrackerColor("positive"))
 				else
-					self:diffuse(HVColor.Negative or color("#ff0000"))
+					self:diffuse(HVColor.GetGoalTrackerColor("negative"))
 				end
 				self:settextf("%+5.2f (%5.2f%%)", tDiff or 0, displayTarget)
 			end,
@@ -596,8 +752,12 @@ t[#t + 1] = Def.ActorFrame {
 		self:xy(gameplayCoord("DisplayMeanX"), gameplayCoord("DisplayMeanY")):zoom(gameplaySize("DisplayMeanZoom")):diffusealpha(0)
 		-- Check if notefield stat should be shown
 		local statType = HV.GetNotefieldStat()
-		local showStat = statType ~= "Off" and not HV.MinimalisticMode() and not isSync
-		self:visible(showStat)
+		local showStat = statType ~= "Off" and not isSync
+		self.HVBaseVisible = showStat
+		self:visible(minimalisticHUDVisible(showStat))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(self.HVBaseVisible, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_m", "DeviceButton_comma"}, self, self:GetChild("Border"))
@@ -610,14 +770,25 @@ t[#t + 1] = Def.ActorFrame {
 				local statType = HV.GetNotefieldStat()
 				self.statType = statType
 				self.currWifePoints = 0
+				self.leftOffsetSumMs = 0
+				self.leftOffsetCount = 0
+				self.rightOffsetSumMs = 0
+				self.rightOffsetCount = 0
+				self.middleOffsetSumMs = 0
+				self.middleOffsetCount = 0
 				if statType == "J4" then
 					self:settext("100.0000%")
+				elseif statType == "MARatio" then
+					self:settext("0.00:1")
+				elseif statType == "DeltaHand" then
+					self:settext("0.0000%")
 				else
 					self:settext("0.00ms")
 				end
 			end,
 			JudgmentMessageCommand = function(self, msg)
 				if msg.Player ~= GAMESTATE:GetMasterPlayerNumber() then return end
+				if msg.HoldNoteScore then return end -- Skip holds, handled in HoldNoteScoreMessageCommand
 				if self.statType == "J4" then
 					if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
 						local ts = ms.JudgeScalers[4] or 1.0
@@ -627,6 +798,35 @@ t[#t + 1] = Def.ActorFrame {
 							self.currWifePoints = self.currWifePoints - 5.5
 						elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
 							self.currWifePoints = self.currWifePoints - 7.0
+						elseif msg.TapNoteScore ~= "TapNoteScore_None" then
+							self.currWifePoints = self.currWifePoints + 2.0
+						end
+					end
+				elseif self.statType == "DeltaHand" then
+					if msg.TapNoteOffset and msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
+						local track = msg.FirstTrack
+						if track == nil then track = msg.Track end
+						if track ~= nil then
+							local judge = (PREFSMAN:GetPreference("SortBySSRNormPercent") and 4) or GetTimingDifficulty()
+							local ts = (ms.JudgeScalers and ms.JudgeScalers[judge]) or 1.0
+							local pts = wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
+
+							local cols = 4
+							local style = GAMESTATE:GetCurrentStyle()
+							if style and style.ColumnsPerPlayer then cols = style:ColumnsPerPlayer() end
+							local middleColumn = (cols - 1) / 2.0
+
+							if track < middleColumn then
+								self.leftOffsetSumMs = self.leftOffsetSumMs + pts
+								self.leftOffsetCount = self.leftOffsetCount + 1
+							elseif track > middleColumn then
+								self.rightOffsetSumMs = self.rightOffsetSumMs + pts
+								self.rightOffsetCount = self.rightOffsetCount + 1
+							else
+								-- Middle column (odd keymodes)
+								self.middleOffsetSumMs = (self.middleOffsetSumMs or 0) + pts
+								self.middleOffsetCount = (self.middleOffsetCount or 0) + 1
+							end
 						end
 					end
 				end
@@ -635,6 +835,7 @@ t[#t + 1] = Def.ActorFrame {
 			HoldNoteScoreMessageCommand = function(self, msg)
 				if msg.Player ~= GAMESTATE:GetMasterPlayerNumber() then return end
 				if self.statType == "J4" then
+					-- The engine applies the hold penalty even if the head was completely missed
 					if msg.HoldNoteScore == "HoldNoteScore_LetGo" or msg.HoldNoteScore == "HoldNoteScore_MissedHold" then
 						self.currWifePoints = self.currWifePoints - 4.5
 					end
@@ -654,17 +855,8 @@ t[#t + 1] = Def.ActorFrame {
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 				if not pss then return end
 				local ps = GAMESTATE:GetPlayerState(pn)
-				local isAuto = false
-				if getAutoplay and getAutoplay() ~= 0 then
-					isAuto = true
-				elseif ps then
-					local modStr = ps:GetPlayerOptionsString("ModsLevel_Current"):lower()
-					isAuto = modStr:find("autoplay") ~= nil or modStr:find("practice") ~= nil
-				end
 
-				if isAuto then
-					self:settext("0.0000%")
-				elseif self.statType == "J4" then
+				if self.statType == "J4" then
 					local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
 									   pss:GetTapNoteScores("TapNoteScore_W2") +
 									   pss:GetTapNoteScores("TapNoteScore_W3") +
@@ -687,6 +879,50 @@ t[#t + 1] = Def.ActorFrame {
 					if dvt and #dvt > 0 then
 						self:settextf("%.2fms", wifeSd(dvt))
 					end
+				elseif self.statType == "MARatio" then
+					local marv = pss:GetTapNoteScores("TapNoteScore_W1") or 0
+					local perf = pss:GetTapNoteScores("TapNoteScore_W2") or 0
+					if perf > 0 then
+						self:settextf("%.2f:1", marv / perf)
+					elseif marv > 0 then
+						self:settext("∞")
+					else
+						self:settext("0.00:1")
+					end
+				elseif self.statType == "DeltaHand" then
+					local cols = 4
+					local style = GAMESTATE:GetCurrentStyle()
+					if style and style.ColumnsPerPlayer then cols = style:ColumnsPerPlayer() end
+					local oddColumns = (cols % 2) ~= 0
+
+					local leftTaps, rightTaps = self.leftOffsetCount or 0, self.rightOffsetCount or 0
+					local middleTaps = self.middleOffsetCount or 0
+					local leftScore = leftTaps > 0 and (self.leftOffsetSumMs / (leftTaps * 2)) or 0
+					local rightScore = rightTaps > 0 and (self.rightOffsetSumMs / (rightTaps * 2)) or 0
+					local middleScore = middleTaps > 0 and ((self.middleOffsetSumMs or 0) / (middleTaps * 2)) or 0
+
+					if oddColumns then
+						if leftTaps == 0 and rightTaps == 0 and middleTaps == 0 then
+							self:settext("0.0000%")
+						else
+							local scores = {L = leftScore, M = middleScore, R = rightScore}
+							local minScore = math.min(leftScore, middleScore, rightScore)
+							local maxScore = math.max(leftScore, middleScore, rightScore)
+							local delta = (maxScore - minScore) * 100
+							local sorted = {"L", "M", "R"}
+							table.sort(sorted, function(a, b) return scores[a] > scores[b] end)
+							local symbol = table.concat(sorted, ">")
+							self:settextf("%s %.4f%%", symbol, delta)
+						end
+					else
+						if leftTaps > 0 and rightTaps > 0 then
+							local delta = math.abs(leftScore - rightScore) * 100
+							local symbol = leftScore > rightScore and "> " or "< "
+							self:settextf("%s%.4f%%", symbol, delta)
+						else
+							self:settext("0.0000%")
+						end
+					end
 				else
 					local dvt = pss:GetOffsetVector()
 					if dvt and #dvt > 0 then
@@ -694,8 +930,20 @@ t[#t + 1] = Def.ActorFrame {
 					end
 				end
 			end,
-			PracticeModeResetMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end,
-			PracticeModeReloadMessageCommand = function(self) self.currWifePoints = 0; self:queuecommand("Update") end
+			PracticeModeResetMessageCommand = function(self)
+				self.currWifePoints = 0
+				self.leftOffsetSumMs, self.leftOffsetCount = 0, 0
+				self.rightOffsetSumMs, self.rightOffsetCount = 0, 0
+				self.middleOffsetSumMs, self.middleOffsetCount = 0, 0
+				self:queuecommand("Update")
+			end,
+			PracticeModeReloadMessageCommand = function(self)
+				self.currWifePoints = 0
+				self.leftOffsetSumMs, self.leftOffsetCount = 0, 0
+				self.rightOffsetSumMs, self.rightOffsetCount = 0, 0
+				self.middleOffsetSumMs, self.middleOffsetCount = 0, 0
+				self:queuecommand("Update")
+			end
 		
 		},
 		MovableBorder(100, 18, 1, 0, 0)
@@ -704,7 +952,7 @@ t[#t + 1] = Def.ActorFrame {
 -- ============================================================
 -- CENTERED COMBO / MISS COMBO
 -- ============================================================
-local showCombo = HV.ShowCombo() and not HV.MinimalisticMode()
+local showCombo = HV.ShowCombo()
 
 if showCombo then
 t[#t + 1] = Def.ActorFrame {
@@ -712,12 +960,16 @@ t[#t + 1] = Def.ActorFrame {
 	InitCommand = function(self)
 		self:xy(SCREEN_CENTER_X + gameplayCoord("ComboX"), SCREEN_CENTER_Y + gameplayCoord("ComboY")):zoom(gameplaySize("ComboZoom"))
 		self.comboBreaks = 0
+		self:visible(minimalisticHUDVisible(showCombo))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(showCombo, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_3", "DeviceButton_4"}, self, self:GetChild("Border"))
 	end,
 
-	LoadFont("combo/_mochiy pop one 24px") .. {
+	LoadFont("combo/_theFont 48px") .. {
 		Name = "ComboNumber",
 		InitCommand = function(self)
 			self:zoom(0.75):diffuse(brightText):y(-4)
@@ -852,7 +1104,7 @@ end -- End combo visibility check
 -- ============================================================
 -- COMBO BREAK LANE HIGHLIGHT
 -- ============================================================
-local showComboBreakHighlight = HV.ComboBreakHighlight() and not HV.MinimalisticMode() and not isSync
+local showComboBreakHighlight = HV.ComboBreakHighlight() and not isSync
 
 if showComboBreakHighlight then
 
@@ -903,6 +1155,10 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "ComboBreakHighlight",
 	InitCommand = function(self)
 		self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y)
+		self:visible(minimalisticHUDVisible(showComboBreakHighlight))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(showComboBreakHighlight, params and params.Enabled))
 	end,
 
 	-- 4 gradient lane highlights for standard 4K (64px wide, spaced 64px apart)
@@ -922,9 +1178,9 @@ t[#t + 1] = Def.ActorFrame {
 
 		if isComboBreak and params.Notes then
 			local jColor = color("#FF5050")
-			if params.TapNoteScore == "TapNoteScore_W4" then jColor = judgmentColors[4]
-			elseif params.TapNoteScore == "TapNoteScore_W5" then jColor = judgmentColors[5]
-			elseif params.TapNoteScore == "TapNoteScore_Miss" then jColor = judgmentColors[6] end
+			if params.TapNoteScore == "TapNoteScore_W4" then jColor = HVColor.GetJudgmentColor("W4")
+			elseif params.TapNoteScore == "TapNoteScore_W5" then jColor = HVColor.GetJudgmentColor("W5")
+			elseif params.TapNoteScore == "TapNoteScore_Miss" then jColor = HVColor.GetJudgmentColor("Miss") end
 
 			-- Flash lanes that had notes in this judgment
 			for i = 1, 4 do
@@ -957,7 +1213,8 @@ t[#t + 1] = LoadActor("replayscrolling.lua")
 -- ============================================================
 -- ERROR BAR (TIMING BAR)
 -- ============================================================
-local ebW = 240
+local baseEBW = 240
+local ebW = baseEBW * gameplaySize("ErrorBarScale")
 local ebH = 2
 local ebCenterY = SCREEN_CENTER_Y + SCREEN_HEIGHT * 0.15 - 40
 local maxOffset = 180 -- ms
@@ -977,7 +1234,12 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 			self:xy(gameplayCoord("ErrorBarX"), gameplayCoord("ErrorBarY")):visible(ebMode ~= "Off" and not isSync)
 		end,
 		OnCommand = function(self)
-			setMovableActor({"DeviceButton_5"}, self, self:GetChild("Border"))
+			setMovableActor({"DeviceButton_5", "DeviceButton_6"}, self, self:GetChild("Border"))
+		end,
+		UpdateEBScaleCommand = function(self, params)
+			ebW = baseEBW * params.scale
+			self:GetChild("Border"):playcommand("ChangeWidth", {val = ebW})
+			self:playcommand("UpdateChildrenEBWidth", {width = ebW})
 		end,
 
 	-- Background line
@@ -992,7 +1254,51 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 		Name = "CenterLine",
 		InitCommand = function(self)
 			self:zoomto(1, ebH + 8):diffuse(color("1,1,1,0.3"))
+		end,
+		UpdateChildrenEBWidthCommand = function(self, params)
+			-- center line doesn't change size usually but we can react if needed
 		end
+	},
+	
+	-- Judgement window highlights (only visible when resizing)
+	Def.ActorFrame {
+		Name = "Highlights",
+		InitCommand = function(self)
+			self:visible(false)
+		end,
+		MovableUpdatedMessageCommand = function(self, params)
+			local ebMode = ThemePrefs.Get("HV_ErrorBarMode") or "Standard"
+			local isVisible = params and (params.button == "DeviceButton_6") and (ebMode ~= "Off")
+			self:visible(isVisible or false)
+		end,
+		(function()
+			local g = Def.ActorFrame{}
+			local windows = {180, 135, 90, 45, 22.5}
+			local colors = {
+				HVColor.GetJudgmentColor("W5"),
+				HVColor.GetJudgmentColor("W4"),
+				HVColor.GetJudgmentColor("W3"),
+				HVColor.GetJudgmentColor("W2"),
+				HVColor.GetJudgmentColor("W1")
+			}
+			if HV.EmulateRidiculousEnabled() then
+				table.insert(windows, 11.25 * (tonumber(HV_JudgeScale) or 1))
+				table.insert(colors, HVColor.GetJudgmentColor("Ridiculous"))
+			end
+			for i=1, #windows do
+				g[#g+1] = Def.Quad {
+					InitCommand = function(self)
+						local w = (windows[i] / maxOffset) * ebW
+						self:zoomto(w, ebH + 16):diffuse(colors[i]):diffusealpha(0.35)
+					end,
+					UpdateChildrenEBWidthCommand = function(self, params)
+						local w = (windows[i] / maxOffset) * params.width
+						self:zoomto(w, ebH + 16)
+					end
+				}
+			end
+			return g
+		end)()
 	},
 	
 	-- Early Indicator (Left)
@@ -1003,6 +1309,9 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 		end,
 		OnCommand = function(self)
 			self:sleep(0.5):linear(0.2):diffusealpha(0.6):sleep(1.2):linear(0.2):diffusealpha(0)
+		end,
+		UpdateChildrenEBWidthCommand = function(self, params)
+			self:x(-params.width/2 - 5)
 		end
 	},
 	-- Late Indicator (Right)
@@ -1013,6 +1322,9 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 		end,
 		OnCommand = function(self)
 			self:sleep(0.5):linear(0.2):diffusealpha(0.6):sleep(1.2):linear(0.2):diffusealpha(0)
+		end,
+		UpdateChildrenEBWidthCommand = function(self, params)
+			self:x(params.width/2 + 5)
 		end
 	},
 
@@ -1025,6 +1337,9 @@ local showStandard = (ebMode == "Standard" or ebMode == "Both")
 			local offset = params.offset
 			ewmaValue = (1 - ewmaAlpha) * ewmaValue + ewmaAlpha * offset
 			self:x((ewmaValue / maxOffset) * (ebW / 2))
+		end,
+		UpdateChildrenEBWidthCommand = function(self, params)
+			self:x((ewmaValue / maxOffset) * (params.width / 2))
 		end
 	},
 
@@ -1095,11 +1410,15 @@ local showJudgeCounter = HV.ShowJudgeCounter()
 local tallyX = SCREEN_CENTER_X + 160
 local tallyY = SCREEN_HEIGHT - 176
 
-if showJudgeCounter and not HV.MinimalisticMode() and not isSync then
+if showJudgeCounter and not isSync then
 t[#t + 1] = Def.ActorFrame {
 	Name = "TallyAndMetrics",
 	InitCommand = function(self)
 		self:xy(gameplayCoord("JudgeCounterX"), gameplayCoord("JudgeCounterY")):diffusealpha(0.8)
+		self:visible(minimalisticHUDVisible(showJudgeCounter))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(showJudgeCounter, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_p"}, self, self:GetChild("Border"))
@@ -1137,11 +1456,17 @@ t[#t + 1] = Def.ActorFrame {
 						UpdateCommand = function(self)
 							local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 							if pss then
-								self:settext(pss:GetTapNoteScores(judgmentTNS[i]))
+								self:settext(getGameplayJudgmentCount(pss, judgmentTNS[i]))
 							end
 						end,
-						PracticeModeResetMessageCommand = function(self) self:settext("0") end,
-						PracticeModeReloadMessageCommand = function(self) self:settext("0") end
+						PracticeModeResetMessageCommand = function(self)
+							if judgmentTNS[i] == "Ridiculous" then HV_RidiculousCount = 0 end
+							self:settext("0")
+						end,
+						PracticeModeReloadMessageCommand = function(self)
+							if judgmentTNS[i] == "Ridiculous" then HV_RidiculousCount = 0 end
+							self:settext("0")
+						end
 					}
 				}
 			end
@@ -1236,6 +1561,14 @@ t[#t + 1] = Def.ActorFrame {
 			end,
 			JudgmentMessageCommand = function(self, msg)
 				-- Only process tap-related judgments.
+				if msg.HoldNoteScore or msg.RollNoteScore then
+					if msg.HoldNoteScore == "HoldNoteScore_LetGo" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
+						self.currWifePoints = self.currWifePoints - 4.5
+						self:queuecommand("Update")
+					end
+					return
+				end
+
 				if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
 					local ts = ms.JudgeScalers[4] or 1.0 -- J4 rescaling always uses J4 (Index 4)
 					if msg.TapNoteOffset then
@@ -1244,9 +1577,9 @@ t[#t + 1] = Def.ActorFrame {
 						self.currWifePoints = self.currWifePoints - 5.5
 					elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
 						self.currWifePoints = self.currWifePoints - 7.0
+					elseif msg.TapNoteScore ~= "TapNoteScore_None" then
+						self.currWifePoints = self.currWifePoints + 2.0
 					end
-				elseif msg.HoldNoteScore == "HoldNoteScore_LetGo" then
-					self.currWifePoints = self.currWifePoints - 4.5
 				end
 				self:queuecommand("Update")
 			end,
@@ -1439,11 +1772,15 @@ end
 -- ============================================================
 -- SONG TITLE (BOTTOM of screen)
 -- ============================================================
-if not HV.MinimalisticMode() and not isSync then
+if not isSync then
 t[#t + 1] = Def.ActorFrame {
 	Name = "BPMText",
 	InitCommand = function(self)
 		self:xy(gameplayCoord("BPMTextX"), gameplayCoord("BPMTextY")):zoom(gameplaySize("BPMTextZoom"))
+		self:visible(minimalisticHUDVisible(true))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(true, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_x", "DeviceButton_c"}, self, self:GetChild("Border"))
@@ -1471,6 +1808,10 @@ t[#t + 1] = Def.ActorFrame {
 	Name = "SongInfoHUD",
 	InitCommand = function(self)
 		self:xy(SCREEN_CENTER_X, SCREEN_BOTTOM - 14)
+		self:visible(minimalisticHUDVisible(true))
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self, params)
+		animateGameplayHUDVisibility(self, minimalisticHUDVisible(true, params and params.Enabled))
 	end,
 	OnCommand = function(self)
 		self:diffusealpha(0.6)
@@ -1498,7 +1839,7 @@ local lastToastyCombo = 0
 
 local function safeGetThemePath(type, folder, element)
 	local possiblePaths = {
-		"Themes/Holographic Void/" .. folder .. "/" .. element,
+		"Themes/Etternity/" .. folder .. "/" .. element,
 		"Themes/_fallback/" .. folder .. "/" .. element
 	}
 	for _, p in ipairs(possiblePaths) do
@@ -1624,8 +1965,11 @@ if not isSync then
 	t[#t + 1] = Def.ActorFrame {
 		Name = "AutofailDisplay",
 		InitCommand = function(self)
-			self:xy(10, SCREEN_CENTER_Y + 40)
+			self:xy(gameplayCoord("AutoFailDisplayX"), gameplayCoord("AutoFailDisplayY")):zoom(gameplaySize("AutoFailDisplayZoom"))
 			self:visible(false)
+		end,
+		OnCommand = function(self)
+			setMovableActor({"DeviceButton_g", "DeviceButton_h"}, self, self:GetChild("Border"))
 		end,
 		BeginCommand = function(self)
 			self:queuecommand("Refresh")
@@ -1642,10 +1986,6 @@ if not isSync then
 		RefreshCommand = function(self)
 			local actionMode = ThemePrefs.Get("HV_AutoFailMode")
 			if actionMode == "Off" or not actionMode then
-				self:visible(false)
-				return
-			end
-			if HV.MinimalisticMode() then
 				self:visible(false)
 				return
 			end
@@ -1728,7 +2068,8 @@ if not isSync then
 				self:halign(0):valign(0.5):xy(11, 20):zoom(0.55)
 				self:settext("")
 			end
-		}
+		},
+		MovableBorder(64, 64, 1, 32, 0)
 	}
 	t[#t + 1] = LoadActor("npscalc")
 	t[#t + 1] = LoadActor("multiplayer")
@@ -1741,12 +2082,20 @@ t[#t + 1] = LoadActor("messagebox")
 -- ============================================================
 -- NG INDICATOR (POPUP)
 -- ============================================================
-if HV.ShowNGIndicator() and not HV.MinimalisticMode() and not isSync then
+if HV.ShowNGIndicator() and not isSync then
 	local isReverse = GAMESTATE:GetPlayerState(PLAYER_1):GetCurrentPlayerOptions():UsingReverse()
 	local ngY = isReverse and (SCREEN_CENTER_Y + 164 - 40) or (SCREEN_CENTER_Y - 164 + 40)
 	local colOffsets = {-96, -32, 32, 96}
 
-	local ngFrame = Def.ActorFrame { Name = "NGIndicator" }
+	local ngFrame = Def.ActorFrame {
+		Name = "NGIndicator",
+		InitCommand = function(self)
+			self:visible(minimalisticHUDVisible(true))
+		end,
+		HV_MinimalisticModeChangedMessageCommand = function(self, params)
+			animateGameplayHUDVisibility(self, minimalisticHUDVisible(true, params and params.Enabled))
+		end,
+	}
 	for i = 1, 4 do
 		ngFrame[#ngFrame + 1] = LoadFont("Common Normal") .. {
 			Name = "NG_" .. i,
@@ -2003,20 +2352,18 @@ t[#t + 1] = Def.Actor {
 		if actionMode == "Off" or not actionMode or self.hasTriggered then return end
 		
 		local condition = ThemePrefs.Get("HV_AutoFailCondition")
-		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
-		if not pss then return end
 		
 		local triggered = false
 
 		if condition == "Wife Percent" then
 			local threshold = tonumber(ThemePrefs.Get("HV_AutoFailThreshold_Wife")) or 93.00
 			local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
-			if subtractiveWife < threshold then 
+			if subtractiveWife <= threshold then 
 				triggered = true 
 			end
 		elseif condition == "Personal Best" then
 			local subtractiveWife = ((HV_MaxPoints - HV_PointsLost) / HV_MaxPoints) * 100
-			if subtractiveWife < HV_PBThreshold then
+			if subtractiveWife <= HV_PBThreshold then
 				triggered = true
 			end
 		elseif condition == "Judgement Count" then
@@ -2029,7 +2376,7 @@ t[#t + 1] = Def.Actor {
 			end
 			local currentCount = 0
 			for i=idx, #order do
-				currentCount = currentCount + pss:GetTapNoteScores("TapNoteScore_" .. order[i])
+				currentCount = currentCount + (HV_AutoFailJudgeCounts[order[i]] or 0)
 			end
 			if currentCount > 0 and currentCount >= limit then 
 				triggered = true 
@@ -2050,12 +2397,20 @@ t[#t + 1] = Def.Actor {
 		local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 		
 		if top and pss then
+			PlayFailSfxOnce()
+
 			-- Explicitly mark the score as Failed for the engine's stats committer
 			if pss.FailPlayer then
 				pss:FailPlayer()
 			end
 			
 			if actionMode == "Fail" then
+				if top.GetLifeMeter then
+					local lifeMeter = top:GetLifeMeter(pn)
+					if lifeMeter and lifeMeter.ChangeLife then
+						lifeMeter:ChangeLife(-10)
+					end
+				end
 				top:PostScreenMessage("SM_BeginFailed", 0)
 			elseif actionMode == "Restart" then
 				SCREENMAN:SetNewScreen("ScreenGameplay")

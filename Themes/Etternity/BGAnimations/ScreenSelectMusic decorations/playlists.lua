@@ -102,7 +102,7 @@ local function SortChartList(mode)
 end
 
 -- Manual chart reordering workaround
--- pl:MoveChart is not available in this Etternity version,
+-- pl:MoveChart is not available in this Etterna version,
 -- so we rebuild the playlist by deleting all charts and re-adding them in the new order.
 local function ManualMoveChart(fromIdx, toIdx)
 	if not pl then return false end
@@ -152,7 +152,7 @@ local function ManualMoveChart(fromIdx, toIdx)
 end
 
 -- Manual playlist rename workaround
--- SONGMAN:RenamePlaylist is not available in some older Etternity versions
+-- SONGMAN:RenamePlaylist is not available in some older Etterna versions
 local function ManualRenamePlaylist(oldName, newName, oldPl)
 	if not oldPl or not oldName or not newName or oldName == newName then return false end
 

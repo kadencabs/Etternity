@@ -40,7 +40,6 @@ local function releaseFilterInputRedirection()
 	SCREENMAN:set_input_redirected(PLAYER_1, false)
 end
 
-
 -- Numeric input handler (runs when a filter cell is being edited)
 local function FilterInput(event)
 	if event.type ~= "InputEventType_Release" and ActiveSS > 0 and active then

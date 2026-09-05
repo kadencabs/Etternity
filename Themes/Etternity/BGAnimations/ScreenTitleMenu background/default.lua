@@ -1,6 +1,6 @@
 -- Global State Initialization
 HV.TitleState = HV.TitleState or {}
-HV.TitleState.player = HV.TitleState.player or { song = nil, paused = true, offset = 0, lastStart = 0, duration = 0, history = {} }
+HV.TitleState.player = HV.TitleState.player or { song = nil, paused = true, offset = 0, lastStart = 0, duration = 0, history = {}, lastToggleAt = 0 }
 HV.TitleState.mouse = HV.TitleState.mouse or { lastHovered = nil }
 HV.TitleState.selectedProfile = HV.TitleState.selectedProfile or 0
 HV.TitleState.showEffectsPopup = HV.TitleState.showEffectsPopup or false
@@ -53,7 +53,8 @@ local function cyclePref(name)
 		local active = ThemePrefs.Get("HV_AlarmActive")
 		if (active == "true" or active == true) and ThemePrefs.Get("HV_AlarmType") == "Timer" then
 			local duration = tonumber(ThemePrefs.Get("HV_AlarmTimerDuration")) or 5
-			HV.AlarmTimerEndTime = os.clock() + (duration * 60)
+			HV.AlarmTimerDuration = duration * 60
+			HV.AlarmTimerStartTime = GetTimeSinceStart()
 			HV.AlarmTimerSeconds = duration * 60
 		end
 	elseif name == "HV_AlarmType" then
@@ -61,7 +62,8 @@ local function cyclePref(name)
 		local active = ThemePrefs.Get("HV_AlarmActive")
 		if (active == "true" or active == true) and ThemePrefs.Get("HV_AlarmType") == "Timer" then
 			local duration = tonumber(ThemePrefs.Get("HV_AlarmTimerDuration")) or 5
-			HV.AlarmTimerEndTime = os.clock() + (duration * 60)
+			HV.AlarmTimerDuration = duration * 60
+			HV.AlarmTimerStartTime = GetTimeSinceStart()
 			HV.AlarmTimerSeconds = duration * 60
 		end
 	end
@@ -85,6 +87,19 @@ local function getIntensitySpeed(base)
 	return base
 end
 
+local function getSelectedGamemodeLabel()
+	local game = GAMESTATE:GetCurrentGame()
+	local gameName = (game and game:GetName() or "unknown"):upper()
+	local style = GAMESTATE:GetCurrentStyle()
+	if style and style.GetName then
+		local styleName = tostring(style:GetName() or ""):upper()
+		if styleName ~= "" then
+			return "Current Gamemode: " .. gameName .. " · " .. styleName
+		end
+	end
+	return "Current Gamemode: " .. gameName
+end
+
 -- Hitbox Constants
 local pBtnW = 260
 local pBtnH = 70
@@ -105,19 +120,26 @@ local mpPlayPath = THEME:GetPathG("", "mp_play")
 local mpPausePath = THEME:GetPathG("", "mp_pause")
 local mpPrevPath = THEME:GetPathG("", "mp_prev")
 local mpNextPath = THEME:GetPathG("", "mp_next")
+local vizH = 32
+local vizY = mpBarY - (mpBarH / 2)
 
 local t = Def.ActorFrame {
 	InitCommand = function(self)
+		HV.TitleState.keyboardIndex = HV.TitleState.keyboardIndex or 1
 		self:SetUpdateFunction(function(af)
 			local screen = SCREENMAN:GetTopScreen()
 			if screen then
 				local sName = screen:GetName()
 				local isSelect = sName == "ScreenSelectProfile"
 				local prof = af:GetChild("ProfileChip")
+				local online = af:GetChild("OnlineProfileChip")
 				local mp = af:GetChild("MediaPlayer")
+				local viz = af:GetChild("MediaVisualizer")
 				local quotes = af:GetChild("QuotesOverlay")
 				if prof then prof:visible(not isSelect) end
+				if online then online:visible(not isSelect) end
 				if mp then mp:visible(not isSelect) end
+				if viz then viz:visible(not isSelect) end
 				if quotes then quotes:visible(not isSelect) end
 			end
 			
@@ -138,41 +160,60 @@ local t = Def.ActorFrame {
 				end
 			end
 
-			-- Title Menu Hover (4 items)
+			-- Title Menu Hover (5 items)
 			local hovered = nil
-			for i = 1, 4 do
-				local static_iy = (SCREEN_CENTER_Y + 20) + 44 * (i - 2.5)
+			local choiceNames = {"Start", "ColorTheme", "Options", "Quit"}
+			for i = 1, #choiceNames do
+				local static_iy = SCREEN_CENTER_Y + 40 * (i - ((#choiceNames + 1) / 2))
 				if virtualX >= SCREEN_CENTER_X-150 and virtualX <= SCREEN_CENTER_X+150 
-				   and virtualY >= static_iy-22 and virtualY <= static_iy+22 then
+				   and virtualY >= static_iy-20 and virtualY <= static_iy+20 then
 					hovered = i break
+				end
+			end
+
+			-- Selection Glow
+			local selGlow = af:GetChild("SelectionGlow")
+			if selGlow then
+				if hovered then
+					local selY = SCREEN_CENTER_Y + 40 * (hovered - ((#choiceNames + 1) / 2))
+					selGlow:stoptweening():linear(0.05):y(selY):diffusealpha(0)
+				else
+					selGlow:stoptweening():linear(0.1):diffusealpha(0)
 				end
 			end
 
 			if hovered ~= HV.TitleState.mouse.lastHovered then
 				HV.TitleState.mouse.lastHovered = hovered
-				local screen = SCREENMAN:GetTopScreen()
-				if screen then
-					local scroller = screen:GetChild("Scroller")
-					if scroller then
-						if hovered then
-							scroller:SetDestinationItem(hovered - 1)
-						end
-						-- Fire GainFocus/LoseFocus on each item so text zooms/whitens like keyboard
-						for i = 0, 3 do
-							local item = scroller:GetChild(tostring(i))
-							if item then
-								if hovered and i == hovered - 1 then
-									item:playcommand("GainFocus")
-								else
-									item:playcommand("LoseFocus")
-								end
-							end
+			end
+
+			-- Always derive visual highlight from actual scroller/engine selection.
+			local selectedIndex = HV.TitleState.keyboardIndex or 1
+			local screen = SCREENMAN:GetTopScreen()
+			if screen then
+				local scroller = screen:GetChild("Scroller")
+				if scroller then
+					local destItem = scroller:GetDestinationItem()
+					if destItem ~= nil then
+						selectedIndex = destItem + 1
+					else
+						local currItem = scroller:GetCurrentItem()
+						if currItem ~= nil then
+							selectedIndex = currItem + 1
 						end
 					end
-					-- Sync engine selection
-					if screen.SetCurrentChoice and hovered then
-						local choiceNames = {"Start", "ColorTheme", "Options", "Exit"}
-						screen:SetCurrentChoice(choiceNames[hovered])
+				end
+			end
+
+			HV.TitleState.keyboardIndex = selectedIndex
+
+			-- Update custom label colors based on selection state
+			for i = 1, 6 do
+				local lbl = af:GetChild("ChoiceLabel" .. i)
+				if lbl then
+					if i == selectedIndex then
+						lbl:stoptweening():decelerate(0.15):zoom(0.7):diffuse(color("1,1,1,1"))
+					else
+						lbl:stoptweening():decelerate(0.15):zoom(0.6):diffuse(color("0.5,0.5,0.5,1"))
 					end
 				end
 			end
@@ -198,6 +239,22 @@ local t = Def.ActorFrame {
 		if HV.TitleState and HV.TitleState.player then
 			HV.TitleState.player.history = {}
 		end
+	end,
+	MenuUpCommand = function(self)
+		HV.TitleState.keyboardIndex = HV.TitleState.keyboardIndex - 1
+		if HV.TitleState.keyboardIndex < 1 then HV.TitleState.keyboardIndex = 6 end
+	end,
+	MenuDownCommand = function(self)
+		HV.TitleState.keyboardIndex = HV.TitleState.keyboardIndex + 1
+		if HV.TitleState.keyboardIndex > 6 then HV.TitleState.keyboardIndex = 1 end
+	end,
+	Player1UpCommand = function(self)
+		HV.TitleState.keyboardIndex = HV.TitleState.keyboardIndex - 1
+		if HV.TitleState.keyboardIndex < 1 then HV.TitleState.keyboardIndex = 6 end
+	end,
+	Player1DownCommand = function(self)
+		HV.TitleState.keyboardIndex = HV.TitleState.keyboardIndex + 1
+		if HV.TitleState.keyboardIndex > 6 then HV.TitleState.keyboardIndex = 1 end
 	end,
 	LoginMessageCommand = function(self)
 		local user = DLMAN:GetUsername()
@@ -258,15 +315,24 @@ local function jukeboxPlaySong(song)
 	p.duration = song:MusicLengthSeconds()
 	local start = 0
 	SOUND:PlayMusicPart(mp, start, p.duration)
-	p.lastStart = os.clock()
+	p.lastStart = GetTimeSinceStart()
 	p.paused = false
 	MESSAGEMAN:Broadcast("PlayStatusChanged")
+	MESSAGEMAN:Broadcast("ResetVisualizer")
+end
+
+local function canTogglePlayback()
+	local p = HV.TitleState.player
+	local now = GetTimeSinceStart()
+	if now - (p.lastToggleAt or 0) < 0.08 then return false end
+	p.lastToggleAt = now
+	return true
 end
 
 local function jukeboxPause()
 	local p = HV.TitleState.player
 	if p.paused or not p.song then return end
-	p.offset = p.offset + (os.clock() - p.lastStart)
+	p.offset = p.offset + (GetTimeSinceStart() - p.lastStart)
 	SOUND:StopMusic()
 	p.paused = true
 	MESSAGEMAN:Broadcast("PlayStatusChanged")
@@ -281,9 +347,10 @@ local function jukeboxResume()
 	local len = p.duration - p.offset
 	if len <= 0 then len = p.duration; p.offset = 0; start = 0 end
 	SOUND:PlayMusicPart(mp, start, len)
-	p.lastStart = os.clock()
+	p.lastStart = GetTimeSinceStart()
 	p.paused = false
 	MESSAGEMAN:Broadcast("PlayStatusChanged")
+	MESSAGEMAN:Broadcast("ResetVisualizer")
 end
 
 local function jukeboxNext()
@@ -305,6 +372,24 @@ local function jukeboxPrev()
 	if #p.history == 0 then return end
 	local prevSong = table.remove(p.history)
 	if prevSong then jukeboxPlaySong(prevSong) end
+end
+
+local function getPlayerStateKey(p)
+	if not p.song then return "no_track" end
+	if p.paused then return "paused" end
+	return "playing"
+end
+
+local function jukeboxToggle()
+	if not canTogglePlayback() then return end
+	local p = HV.TitleState.player
+	if not p.song then
+		jukeboxNext()
+	elseif p.paused then
+		jukeboxResume()
+	else
+		jukeboxPause()
+	end
 end
 
 -- Visual Elements
@@ -338,6 +423,11 @@ local bgEffectsFrame = Def.ActorFrame {
 		if bgEffect == "None" then alpha = 0 end
 		self:finishtweening():diffusealpha(alpha)
 		
+		local selGlow = self:GetChild("SelectionGlow")
+		if selGlow then
+			selGlow:glow(accentColor):diffuse(accentColor)
+		end
+
 		self:playcommand("UpdateAlpha")
 		self:playcommand("UpdateSpeed")
 	end,
@@ -345,6 +435,25 @@ local bgEffectsFrame = Def.ActorFrame {
 		-- Alpha is handled by parent AF and individual children
 	end,
 }
+
+t[#t + 1] = Def.Quad {
+	Name = "SelectionGlow",
+	InitCommand = function(self) self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y):zoomto(300, 40):diffusealpha(0):fadetop(0.2):fadebottom(0.2) end
+}
+
+--- Title Menu Text Labels (Custom rendering to bypass engine scroller text issues)
+local choiceLabels = {"START", "COLOR THEME", "OPTIONS", "EXIT"}
+local choiceKeys = {"Start", "ColorTheme", "Options", "Quit"}
+for i, label in ipairs(choiceLabels) do
+	local iy = SCREEN_CENTER_Y + 40 * (i - ((#choiceLabels + 1) / 2))
+	t[#t + 1] = LoadFont("Common Normal") .. {
+		Name = "ChoiceLabel" .. i,
+		Text = label,
+		InitCommand = function(self)
+			self:xy(SCREEN_CENTER_X, iy):zoom(0.6):diffuse(color("0.5,0.5,0.5,1")):uppercase(true)
+		end
+	}
+end
 
 -- GRID EFFECT
 local grid = Def.ActorFrame { 
@@ -485,6 +594,26 @@ bgEffectsFrame[#bgEffectsFrame + 1] = rays
 
 t[#t + 1] = bgEffectsFrame
 
+-- Read Author from ThemeInfo.ini
+local themeAuthor = "Unknown"
+local themeName = THEME:GetCurThemeName()
+local paths = {
+	"Themes/" .. themeName .. "/ThemeInfo.ini",
+	"ThemeInfo.ini"
+}
+
+if THEME.GetCurrentThemeDirectory then
+	table.insert(paths, 1, THEME:GetCurrentThemeDirectory() .. "ThemeInfo.ini")
+end
+
+for _, path in ipairs(paths) do
+	local info = IniFile.ReadFile(path)
+	if info and info["ThemeInfo"] and info["ThemeInfo"]["Author"] then
+		themeAuthor = info["ThemeInfo"]["Author"]
+		break
+	end
+end
+
 t[#t + 1] = Def.Quad { 
 	Name = "TopBar",
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+2):zoomto(SCREEN_WIDTH*0.6, 2):diffuse(accentColor):diffusealpha(0.6) end, 
@@ -508,6 +637,25 @@ t[#t + 1] = Def.Quad {
 t[#t + 1] = Def.ActorFrame {
 	Name = "LogoContainer",
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
+	-- Selected gamemode
+	LoadFont("Common Normal") .. {
+		Name = "GamemodeLabel",
+		InitCommand = function(self)
+			self:y(-24):zoom(0.4):diffuse(subText)
+		end,
+		OnCommand = function(self)
+			self:playcommand("Set")
+		end,
+		CurrentGameChangedMessageCommand = function(self)
+			self:playcommand("Set")
+		end,
+		CurrentStyleChangedMessageCommand = function(self)
+			self:playcommand("Set")
+		end,
+		SetCommand = function(self)
+			self:settext(getSelectedGamemodeLabel())
+		end
+	},
 	-- Persistent Glow Layer
 	LoadFont("Common Large") .. { 
 		Text="ETTERNITY", 
@@ -525,88 +673,101 @@ t[#t + 1] = Def.ActorFrame {
 		ThemePrefChangedMessageCommand=function(self, params) if params.Name == "HV_EnableGlow" then self:playcommand("Refresh") end end
 	},
 	-- Main Text
-	LoadFont("Common Large") .. { 
-		Text="ETTERNITY", 
-		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end 
-	}
-}
-
--- Load Shared Background Particles
-t[#t + 1] = LoadActor("../_particles.lua")
-
-t[#t + 1] = Def.ActorFrame {
-	Name = "LogoContainer",
-	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
-	-- Persistent Glow Layer
-	LoadFont("Common Large") .. { 
-		Text="ETTERNITY", 
-		InitCommand=function(self) self:zoom(0.75):diffuse(accentColor):diffusealpha(0) end,
-		RefreshCommand=function(self)
-			self:stopeffect():stoptweening()
-			if tostring(ThemePrefs.Get("HV_EnableGlow")) == "true" then
-				self:diffusealpha(0.4):glow(accentColor)
-				self:thump():effectmagnitude(1.02, 1.02, 1.02):effectperiod(2)
-			else
-				self:diffusealpha(0)
-			end
-		end,
-		OnCommand=function(self) self:playcommand("Refresh") end,
-		ThemePrefChangedMessageCommand=function(self, params) if params.Name == "HV_EnableGlow" then self:playcommand("Refresh") end end
+	LoadFont("Common Large") .. {
+		Text="ETTERNITY",
+		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end
 	},
-	-- Main Text
-	LoadFont("Common Large") .. { 
-		Text="ETTERNITY", 
-		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end 
+	-- Author Text
+	LoadFont("Common Normal") .. {
+		Text="by " .. themeAuthor,
+		InitCommand=function(self) self:y(25):zoom(0.4):diffuse(subText) end
 	}
 }
 
 -- Load Shared Background Particles
 t[#t + 1] = LoadActor("../_particles.lua")
 
--- FIXED SECTION: Containing the children properly within the ActorFrame
 t[#t + 1] = Def.ActorFrame {
-	InitCommand = function(self)
-		self:SetUpdateFunction(function(af)
-			af:GetChild("D"):settextf("%04d-%02d-%02d", Year(), MonthOfYear()+1, DayOfMonth())
-			af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
+	InitCommand = function(self) self:SetUpdateFunction(function(af)
+		af:GetChild("D"):settextf("%04d-%02d-%02d", Year(), MonthOfYear()+1, DayOfMonth())
+		af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
+		
+		local srv = af:GetChild("S")
+		if false then
+			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. (GetServerName() or THEME:GetString("ScreenTitleMenu", "Connected"))):diffuse(color("0.65,1,0.72,1"))
+		else
+			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. THEME:GetString("ScreenTitleMenu", "Offline")):diffuse(dimText)
+		end
 
-			--[[local srv = af:GetChild("S")
-			srv:settext(
-				THEME:GetString("ScreenTitleMenu", "Server") ..
-				" · " ..
-				THEME:GetString("ScreenTitleMenu", "Offline")
-			):diffuse(dimText) ]]--
-
-			local alrm = af:GetChild("A")
-			local active = ThemePrefs.Get("HV_AlarmActive")
-
-			if active == "true" or active == true then
-				local type = ThemePrefs.Get("HV_AlarmType")
-				if type == "Time" then
-					alrm:settext("ALARM · " .. (ThemePrefs.Get("HV_AlarmTime") or "12:00"))
-						:diffuse(accentColor)
+		local alrm = af:GetChild("A")
+		local active = ThemePrefs.Get("HV_AlarmActive")
+		if active == "true" or active == true then
+			local type = ThemePrefs.Get("HV_AlarmType")
+			if type == "Time" then
+				alrm:settext("ALARM · " .. (ThemePrefs.Get("HV_AlarmTime") or "12:00")):diffuse(accentColor)
+			else
+				local s = HV.AlarmTimerSeconds or 0
+				if s > 0 then
+					alrm:settext("TIMER · " .. SecondsToMSS(s)):diffuse(accentColor)
 				else
-					local s = HV.AlarmTimerSeconds or 0
-					if s > 0 then
-						alrm:settext("TIMER · " .. SecondsToMSS(s))
-							:diffuse(accentColor)
-					else
-						alrm:settext("TIMER · " .. (ThemePrefs.Get("HV_AlarmTimerDuration") or 5) .. "M")
-							:diffuse(accentColor)
-					end
+					alrm:settext("TIMER · " .. (ThemePrefs.Get("HV_AlarmTimerDuration") or 5) .. "M"):diffuse(accentColor)
 				end
-			else
-				alrm:settext("ALARM · OFF"):diffuse(dimText)
 			end
-		end)
-	end,
-	-- These are now properly comma-separated children of the ActorFrame
+		else
+			alrm:settext("ALARM · OFF"):diffuse(dimText)
+		end
+	end) end,
 	LoadFont("Common Normal") .. { Name="D", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+14):halign(0):zoom(0.5):diffuse(subText) end },
 	LoadFont("Common Normal") .. { Name="T", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+30):halign(0):zoom(0.35):diffuse(subText) end },
 	LoadFont("Common Normal") .. { Name="S", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+44):halign(0):zoom(0.3):diffuse(dimText) end },
 	LoadFont("Common Normal") .. { Name="A", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+58):halign(0):zoom(0.3):diffuse(dimText) end },
-}
 	
+	-- Online Profile Display (Under Alarm)
+	Def.ActorFrame {
+		Name = "OnlineProfileChip",
+		InitCommand = function(self)
+			self:xy(SCREEN_LEFT + 16, SCREEN_TOP + 100):visible(false)
+			self:SetUpdateFunction(function(af)
+				local loggedIn = DLMAN:IsLoggedIn()
+				af:visible(loggedIn)
+				if not loggedIn then return end
+				
+				local nameTxt = af:GetChild("Name")
+				local ratingTxt = af:GetChild("Rating")
+				local rankTxt = af:GetChild("Rank")
+				
+				nameTxt:settext(DLMAN:GetUsername())
+				local r = DLMAN:GetSkillsetRating("Overall")
+				local showStats = HV.ShowProfileStats()
+				ratingTxt:visible(showStats and HV.ShowMSD()):settextf("%.2f", r):diffuse(HVColor.GetMSDRatingColor(r))
+				
+				if rankTxt then
+					local rank = DLMAN:GetSkillsetRank("Overall")
+					rankTxt:visible(showStats and HV.ShowMSD() and rank > 0):settextf("#%d", rank):diffuse(HVColor.GetSkillsetRankColor(rank))
+				end
+			end)
+		end,
+		
+		Def.Quad {
+			InitCommand = function(self)
+				self:halign(0):zoomto(pBtnW, compactRowH):diffuse(color("0.08,0.22,0.1,0.85")):diffuseleftedge(accentColor)
+			end
+		},
+		LoadFont("Common Normal") .. {
+			Name = "Name",
+			InitCommand = function(self) self:xy(10, -6):halign(0):zoom(0.4):diffuse(brightText) end
+		},
+		LoadFont("Common Large") .. {
+			Name = "Rating",
+			InitCommand = function(self) self:xy(8, 8):halign(0):zoom(0.50):diffuse(dimText) end
+		},
+		LoadFont("Common Normal") .. {
+			Name = "Rank",
+			InitCommand = function(self) self:xy(72, 10):halign(0):zoom(0.45):diffuse(dimText) end
+		}
+	}
+}
+
 -- Profile chip (Top right) + Inline Profile List
 local compactRowW = pBtnW
 
@@ -682,7 +843,7 @@ t[#t + 1] = Def.ActorFrame {
 							local cRating = row:GetChild("CRating")
 							local cAvatar = row:GetChild("CAvatar")
 							local cBg = row:GetChild("CBg")
-							if cName and p then cName:settext(p:GetDisplayName()) end
+							if cName and p then cName:settext(p:GetDisplayName()) end -- Compact rows still show local profile name
 							if cRating and p then
 								local r = p:GetPlayerRating()
 								local showStats = HV.ShowProfileStats()
@@ -784,12 +945,7 @@ end
 -- Custom Message Handlers
 t[#t + 1] = Def.Actor {
 	TriggerJukeboxPauseMessageCommand = function(self)
-		local p = HV.TitleState.player
-		if p.paused then
-			if not p.song then jukeboxNext() else jukeboxResume() end
-		else
-			jukeboxPause()
-		end
+		jukeboxToggle()
 	end
 }
 
@@ -806,11 +962,56 @@ t[#t + 1] = Def.ActorFrame {
 	LoadActor("quotes.lua")
 }
 
+-- Media Visualizer
+do
+	local visCore = nil
+	if audioVisualizer and audioVisualizer.new then
+		visCore = audioVisualizer:new {
+			x = 0,
+			y = 0,
+			width = SCREEN_WIDTH,
+			maxHeight = vizH,
+			freqIntervals = audioVisualizer.multiplyIntervals(audioVisualizer.defaultIntervals, 4),
+			color = accentColor,
+			onBarUpdate = function(self)
+				self:diffuse(accentColor):diffusealpha(0.55)
+			end
+		}
+	end
+
+	t[#t + 1] = Def.ActorFrame {
+		Name = "MediaVisualizer",
+		InitCommand = function(self)
+			self:xy(SCREEN_LEFT, vizY):draworder(-10000)
+		end,
+		Def.Quad {
+			InitCommand = function(self)
+				self:xy(SCREEN_WIDTH / 2, -vizH / 2):zoomto(SCREEN_WIDTH, vizH + 2)
+				self:diffuse(color("0.05,0.05,0.05,0.35"))
+			end
+		},
+		(visCore and (visCore .. {
+			Name = "VisualizerCore",
+			InitCommand = function(self)
+				self:draworder(-9999)
+			end,
+			PlayStatusChangedMessageCommand = function(self)
+				local p = HV.TitleState.player
+				if p.song and p.paused then
+					self:RunCommandsOnChildren(function(bar)
+						bar:stoptweening():smooth(0.15):zoomtoheight(2):diffuse(subText):diffusealpha(0.18)
+					end)
+				end
+			end
+		}) or Def.Actor {})
+	}
+end
+
 -- Media Player Bar
 t[#t + 1] = Def.ActorFrame {
 	Name = "MediaPlayer",
 	InitCommand = function(self)
-		local lastPausedState = nil
+		local lastStateKey = nil
 		self:SetUpdateFunction(function(af)
 			local p = HV.TitleState.player
 			-- Update song text
@@ -819,7 +1020,7 @@ t[#t + 1] = Def.ActorFrame {
 				if p.song then
 					local artist = p.song:GetDisplayArtist() or "?"
 					local title = p.song:GetDisplayMainTitle() or "?"
-					songTxt:settext(artist .. " — " .. title)
+					songTxt:settext(artist .. " - " .. title)
 					songTxt:diffuse(subText)
 				else
 					songTxt:settext(THEME:GetString("ScreenTitleMenu", "JukeboxNoTrack"))
@@ -830,14 +1031,14 @@ t[#t + 1] = Def.ActorFrame {
 			local timeTxt = af:GetChild("ElapsedTime")
 			if timeTxt then
 				if p.song and not p.paused then
-					local elapsed = p.offset + (os.clock() - p.lastStart)
+					local elapsed = p.offset + (GetTimeSinceStart() - p.lastStart)
 					timeTxt:settext(SecondsToMSS(elapsed))
 					timeTxt:diffuse(subText)
-				elseif p.song and p.paused then
+				elseif p.song and p.offset then
 					timeTxt:settext(SecondsToMSS(p.offset))
 					timeTxt:diffuse(dimText)
 				else
-					timeTxt:settext("—:——")
+					timeTxt:settext("-:--")
 					timeTxt:diffuse(dimText)
 				end
 			end
@@ -847,7 +1048,7 @@ t[#t + 1] = Def.ActorFrame {
 				if p.song and p.duration > 0 then
 					local elapsed = p.offset
 					if not p.paused then
-						elapsed = p.offset + (os.clock() - p.lastStart)
+						elapsed = p.offset + (GetTimeSinceStart() - p.lastStart)
 					end
 					local percent = math.max(0, math.min(1, elapsed / p.duration))
 					bar:zoomto(SCREEN_WIDTH * percent, 2)
@@ -857,14 +1058,20 @@ t[#t + 1] = Def.ActorFrame {
 			end
 
 			-- Swap play/pause icon only when state changes
-			if lastPausedState ~= p.paused then
-				lastPausedState = p.paused
+			local stateKey = getPlayerStateKey(p)
+			if lastStateKey ~= stateKey then
+				lastStateKey = stateKey
 				local playBtn = af:GetChild("PlayBtn")
 				if playBtn then
-					if p.paused then
-						playBtn:Load(mpPlayPath)
-					else
+					if stateKey == "playing" then
 						playBtn:Load(mpPausePath)
+						playBtn:diffusealpha(0.7)
+					elseif stateKey == "paused" then
+						playBtn:Load(mpPlayPath)
+						playBtn:diffusealpha(0.7)
+					else
+						playBtn:Load(mpPlayPath)
+						playBtn:diffusealpha(0.45)
 					end
 					playBtn:zoomto(mpBtnSize, mpBtnSize)
 				end
@@ -910,12 +1117,7 @@ t[#t + 1] = Def.ActorFrame {
 		MouseOutCommand = function(self) self:stoptweening():linear(0.1):diffusealpha(0.7) end,
 		MouseDownCommand = function(self, params)
 			if params.event == "DeviceButton_left mouse button" then
-				local p = HV.TitleState.player
-				if p.paused then
-					if not p.song then jukeboxNext() else jukeboxResume() end
-				else
-					jukeboxPause()
-				end
+				jukeboxToggle()
 			end
 		end
 	},
@@ -945,7 +1147,7 @@ t[#t + 1] = Def.ActorFrame {
 	-- Elapsed time
 	LoadFont("Common Normal") .. {
 		Name = "ElapsedTime",
-		Text = "—:——",
+		Text = "-:--",
 		InitCommand = function(self)
 			self:xy(SCREEN_RIGHT - 16, mpBtnY):halign(1):zoom(0.3)
 			self:diffuse(dimText)
@@ -1169,7 +1371,6 @@ t[#t + 1] = Def.ActorFrame {
 									ThemePrefs.Set("HV_AlarmTimerDuration", m)
 									ThemePrefs.Set("HV_AlarmActive", false) -- Reset active so user has to turn it back on to start
 									ThemePrefs.Save()
-									HV.AlarmTimerEndTime = 0
 									HV.AlarmTimerSeconds = m * 60
 								end
 							end)

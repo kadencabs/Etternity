@@ -60,4 +60,4 @@ function PONextScreen(currentKey)
 	}
 end
 
-Trace("Holographic Void: 04 PlayerOptionsPages.lua loaded.")
+Trace("Etternity: 04 PlayerOptionsPages.lua loaded.")

@@ -12,17 +12,35 @@ local function shouldShowLowerJudgementOffset(tns)
 	return currentIndex ~= nil and currentIndex >= thresholdIndex
 end
 
+local function recentJudgmentVisible()
+	return HV.RecentJudgmentDisplay() and not HV.MinimalisticMode()
+end
+
+local function animateRecentJudgmentVisibility(self, visible)
+	self:stoptweening()
+	if visible then
+		self:visible(true):diffusealpha(0):decelerate(0.18):diffusealpha(1)
+	else
+		self:accelerate(0.14):diffusealpha(0)
+	end
+end
+
 -- Create the Recent Judgment display dots statically first
 local recentJudgmentDisplay = Def.ActorFrame {
 	Name = "RecentJudgmentDisplay",
 	InitCommand = function(self)
 		self:xy((MovableValues and MovableValues.RecentJudgmentDisplayX) or getDefaultGameplayCoordinate("RecentJudgmentDisplayX") or -160, (MovableValues and MovableValues.RecentJudgmentDisplayY) or getDefaultGameplayCoordinate("RecentJudgmentDisplayY") or 50):zoom((MovableValues and MovableValues.RecentJudgmentDisplayZoom) or getDefaultGameplaySize("RecentJudgmentDisplayZoom") or 1)
+		self:visible(recentJudgmentVisible())
+		self:diffusealpha(recentJudgmentVisible() and 1 or 0)
 	end,
 	OnCommand = function(self)
 		setMovableActor({"DeviceButton_v", "DeviceButton_b"}, self, self:GetChild("Border"))
 	end,
 	UpdateRowsMessageCommand = function(self)
-		self:visible(HV.RecentJudgmentDisplay() and not HV.MinimalisticMode())
+		animateRecentJudgmentVisibility(self, recentJudgmentVisible())
+	end,
+	HV_MinimalisticModeChangedMessageCommand = function(self)
+		animateRecentJudgmentVisibility(self, recentJudgmentVisible())
 	end
 }
 
@@ -56,6 +74,14 @@ local t = Def.ActorFrame {
 		local jdgIdx = judgments[tns]
 		if not jdgIdx then return end
 		
+		local isRidiculous = false
+		if HV.EmulateRidiculousEnabled() and tns == "W1" and params.TapNoteOffset then
+			local judgeScale = tonumber(HV_JudgeScale) or PREFSMAN:GetPreference("TimingWindowScale") or 1
+			if math.abs(params.TapNoteOffset) <= 0.01125 * judgeScale then
+				isRidiculous = true
+			end
+		end
+
 		-- Recent Judgment Display Logic
 		if HV.RecentJudgmentDisplay and HV.RecentJudgmentDisplay() and not HV.MinimalisticMode() then
 			local dotFrame = self:GetChild("RecentJudgmentDisplay")
@@ -64,7 +90,7 @@ local t = Def.ActorFrame {
 				for i = DOT_COUNT, 2, -1 do
 					dotHistory[i] = dotHistory[i-1]
 				end
-				dotHistory[1] = HVColor.GetJudgmentColor(tns)
+				dotHistory[1] = HVColor.GetJudgmentColor(isRidiculous and "Ridiculous" or tns)
 				
 				-- Update dots
 				for i = 1, DOT_COUNT do
@@ -84,16 +110,7 @@ local t = Def.ActorFrame {
 			end
 		end
 
-		-- Ridiculous Emulation Logic
-		local isRidiculous = false
-		if (ThemePrefs.Get("HV_EmulateRidiculous") == true or ThemePrefs.Get("HV_EmulateRidiculous") == "true") and tns == "W1" and params.TapNoteOffset then
-			-- Ridiculous window = 22.5 / 2 = 11.25ms (0.01125s)
-			if math.abs(params.TapNoteOffset) <= 0.01125 then
-				isRidiculous = true
-			end
-		end
-
-		local emulateRidiculous = (ThemePrefs.Get("HV_EmulateRidiculous") == true or ThemePrefs.Get("HV_EmulateRidiculous") == "true")
+		local emulateRidiculous = HV.EmulateRidiculousEnabled()
 		local numStates = sprite:GetNumStates()
 		local state
 		local offset = params.TapNoteOffset
@@ -104,6 +121,8 @@ local t = Def.ActorFrame {
 			local baseIdx = jdgIdx
 			if emulateRidiculous then
 				baseIdx = isRidiculous and 0 or (jdgIdx + 1)
+			else
+				baseIdx = jdgIdx == 0 and 0 or (jdgIdx + 1)
 			end
 			state = baseIdx * 2 + isLate
 		elseif numStates == 7 then
@@ -111,6 +130,8 @@ local t = Def.ActorFrame {
 			local baseIdx = jdgIdx
 			if emulateRidiculous then
 				baseIdx = isRidiculous and 0 or (jdgIdx + 1)
+			else
+				baseIdx = jdgIdx == 0 and 0 or (jdgIdx + 1)
 			end
 			state = baseIdx
 		elseif numStates == 12 then
@@ -180,7 +201,7 @@ local t = Def.ActorFrame {
 		if offsetText then
 			if shouldShowLowerJudgementOffset(tns) and params.TapNoteOffset ~= nil then
 				offsetText:settext(string.format("%+.2fms", params.TapNoteOffset * 1000))
-				offsetText:diffuse(HVColor.GetJudgmentColor(tns))
+				offsetText:diffuse(HVColor.GetJudgmentColor(isRidiculous and "Ridiculous" or tns))
 				offsetText:visible(true):diffusealpha(1)
 			else
 				offsetText:visible(false)

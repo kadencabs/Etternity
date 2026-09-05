@@ -2,7 +2,7 @@
 -- Full-featured evaluation screen ported from spawncamping-wallhack.
 -- Features: Life/Combo graphs, Avatar+Player info, Grade+Score with rescoring (needs testing to ensure nothing breaks),
 --   ClearType comparison, Tap/Hold/Mine judgments, Timing stats (mean/sd),
---   CB L/R breakdown, Paginated Local Scoreboard, Full Offset Plot.
+--   CB L/R breakdown, Paginated Local/Online Scoreboard, Full Offset Plot.
 
 local song = GAMESTATE:GetCurrentSong()
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
@@ -13,7 +13,7 @@ local profile = PROFILEMAN:GetProfile(pn)
 -- State variables (declared early for function visibility)
 local curScore = pss:GetHighScore()
 local judge = 4
-local judges = {"TapNoteScore_W1","TapNoteScore_W2","TapNoteScore_W3","TapNoteScore_W4","TapNoteScore_W5","TapNoteScore_Miss"}
+local judges = HV.EmulateRidiculousEnabled() and {"Ridiculous","TapNoteScore_W1","TapNoteScore_W2","TapNoteScore_W3","TapNoteScore_W4","TapNoteScore_W5","TapNoteScore_Miss"} or {"TapNoteScore_W1","TapNoteScore_W2","TapNoteScore_W3","TapNoteScore_W4","TapNoteScore_W5","TapNoteScore_Miss"}
 
 -- Rescoring/offset plot state
 local nrv, dvt, ctt, ntt, totalTaps
@@ -48,7 +48,6 @@ local function getJudgeForScore(score)
 	else
 		playedJudge = GetTimingDifficulty()
 	end
-end
 	return math.max(4, math.min(9, playedJudge))
 end
 
@@ -56,6 +55,47 @@ local function formatWifePercent(pct)
 	local precision = pct >= 99 and 4 or 2
 	local rounded = roundTo(pct, precision)
 	return string.format("%." .. precision .. "f%%", rounded)
+end
+
+local evalModShorthands = {
+	-- Turn
+	["Mirror"] = "MIR", ["Back"] = "BAK", ["Left"] = "LFT", ["Right"] = "RGT",
+	["Shuffle"] = "SHU", ["SoftShuffle"] = "SSH", ["SuperShuffle"] = "XSH",
+	-- Appearance
+	["Hidden"] = "HID", ["Sudden"] = "SUD", ["Stealth"] = "STL", ["Blink"] = "BLK", ["RandomVanish"] = "RVN",
+	-- Hide
+	["Dark"] = "DRK", ["Blind"] = "BLN", ["Cover"] = "COV",
+	-- Remove
+	["NoMines"] = "NOM", ["NoHolds"] = "NOH", ["NoRolls"] = "NOR", ["NoLifts"] = "NOL", ["NoFakes"] = "NOF",
+	-- Other
+	["Reverse"] = "REV", ["Mines"] = "MNS",
+}
+
+local function formatEvalSpeedMode(mode, speed)
+	mode = mode or "C"
+	speed = speed or 400
+	if mode == "x" then
+		return string.format("%.2fx", speed / 100)
+	end
+	return mode .. tostring(speed)
+end
+
+local function formatEvalRateValue(rate)
+	local formatted = string.format("%.2f", tonumber(rate) or 1):gsub("%.?0+$", "") .. "x"
+	if formatted == "1x" then formatted = "1.0x" end
+	if formatted == "2x" then formatted = "2.0x" end
+	return formatted
+end
+
+local function hasEvaluationAssistEnabled(po, modStr)
+	local normalizedModStr = (modStr or ""):lower():gsub("[%s_]+", "")
+	if po then
+		if po.AssistClap and po:AssistClap() then return true end
+		if po.AssistTick and po:AssistTick() then return true end
+	end
+	return string.find(normalizedModStr, "assistclap")
+		or string.find(normalizedModStr, "assisttick")
+		or string.find(normalizedModStr, "autoplay")
 end
 
 local function setDPTextActors(wholeActor, decimalActor, dp, precision)
@@ -72,20 +112,125 @@ local function setDPTextActors(wholeActor, decimalActor, dp, precision)
 	end
 end
 
+-- Filter the module-level dvt by tap note type, mirroring getRescoreElementsFromScore.
+-- Without this, mine-hit offsets pass through wife3() giving ~+2 pts each while
+-- minesHit*-7 is ALSO applied, netting -5 per mine instead of the correct -7.
+local function getFilteredDvt()
+	if not dvt then return {} end
+	if ntt and #ntt == #dvt then
+		local out = {}
+		for i = 1, #dvt do
+			local ty = ntt[i]
+			if ty == "TapNoteType_Tap" or ty == "TapNoteType_HoldHead" or ty == "TapNoteType_Lift" then
+				out[#out + 1] = dvt[i]
+			end
+		end
+		return out
+	end
+	return dvt -- no type vector: return as-is (PSS path, already clean)
+end
+
 local function refreshRescoredPercentage()
 	local rst = getRescoreElements(pss, curScore)
 	if not rst then
 		rescoredPercentage = nil
 		return
 	end
-	rst.dvt = dvt
+	rst.dvt = getFilteredDvt()
 	rescoredPercentage = getRescoredWife3Judge(3, judge, rst)
+end
+
+local function calculateCustomWindowScore(configName, rst)
+	if not customWindowsConfig or not rst then return 0 end
+	local config = customWindowsConfig:get_data().customWindowConfigs[configName]
+	if not config then return 0 end
+	
+	local pts = 0
+	local dvt = rst.dvt
+	
+	local curveFunc = config.customWindowCurveFunction
+	local worths = config.customWindowWorths
+	local windows = config.customWindowWindows
+	
+	local function getCurveWorth(offset)
+		if curveFunc then return curveFunc(offset / 1000) end
+		if worths and windows then
+			local ms = math.abs(offset)
+			if ms <= (windows.W1 or 22.5) then return worths.W1 or 2
+			elseif ms <= (windows.W2 or 45) then return worths.W2 or 2
+			elseif ms <= (windows.W3 or 90) then return worths.W3 or 1
+			elseif ms <= (windows.W4 or 135) then return worths.W4 or 0
+			elseif ms <= (windows.W5 or 180) then return worths.W5 or -4
+			else return worths.Miss or -8 end
+		end
+		return 0
+	end
+	
+	-- Calculate tap/hit points
+	if dvt then
+		for i=1, #dvt do
+			pts = pts + getCurveWorth(dvt[i])
+		end
+	end
+	
+	-- Penalty for unplayed notes
+	local missWorth = 0
+	if worths and worths.Miss then missWorth = worths.Miss
+	elseif curveFunc then missWorth = curveFunc(1.000) end
+	if not missWorth or missWorth == 0 then missWorth = -8 end
+	
+	local maxNotes = math.max(0, tonumber(rst.totalNotes) or 0)
+	maxNotes = math.max(maxNotes, tonumber(rst.notesPassed) or 0)
+	local unplayed = math.max(0, maxNotes - (tonumber(rst.notesPassed) or 0))
+	pts = pts + (unplayed * missWorth)
+	
+	-- Hold/Roll scoring
+	local holdWorths = config.customWindowHoldWorths or {}
+	local heldWorth = holdWorths.Held or 0
+	local letGoWorth = holdWorths.LetGo or -4.5
+	local missedHoldWorth = holdWorths.Missed or -4.5
+	
+	local totalHolds = rst.totalHolds or 0
+	local totalRolls = rst.totalRolls or 0
+	local totalLongNotes = totalHolds + totalRolls
+	local longNotesMissed = (rst.holdsMissed or 0) + (rst.rollsMissed or 0)
+	
+	-- Penalize missed long notes
+	pts = pts + (longNotesMissed * missedHoldWorth)
+	-- Reward successfully held long notes
+	pts = pts + (totalLongNotes - longNotesMissed) * heldWorth
+	
+	-- Mine penalties
+	local mineHitWorth = config.customWindowMineHitWorth or -2
+	pts = pts + (rst.minesHit or 0) * mineHitWorth
+	
+	-- Max points calculation
+	local tapTypeWorths = config.customWindowTapNoteTypeWorths or {}
+	local tapWorth = tapTypeWorths.Tap or 2
+	local holdHeadWorth = tapTypeWorths.HoldHead or 2
+	local liftWorth = tapTypeWorths.Lift or tapWorth
+	local mineWorth = tapTypeWorths.Mine or 0
+	
+	-- RadarCategory_Notes = Taps + HoldHeads + RollHeads + Lifts
+	-- We approximate RollHeads as using HoldHead worth
+	local others = maxNotes - totalLongNotes
+	if others < 0 then others = 0 end
+	
+	local maxPts = (others * tapWorth) + (totalLongNotes * holdHeadWorth)
+	-- Plus completion points for every long note
+	maxPts = maxPts + (totalLongNotes * heldWorth)
+	-- Plus mine points if hit (usually 0)
+	local totalMines = rst.totalMines or 0
+	maxPts = maxPts + (totalMines * mineWorth)
+	
+	if maxPts <= 0 then return 0 end
+	return math.max(0, math.min(100, (pts / maxPts) * 100))
 end
 
 local function updateVectors()
 	local replay = curScore and curScore:GetReplay() or nil
 	local hasReplay = replay and replay:LoadAllData()
-	
+
 	if hasReplay then
 		nrv = replay:GetNoteRowVector()
 		ctt = replay:GetTrackVector()
@@ -117,6 +262,35 @@ local function localWifeMean(dvt) return wifeMean(dvt) end
 local function localWifeAbsMean(dvt) return wifeAbsMean(dvt) end
 local function localWifeSd(dvt) return wifeSd(dvt) end
 local function localWifeMax(dvt) return wifeMax(dvt) end
+
+local function getKeycountLabelForSteps(curSteps)
+	if not curSteps then return nil end
+
+	local st = tostring(curSteps:GetStepsType() or ""):lower()
+	local stepsTypeToKeys = {
+		stepstype_dance_single = 4,
+		stepstype_dance_double = 8,
+		stepstype_pump_single = 5,
+		stepstype_pump_halfdouble = 6,
+		stepstype_pump_double = 10,
+		stepstype_kb7_single = 7,
+		stepstype_beat_single5 = 5,
+		stepstype_beat_single7 = 7,
+		stepstype_popn_five = 5,
+		stepstype_popn_nine = 9,
+	}
+
+	local keys = stepsTypeToKeys[st]
+	if not keys then
+		local style = GAMESTATE:GetCurrentStyle()
+		if style and style.ColumnsPerPlayer then
+			keys = tonumber(style:ColumnsPerPlayer())
+		end
+	end
+
+	if not keys or keys <= 0 then return nil end
+	return tostring(math.floor(keys + 0.5)) .. "K"
+end
 
 -- LA/RA Ratio calculation (ported from Til Death)
 -- Calculates Ludicrous Attack and Ridiculous Attack ratios from replay offsets
@@ -187,8 +361,6 @@ end
 local songTotalNotes = steps:GetRadarValues(pn):GetValue("RadarCategory_Notes")
 local songMaxPoints = songTotalNotes * 2
 
-
-
 local function getRunningWife(wife, judged)
 	if judged == 0 then return 0 end
 	return wife * (songTotalNotes / judged)
@@ -200,7 +372,6 @@ local function clampJudge()
 end
 clampJudge()
 
--- Score table
 local hsTable = getScoreTable(pn, rate)
 local scoreIndex = 0
 if hsTable then
@@ -209,7 +380,6 @@ end
 local recScore = getBestScore(pn, scoreIndex, rate, true)
 local clearType = getClearType(pn, steps, curScore)
 
--- Left/Right CB tracking
 local tracks = pss:GetTrackVector()
 local devianceTable = pss:GetOffsetVector()
 local cbl, cbr, cbm = 0, 0, 0
@@ -224,8 +394,7 @@ local function recountCBs()
 	if not ctt or not dvt then return end
 	for i = 1, #dvt do
 		if ctt[i] then
-			-- Standard Etternity CB threshold is 90ms (J4). Scales with judge.
-			if math.abs(dvt[i]) > tso * 90 then 
+			if math.abs(dvt[i]) > tso * 90 then
 				if ctt[i] < middleCol then cbl = cbl + 1
 				elseif ctt[i] > middleCol then cbr = cbr + 1
 				else cbm = cbm + 1 end
@@ -245,7 +414,6 @@ local function getStatInfo()
 	}
 end
 
--- HV Color Palette
 local accentColor = HVColor.Accent
 local brightText = color("1,1,1,1")
 local dimText = brightText
@@ -254,23 +422,59 @@ local mainText = brightText
 local bgCard = color("0.06,0.06,0.06,0.7")
 local dividerColor = color("0.2,0.2,0.2,1")
 
--- Judgment colors (HV palette)
 local judgmentColors = {
+	HV.EmulateRidiculousEnabled() and HVColor.GetJudgmentColor("Ridiculous") or nil,
 	HVColor.GetJudgmentColor("W1"), HVColor.GetJudgmentColor("W2"), HVColor.GetJudgmentColor("W3"),
 	HVColor.GetJudgmentColor("W4"), HVColor.GetJudgmentColor("W5"), HVColor.GetJudgmentColor("Miss")
 }
+if not HV.EmulateRidiculousEnabled() then table.remove(judgmentColors, 1) end
+
+local ridiculousCount = nil
+if HV.EmulateRidiculousEnabled() then
+	local ok, offsets = pcall(function() return pss:GetOffsetVector() end)
+	ridiculousCount = ok and HV.GetRidiculousCountFromOffsets(offsets, ms.JudgeScalers[getJudgeForScore(curScore)] or 1) or nil
+end
+
+local function getEvaluationJudgeCount(judgeName, judgeIndex)
+	if judgeName == "Ridiculous" then return ridiculousCount or 0 end
+	if judgeName == "TapNoteScore_W1" and ridiculousCount then return pss:GetTapNoteScores(judgeName) - ridiculousCount end
+	return pss:GetTapNoteScores(judgeName)
+end
+
+local function getEvaluationRescoredJudgeCount(offsetVector, judgeScale, judgeName, judgeIndex)
+	local ridiculousScale = ms.JudgeScalers[judgeScale] or judgeScale
+	if judgeName == "Ridiculous" then return HV.GetRidiculousCountFromOffsets(offsetVector, ridiculousScale) end
+	local index = HV.EmulateRidiculousEnabled() and judgeIndex - 1 or judgeIndex
+	local count = getRescoredJudge(offsetVector, judgeScale, index)
+	if judgeName == "TapNoteScore_W1" and HV.EmulateRidiculousEnabled() then
+		count = count - HV.GetRidiculousCountFromOffsets(offsetVector, ridiculousScale)
+	end
+	return count
+end
+
+local function getRATallyCount(rowIndex)
+	local ra, la, ridic, marvRA, ludic, ridicLA = getRatios()
+	if rowIndex == 1 then return ludic
+	elseif rowIndex == 2 then return ridicLA
+	elseif rowIndex == 3 then return marvRA
+	elseif rowIndex == 4 then return pss:GetTapNoteScores("TapNoteScore_W2")
+	elseif rowIndex == 5 then return pss:GetTapNoteScores("TapNoteScore_W3")
+	elseif rowIndex == 6 then return pss:GetTapNoteScores("TapNoteScore_Miss")
+	end
+	return 0
+end
 
 -- Combo Graph Configuration
- local comboConfig = {
+local comboConfig = {
  	{ name = "8ms FA+",  window = 8.0,  judgment = 4, color = color("#c3f1ff") },
  	{ name = "10ms FA+", window = 10.0,  judgment = 4, color = color("#86e3ff") },
  	{ name = "15ms FA+", window = 15.0,  judgment = 4, color = color("#39d1ff") },
- 	{ name = "Marvelous", window = 22.5,  judgment = 4, color = judgmentColors[1] },
+	{ name = "Marvelous", window = 22.5,  judgment = 4, color = HVColor.GetJudgmentColor("W1") },
  	{ name = "J6 Perfect", window = 45.0,  judgment = 6, color = color("#feffafff") },
- 	{ name = "Perfect", window = 45.0, judgment = 4, color = judgmentColors[2] },
+	{ name = "Perfect", window = 45.0, judgment = 4, color = HVColor.GetJudgmentColor("W2") },
  }
 
- -- Life Difficulty Color Helper (1-7 scale)
+-- Life Difficulty Color Helper (1-7 scale)
 local function getLifeDifficultyColor(diff)
 	local c1 = color("#A0CFAB") -- Easy / Green
 	local c2 = color("#CFD198") -- Normal / Gold
@@ -353,7 +557,9 @@ local t = Def.ActorFrame {
 	OnCommand = function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(scroller)
 		SCREENMAN:SetSystemCursorVisible(true)
-		INPUTFILTER:SetMouseVisible(true)
+		if INPUTFILTER and INPUTFILTER.SetMouseVisible then
+			INPUTFILTER:SetMouseVisible(true)
+		end
 		self:sleep(0):queuecommand("RefreshJudgeDisplay")
 	end,
 
@@ -418,8 +624,7 @@ local t = Def.ActorFrame {
 	end
 }
 
--- Rescore data + rescore delegate to the corrected global functions in 08 EtternityUtils.lua.
-
+-- Rescore data + rescore delegate to the corrected global functions in 08 EtternaUtils.lua.
 
 ------------------------------------------------------------
 -- LEFT PANEL: SCORE CARD
@@ -430,7 +635,8 @@ local function scoreBoard(pn)
 	local frameW = SCREEN_CENTER_X - 20
 	local frameH = SCREEN_HEIGHT - 20
 	local pad = 12
-
+	local modIconsY = 8
+	local topHeaderY = pad + 10
 
 	local board = Def.ActorFrame {
 		InitCommand = function(self)
@@ -454,7 +660,6 @@ local function scoreBoard(pn)
 				return
 			end
 
-			local rst = getRescoreElements(pss, curScore)
 			if params.Name == "PrevJudge" and judge > 1 then
 				judge = judge - 1
 				clampJudge()
@@ -492,6 +697,9 @@ local function scoreBoard(pn)
 			end)
 		end,
 		ToggleCustomWindowsMessageCommand = function(self)
+			if inMulti then return end
+			usingCustomWindows = not usingCustomWindows
+
 			if not usingCustomWindows then
 				unloadCustomWindowConfig()
 				MESSAGEMAN:Broadcast("UnloadedCustomWindow")
@@ -544,20 +752,133 @@ local function scoreBoard(pn)
 			end
 		},
 
+		Def.ActorFrame {
+			Name = "ModIcons",
+			InitCommand = function(self)
+				self:xy(20, modIconsY):diffusealpha(0)
+			end,
+			OnCommand = function(self)
+				self:playcommand("Update")
+				self:sleep(0.12):linear(0.25):diffusealpha(1)
+			end,
+			UpdateCommand = function(self)
+				local ps = GAMESTATE:GetPlayerState(pn)
+				if not ps then return end
+
+				local po = ps:GetPlayerOptions("ModsLevel_Current")
+				local modStr = (curScore and curScore.GetModifiers and curScore:GetModifiers())
+					or ps:GetPlayerOptionsString("ModsLevel_Current")
+					or ""
+				if modStr == "" then
+					modStr = ps:GetPlayerOptionsString("ModsLevel_Preferred") or ""
+				end
+				local normalizedModStr = modStr:lower():gsub("[%s_]+", "")
+
+				local speed, mode = 400, "C"
+				if GetSpeedModeAndValueFromPoptions then
+					speed, mode = GetSpeedModeAndValueFromPoptions(pn)
+				end
+
+				local rate = (curScore and curScore.GetMusicRate and curScore:GetMusicRate())
+					or (getCurRateValue and getCurRateValue())
+					or 1
+				local life = GetLifeDifficulty()
+				local playedJudge = curScore and getJudgeForScore(curScore) or GetTimingDifficulty()
+				local fail = po and po:FailSetting() or "FailType_Immediate"
+				local assist = hasEvaluationAssistEnabled(po, modStr)
+
+				local accent = accentColor or (HVColor and HVColor.Accent) or color("#5ABAFF")
+				local dim = (HVColor and HVColor.TextDim) or color("0.4,0.4,0.4,1")
+				local warn = color("#CF9898")
+
+				self:GetChild("Speed"):settext(formatEvalSpeedMode(mode, speed)):diffuse(accent)
+				self:GetChild("Rate"):settext(formatEvalRateValue(rate)):diffuse(accent)
+
+				local lifeKey = "L7"
+				if life <= 1 then
+					lifeKey = "L1"
+				elseif life == 2 then
+					lifeKey = "L2"
+				elseif life == 3 then
+					lifeKey = "L3"
+				elseif life == 4 then
+					lifeKey = "L4"
+				elseif life == 5 then
+					lifeKey = "L5"
+				elseif life == 6 then
+					lifeKey = "L6"
+				end
+				local lifeColor = (HVColor and HVColor.GetLifeBarColor and HVColor.GetLifeBarColor(lifeKey))
+					or color("#FFFFFF")
+				self:GetChild("Life"):settext(string.format("L%d", life)):diffuse(lifeColor)
+				self:GetChild("Judge"):settext(string.format("J%d", playedJudge)):diffuse(accent)
+
+				local failText = "F:IMM"
+				if fail == "FailType_Off" then
+					failText = "F:OFF"
+				elseif fail == "FailType_EndOfSong" then
+					failText = "F:END"
+				end
+				self:GetChild("Fail"):settext(failText):diffuse(fail == "FailType_Immediate" and accent or warn)
+				self:GetChild("Assist"):settext("AST"):diffuse(assist and accent or dim)
+
+				local active = {}
+				for mod, short in pairs(evalModShorthands) do
+					local normalizedMod = mod:lower()
+					local matched = string.find(normalizedModStr, normalizedMod)
+					if mod == "Mines" then
+						matched = string.find(normalizedModStr, "mines") and not string.find(normalizedModStr, "nomines")
+					elseif mod == "Shuffle" then
+						matched = string.find(normalizedModStr, "shuffle")
+							and not string.find(normalizedModStr, "softshuffle")
+							and not string.find(normalizedModStr, "supershuffle")
+					end
+					if matched then
+						table.insert(active, short)
+					end
+				end
+
+				local receptorSize = tonumber(ThemePrefs.Get("HV_Mini")) or 100
+				if math.abs(receptorSize - 100) > 0.001 then
+					table.insert(active, "MN" .. math.round(receptorSize))
+				end
+
+				self:GetChild("Separator"):visible(#active > 0)
+				self:GetChild("Mods"):settext(table.concat(active, "  ")):diffuse(accent)
+			end,
+			ScoreChangedMessageCommand = function(self)
+				self:finishtweening():sleep(0):queuecommand("Update")
+			end,
+			LoadFont("Common Normal") .. { Name = "Speed", InitCommand = function(self) self:zoom(0.4):halign(0) end },
+			LoadFont("Common Normal") .. { Name = "Rate", InitCommand = function(self) self:x(42):zoom(0.4):halign(0) end },
+			LoadFont("Common Normal") .. { Name = "Life", InitCommand = function(self) self:x(82):zoom(0.4):halign(0) end },
+			LoadFont("Common Normal") .. { Name = "Judge", InitCommand = function(self) self:x(110):zoom(0.4):halign(0):diffuse(accentColor or (HVColor and HVColor.Accent) or color("#5ABAFF")) end },
+			LoadFont("Common Normal") .. { Name = "Fail", InitCommand = function(self) self:x(138):zoom(0.4):halign(0):diffuse(color("#CF9898")) end },
+			LoadFont("Common Normal") .. { Name = "Assist", InitCommand = function(self) self:x(182):zoom(0.4):halign(0):diffuse(accentColor or (HVColor and HVColor.Accent) or color("#5ABAFF")) end },
+			LoadFont("Common Normal") .. {
+				Name = "Separator",
+				InitCommand = function(self) self:x(217):zoom(0.4):halign(0):settext("|"):diffuse(color("0.4,0.4,0.4,1")) end
+			},
+			LoadFont("Common Normal") .. {
+				Name = "Mods",
+				InitCommand = function(self) self:x(232):zoom(0.4):halign(0):diffuse(accentColor or (HVColor and HVColor.Accent) or color("#5ABAFF")) end
+			}
+		},
+
 		-- Banner + Profile Display
 		Def.ActorFrame {
 			Name = "TopHeader",
-			InitCommand = function(self) self:xy(20, pad + 10) end,
+			InitCommand = function(self) self:xy(20, topHeaderY) end,
 
 			Def.Sprite {
 				Name = "Banner",
-				InitCommand = function(self) self:halign(0):valign(0):xy(pad + 30, 0):diffusealpha(0) end,
+				InitCommand = function(self) self:halign(0):valign(0):xy(pad -20, 0):diffusealpha(0) end,
 				OnCommand = function(self)
 					if song then
 						local bpath = song:GetBannerPath()
 						if not bpath then bpath = THEME:GetPathG("Common", "fallback banner") end
 						self:LoadBackground(bpath)
-						self:scaletofit(0, 0, (frameW - pad * 3) * 0.5, 60)
+						self:scaletoclipped((frameW - pad * 3) * 0.5, 60)
 					end
 					self:stoptweening():sleep(0.05):linear(0.25):diffusealpha(1)
 				end
@@ -582,14 +903,36 @@ local function scoreBoard(pn)
 					end
 				},
 
-				-- Name
+				-- Name (cycles between online and offline with fade)
 				LoadFont("Common Normal") .. {
 					Name = "PlayerName",
-					InitCommand = function(self) 
-						self:xy(65, 8):zoom(0.45):halign(0):maxwidth(((frameW - pad * 3) * 0.5 - 65) / 0.45) 
+					InitCommand = function(self)
+						self:xy(65, 8):zoom(0.45):halign(0):maxwidth(((frameW - pad * 3) * 0.5 - 65) / 0.45)
+						self.showOnline = true
+						self.transitionDuration = 0.25
+						self.displayDuration = 3
+						self.onlineName = DLMAN:IsLoggedIn() and DLMAN:GetUsername() or nil
+						self.offlineName = profile and profile:GetDisplayName() or nil
+						if self.offlineName == "" then self.offlineName = nil end
 					end,
 					OnCommand = function(self)
-						self:settext(HV.GetPlayerName())
+						if not self.onlineName then
+							self:settext(self.offlineName or "Player 1")
+							return
+						elseif not self.offlineName or self.onlineName == self.offlineName then
+							self:settext(self.onlineName)
+							return
+						end
+						self:playcommand("UpdateName")
+					end,
+					UpdateNameCommand = function(self)
+						self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(0):queuecommand("SwapName")
+					end,
+					SwapNameCommand = function(self)
+						local nextName = self.showOnline and self.onlineName or self.offlineName
+						self:settext(nextName)
+						self.showOnline = not self.showOnline
+						self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(1):sleep(self.displayDuration):queuecommand("UpdateName")
 					end
 				},
 
@@ -728,19 +1071,40 @@ local function scoreBoard(pn)
 					}
 				},
 
-				-- Rating (Player SSR)
+				-- Rating (Player SSR - cycles between online and offline with fade)
 				LoadFont("Common Large") .. {
 					Name = "PlayerRating",
-					InitCommand = function(self) 
-						self:xy(65, 53):zoom(0.45):halign(0) 
+					InitCommand = function(self)
+						self:xy(65, 53):zoom(0.45):halign(0)
+						self.showOnline = true
+						self.transitionDuration = 0.25
+						self.onlineRating = DLMAN:IsLoggedIn() and DLMAN:GetSkillsetRating("Overall") or nil
+						self.offlineRating = profile and profile:GetPlayerRating() or nil
 					end,
 					OnCommand = function(self)
 						if not HV.ShowMSD() then self:visible(false); return end
-						if profile then
-							local val = profile:GetPlayerRating()
-							self:settextf("%.2f", val)
-							self:diffuse(HVColor.GetMSDRatingColor(val))
+						if not profile then return end
+
+						if not self.onlineRating or self.onlineRating <= 0 then
+							self:settextf("%.2f", self.offlineRating)
+							self:diffuse(HVColor.GetMSDRatingColor(self.offlineRating))
+							return
+						elseif not self.offlineRating or self.offlineRating <= 0 or math.abs(self.onlineRating - self.offlineRating) < 0.01 then
+							self:settextf("%.2f", self.onlineRating)
+							self:diffuse(HVColor.GetMSDRatingColor(self.onlineRating))
+							return
 						end
+						self:playcommand("UpdateRating")
+					end,
+					UpdateRatingCommand = function(self)
+						self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(0):queuecommand("SwapRating")
+					end,
+					SwapRatingCommand = function(self)
+						local val = self.showOnline and self.onlineRating or self.offlineRating
+						self:settextf("%.2f", val)
+						self:diffuse(HVColor.GetMSDRatingColor(val))
+						self.showOnline = not self.showOnline
+						self:stoptweening():linear(self.transitionDuration * 0.5):diffusealpha(1):sleep(3):queuecommand("UpdateRating")
 					end
 				}
 			}
@@ -789,7 +1153,7 @@ local function scoreBoard(pn)
 			-- Shorthand (colored by difficulty type)
 			LoadFont("Common Normal") .. {
 				InitCommand = function(self)
-					self:halign(1):valign(1):xy(-58, 16):zoom(0.55)
+					self:halign(1):valign(1):xy(-51, 14):zoom(0.55)
 				end,
 				OnCommand = function(self)
 					if steps then
@@ -797,7 +1161,9 @@ local function scoreBoard(pn)
 						local diffShort = {
 							Beginner = "BG", Easy = "EZ", Medium = "NM", Hard = "HD", Challenge = "IN", Edit = "ED"
 						}
-						self:settext(diffShort[diff] or diff:sub(1,2):upper())
+						local diffLabel = diffShort[diff] or diff:sub(1,2):upper()
+						local keyLabel = getKeycountLabelForSteps(steps)
+						self:settext((keyLabel and (keyLabel .. " " .. diffLabel)) or diffLabel)
 						self:diffuse(HVColor.GetDifficultyColor(diff))
 					end
 				end
@@ -805,13 +1171,14 @@ local function scoreBoard(pn)
 			-- MSD (Common Large, 2 decimal points)
 			LoadFont("Common Large") .. {
 				InitCommand = function(self)
-					self:halign(1):valign(0):xy(2.5, 3):zoom(0.5)
+					self:halign(1):valign(0):xy(0, -2):zoom(0.6)
 				end,
 				OnCommand = function(self)
 					if steps then
 						local msd = steps:GetMSD(getCurRateValue(), 1)
 						if HV.ShowMSD() and msd > 0 then
 							self:settextf("%.2f", msd)
+							self:diffuse(HVColor.GetMSDRatingColor(msd))
 							self:diffuse(HVColor.GetMSDRatingColor(msd))
 						else
 							self:settext(tostring(steps:GetMeter()))
@@ -874,13 +1241,13 @@ local function scoreBoard(pn)
 		-- Grade
 		LoadFont("Common Large") .. {
 			Name = "GradeScoreLabel",
-			InitCommand = function(self) self:halign(0):valign(0):xy(0, 0):zoom(0.75):diffuse(mainText):diffusealpha(0) end,
+			InitCommand = function(self) self:halign(0):valign(0):xy(0, 0):zoom(0.85):diffuse(mainText):diffusealpha(0) end,
 			OnCommand = function(self)
 				local grade = rescoredPercentage and GetGradeFromPercent(rescoredPercentage / 100) or pss:GetWifeGrade()
 				if grade and not tostring(grade):find("^Grade_") then grade = "Grade_" .. grade end
 				self:settext(HV.GetGradeName(ToEnumShortString(grade)))
 				self:diffuse(HVColor.GetGradeColor(ToEnumShortString(grade)))
-				self:stoptweening():sleep(0.3):linear(0.2):zoom(0.65):diffusealpha(1)
+				self:stoptweening():sleep(0.3):linear(0.2):zoom(0.7):diffusealpha(1)
 			end,
 			SetJudgeCommand = function(self)
 				if usingCustomWindows then return end
@@ -892,9 +1259,9 @@ local function scoreBoard(pn)
 				end
 			end
 		},
-		-- SSR (aligned below grade, same x=0, smaller zoom to not overpower grade)
+		-- SSR
 		LoadFont("Common Normal") .. {
-			InitCommand = function(self) self:halign(0):valign(0):xy(-3, 37):zoom(1):diffuse(subText):diffusealpha(0) end,
+			InitCommand = function(self) self:halign(0):valign(0):xy(10, 45):zoom(0.8):diffuse(subText):diffusealpha(0) end,
 			OnCommand = function(self)
 				if HV.ShowMSD() then
 					local ssr = curScore:GetSkillsetSSR("Overall")
@@ -930,7 +1297,7 @@ local function scoreBoard(pn)
 		-- Wife Score Wrapper
 		Def.ActorFrame {
 			Name = "WifeScoreWrapper",
-			InitCommand = function(self) self:xy(110, 0) end,
+			InitCommand = function(self) self:xy(110, 5) end,
 			OnCommand = function(self)
 				local label = self:GetChild("WifeScoreLabel")
 				local wife = rescoredPercentage or (pss:GetWifeScore() * 100)
@@ -945,7 +1312,6 @@ local function scoreBoard(pn)
 					curTime = curTime + delta
 					local progress = math.min(1, curTime / duration)
 					local currentWifeDisplay = targetWife * math.sin(progress * (math.pi / 2)) -- Ease out Sine
-					
 					label:settext(formatWifePercent(currentWifeDisplay))
 					
 					if progress >= 1 then
@@ -971,10 +1337,9 @@ local function scoreBoard(pn)
 
 					if playedJudge > 4 then
 						local rst = getRescoreElements(pss, curScore)
-						rst.dvt = dvt
 						local j4Pct = nil
 						if rst then
-							rst.dvt = dvt
+							rst.dvt = getFilteredDvt()
 							j4Pct = getRescoredWife3Judge(3, 4, rst)
 						end
 						if j4Pct then
@@ -1018,6 +1383,25 @@ local function scoreBoard(pn)
 				end,
 				ScoreChangedMessageCommand = function(self) self:playcommand("On") end
 			},
+			
+			-- Hover detection for Tooltip
+			Def.ActorFrame {
+				OnCommand = function(self)
+					self:SetUpdateFunction(function(self)
+						local wrapper = self:GetParent()
+						local label = wrapper and wrapper:GetChild("WifeScoreLabel")
+						if isOver(label) then
+							MESSAGEMAN:Broadcast("ShowScoreTooltip")
+						else
+							MESSAGEMAN:Broadcast("HideScoreTooltip")
+						end
+					end)
+				end,
+				ResetJudgeMessageCommand = function(self)
+					self:SetUpdateFunction(nil)
+					self:playcommand("On")
+				end
+			}
 		},
 
 		-- Chart Progress (Percentage completion on fail)
@@ -1080,7 +1464,6 @@ local function scoreBoard(pn)
 					curTime = curTime + delta
 					local progress = math.min(1, curTime / duration)
 					local currentDP = targetDP * math.sin(progress * (math.pi / 2))
-					
 					local precision = (displayPct >= 99) and 4 or 2
 					setDPTextActors(wholePart, decimalPart, currentDP, precision)
 					
@@ -1164,14 +1547,14 @@ local function scoreBoard(pn)
 
 		-- Clear Type Display Area
 		Def.ActorFrame {
-			InitCommand = function(self) self:xy(280, 40):diffusealpha(0) end,
+			InitCommand = function(self) self:xy(280, 45):diffusealpha(0) end,
 			OnCommand = function(self)
 				self:stoptweening():sleep(0.55):linear(0.2):diffusealpha(1)
 			end,
 
 			-- Current Clear Type
 			LoadFont("Common Normal") .. {
-				InitCommand = function(self) self:halign(0):valign(0):zoom(0.8) end,
+				InitCommand = function(self) self:halign(0):valign(0):zoom(0.5) end,
 				OnCommand = function(self)
 					local currentCT = clearType or "Clear"
 					self:settext(getClearTypeText(currentCT)):diffuse(getClearTypeColor(currentCT))
@@ -1179,11 +1562,11 @@ local function scoreBoard(pn)
 			},
 			-- Best Clear Type Comparison (Below)
 			Def.ActorFrame {
-				InitCommand = function(self) self:xy(0, 27) end,
+				InitCommand = function(self) self:xy(0, 15) end,
 				
 				LoadFont("Common Normal") .. {
 					Name = "BestLabel",
-					InitCommand = function(self) self:halign(0):valign(0):zoom(0.6) end,
+					InitCommand = function(self) self:halign(0):valign(0):zoom(0.4) end,
 					OnCommand = function(self)
 						if hsTable then
 							local recCT = getHighestClearType(pn, steps, hsTable, scoreIndex) or "Clear"
@@ -1246,7 +1629,7 @@ local function scoreBoard(pn)
 		Def.Quad {
 			Name = "HoverArea",
 			InitCommand = function(self)
-				self:halign(0):valign(0):xy(col1X, statsStartY + 20):zoomto(col2X - pad - 5, rowH * 6 + 4):diffusealpha(0)
+				self:halign(0):valign(0):xy(col1X, statsStartY + 20):zoomto(col2X - pad - 5, rowH * #judges + 4):diffusealpha(0)
 			end
 		},
 
@@ -1273,29 +1656,22 @@ local function scoreBoard(pn)
 				self:halign(0):xy(col1X - 2, jy):zoomto(0, rowH - 2):diffuse(judgmentColors[k]):diffusealpha(0.2)
 			end,
 			OnCommand = function(self)
-				local count = pss:GetTapNoteScores(v)
+				local count = getEvaluationJudgeCount(v, k)
 				local pct = count / songTotalNotes
 				self:zoomto((col2X - pad - col1X) * pct, rowH - 2)
 			end,
 			SetJudgeCommand = function(self)
-				local count = getRescoredJudge(dvt, judge, k)
+				local count = getEvaluationRescoredJudgeCount(dvt, judge, v, k)
 				local pct = count / songTotalNotes
 				self:finishtweening():linear(0.2):zoomto((col2X - pad - col1X) * pct, rowH - 2)
 			end,
 			RATallyChangedCommand = function(self)
 				local count = 0
 				if showRATally then
-					local ra, la, ridic, marvRA, ludic, ridicLA = getRatios()
-					if k == 1 then count = ludic
-					elseif k == 2 then count = ridicLA
-					elseif k == 3 then count = marvRA
-					elseif k == 4 then count = pss:GetTapNoteScores("TapNoteScore_W2")
-					elseif k == 5 then count = pss:GetTapNoteScores("TapNoteScore_W3")
-					elseif k == 6 then count = pss:GetTapNoteScores("TapNoteScore_Miss")
-					end
-					self:diffuse(raColors[k]):diffusealpha(0.2)
+					count = getRATallyCount(k)
+					self:diffuse(raColors[k] or judgmentColors[k]):diffusealpha(k <= #raLabels and 0.2 or 0)
 				else
-					count = getRescoredJudge(dvt, judge, k)
+					count = getEvaluationRescoredJudgeCount(dvt, judge, v, k)
 					self:diffuse(judgmentColors[k]):diffusealpha(0.2)
 				end
 				local pct = count / songTotalNotes
@@ -1307,16 +1683,16 @@ local function scoreBoard(pn)
 		tallyFrame[#tallyFrame + 1] = LoadFont("Common Normal") .. {
 			InitCommand = function(self)
 				self:halign(0):xy(col1X, jy):zoom(0.45):diffuse(judgmentColors[k])
-				self:settext(getJudgeStrings(v))
+					self:settext(v == "Ridiculous" and THEME:GetString("TapNoteScore", "Ridiculous") or getJudgeStrings(v))
 			end,
 			RATallyChangedCommand = function(self)
 				if showRATally then
-					self:settext(raLabels[k]):diffuse(raColors[k])
+					self:settext(raLabels[k] or ""):diffuse(raColors[k] or judgmentColors[k])
 				elseif usingCustomWindows then
 					if getCustomWindowConfigJudgmentName then self:settext(getCustomWindowConfigJudgmentName(v)) end
 					self:diffuse(judgmentColors[k])
 				else
-					self:settext(getJudgeStrings(v)):diffuse(judgmentColors[k])
+					self:settext(v == "Ridiculous" and THEME:GetString("TapNoteScore", "Ridiculous") or getJudgeStrings(v)):diffuse(judgmentColors[k])
 				end
 			end,
 			LoadedCustomWindowMessageCommand = function(self)
@@ -1327,21 +1703,14 @@ local function scoreBoard(pn)
 		-- Count
 		tallyFrame[#tallyFrame + 1] = LoadFont("Common Normal") .. {
 			InitCommand = function(self) self:halign(1):xy(col2X - pad - 40, jy):zoom(0.55):diffuse(brightText) end,
-			OnCommand = function(self) self:settext(pss:GetTapNoteScores(v)) end,
+			OnCommand = function(self) self:settext(getEvaluationJudgeCount(v, k)) end,
 			SetJudgeCommand = function(self) 
-				local count = getRescoredJudge(dvt, judge, k)
+				local count = getEvaluationRescoredJudgeCount(dvt, judge, v, k)
 				self:settext(count)
 			end,
 			RATallyChangedCommand = function(self)
 				if showRATally then
-					local ra, la, ridic, marvRA, ludic, ridicLA = getRatios()
-					if k == 1 then self:settext(ludic)
-					elseif k == 2 then self:settext(ridicLA)
-					elseif k == 3 then self:settext(marvRA)
-					elseif k == 4 then self:settext(pss:GetTapNoteScores("TapNoteScore_W2"))
-					elseif k == 5 then self:settext(pss:GetTapNoteScores("TapNoteScore_W3"))
-					elseif k == 6 then self:settext(pss:GetTapNoteScores("TapNoteScore_Miss"))
-					end
+					self:settext(k <= #raLabels and getRATallyCount(k) or "")
 				else
 					self:playcommand("SetJudge")
 				end
@@ -1358,28 +1727,20 @@ local function scoreBoard(pn)
 		tallyFrame[#tallyFrame + 1] = LoadFont("Common Normal") .. {
 			InitCommand = function(self) self:halign(1):xy(col2X - pad - 5, jy):zoom(0.35):diffuse(dimText) end,
 			OnCommand = function(self)
-				local pct = pss:GetPercentageOfTaps(v)
-				if tostring(pct) == tostring(0/0) then pct = 0 end
+				local pct = songTotalNotes > 0 and getEvaluationJudgeCount(v, k) / songTotalNotes or 0
 				self:settextf("%.1f%%", pct * 100)
 			end,
 			SetJudgeCommand = function(self)
 				if totalTaps > 0 then
-					local count = getRescoredJudge(dvt, judge, k)
+					local count = getEvaluationRescoredJudgeCount(dvt, judge, v, k)
 					self:settextf("%.1f%%", count / totalTaps * 100)
 				end
 			end,
 			RATallyChangedCommand = function(self)
 				if showRATally then
-					local ra, la, ridic, marvRA, ludic, ridicLA = getRatios()
-					local count = 0
-					if k == 1 then count = ludic
-					elseif k == 2 then count = ridicLA
-					elseif k == 3 then count = marvRA
-					elseif k == 4 then count = pss:GetTapNoteScores("TapNoteScore_W2")
-					elseif k == 5 then count = pss:GetTapNoteScores("TapNoteScore_W3")
-					elseif k == 6 then count = pss:GetTapNoteScores("TapNoteScore_Miss")
-					end
-					if totalTaps > 0 then self:settextf("%.1f%%", count / totalTaps * 100) end
+					local count = getRATallyCount(k)
+					if k <= #raLabels and totalTaps > 0 then self:settextf("%.1f%%", count / totalTaps * 100)
+					else self:settext("") end
 				else
 					self:playcommand("SetJudge")
 				end
@@ -1389,7 +1750,7 @@ local function scoreBoard(pn)
 	end
 
 	-- Ratios (Bottom Column 1 - 2x2 Grid)
-	local ratioStartY = statsStartY + 28 + (6 * rowH) + 12
+	local ratioStartY = statsStartY + 28 + (#judges * rowH) + 12
 	local ratioLabels = {"LA", "RA", "MA", "PA"}
 	local ratioColors = {color("#FF69B4"), color("#FFD700"), color("#FFFFFF"), color("#E0E0A0")}
 	for ri, rlabel in ipairs(ratioLabels) do
@@ -1505,7 +1866,7 @@ local function scoreBoard(pn)
 	end
 
 	-- Column 2: Note Types
-	local ntStartY = ratioStartY
+	local ntStartY = statsStartY + 20 + (7 * rowH)
 	local noteTypeLabels = {"Taps", "Holds", "Rolls", "Lifts", "Mines"}
 	local noteTypeRadars = {"RadarCategory_Notes", "RadarCategory_Holds", "RadarCategory_Rolls", "RadarCategory_Lifts", "RadarCategory_Mines"}
 	for ni, nlabel in ipairs(noteTypeLabels) do
@@ -1537,6 +1898,7 @@ t[#t + 1] = scoreBoard(PLAYER_1)
 ------------------------------------------------------------
 -- RIGHT PANEL: OFFSET PLOT + SCOREBOARD
 ------------------------------------------------------------
+local inMulti = Var("LoadingScreen") == "ScreenNetEvaluation"
 local rightX = SCREEN_CENTER_X + 10
 local rightW = SCREEN_CENTER_X - 20
 local offsetPlotHeight = 160
@@ -1823,7 +2185,113 @@ local scoreboardFrame = Def.ActorFrame {
 	InitCommand = function(self) self:xy(rightX + 10, offsetPlotHeight + 110) end,
 }
 
+if inMulti then
+	scoreboardFrame[#scoreboardFrame + 1] = LoadActor("MPscoreboard")
+else
+	scoreboardFrame[#scoreboardFrame + 1] = LoadActor("online_leaderboard")
+end
+
 t[#t + 1] = scoreboardFrame
 t[#t + 1] = LoadActor("../_cursor")
+
+t[#t + 1] = Def.ActorFrame {
+	Name = "GlobalScoreTooltip",
+	InitCommand = function(self) self:diffusealpha(0):z(100) end,
+	ShowScoreTooltipMessageCommand = function(self)
+		self:diffusealpha(1)
+		self:playcommand("UpdateScores")
+		local mx = INPUTFILTER:GetMouseX()
+		local my = INPUTFILTER:GetMouseY()
+		
+		local bg = self:GetChild("BG")
+		local w = bg and bg:GetZoomedWidth() or 260
+		local h = bg and bg:GetZoomedHeight() or 120
+		local cx = mx + 15
+		local cy = my + 15
+		if cx + w > SCREEN_WIDTH then cx = mx - w - 5 end
+		if cy + h > SCREEN_HEIGHT then cy = my - h - 5 end
+		
+		self:xy(cx, cy)
+	end,
+	HideScoreTooltipMessageCommand = function(self) self:diffusealpha(0) end,
+	SetJudgeMessageCommand = function(self) self:playcommand("UpdateScores") end,
+	ScoreChangedMessageCommand = function(self) self:playcommand("UpdateScores") end,
+	UpdateScoresCommand = function(self)
+		if self:GetDiffuseAlpha() == 0 then return end
+		local rst = getRescoreElements(pss, curScore)
+		if rst then rst.dvt = getFilteredDvt() end
+		
+		local numCustoms = customWindowsConfig and #customWindowsConfig:get_data().customWindowOrder or 0
+		local rows = math.max(6, numCustoms)
+		local bg = self:GetChild("BG")
+		if bg then
+			bg:zoomto(260, rows * 16 + 12)
+		end
+		
+		self:RunCommandsOnChildren(function(child)
+			child:playcommand("UpdateData", {rst = rst})
+		end)
+	end,
+	Def.Quad {
+		Name = "Border",
+		InitCommand = function(self) self:halign(0):valign(0):diffuse(color("0.3,0.3,0.3,1")):diffusealpha(0.8) end,
+		UpdateDataCommand = function(self)
+			local bg = self:GetParent():GetChild("BG")
+			if bg then self:zoomto(bg:GetZoomedWidth()+2, bg:GetZoomedHeight()+2):xy(-1, -1) end
+		end
+	},
+	Def.Quad {
+		Name = "BG",
+		InitCommand = function(self) self:halign(0):valign(0):diffuse(color("0.05,0.05,0.05,0.95")) end
+	},
+	(function()
+		local col = Def.ActorFrame { Name = "LeftCol", InitCommand = function(self) self:xy(8, 8) end }
+		for i = 4, 9 do
+			local yOff = (i - 4) * 16
+			col[#col+1] = LoadFont("Common Normal") .. {
+				InitCommand = function(self) self:halign(0):valign(0):xy(0, yOff):zoom(0.35):settext("J"..i..":") end
+			}
+			col[#col+1] = LoadFont("Common Normal") .. {
+				InitCommand = function(self) self:halign(1):valign(0):xy(100, yOff):zoom(0.35) end,
+				UpdateDataCommand = function(self, params)
+					local pct = params.rst and getRescoredWife3Judge(3, i, params.rst) or 0
+					self:settext(formatWifePercent(pct))
+				end
+			}
+		end
+		return col
+	end)(),
+	(function()
+		local col = Def.ActorFrame { Name = "RightCol", InitCommand = function(self) self:xy(120, 8) end }
+		for i = 1, 15 do
+			local yOff = (i - 1) * 16
+			col[#col+1] = LoadFont("Common Normal") .. {
+				InitCommand = function(self) self:halign(0):valign(0):xy(0, yOff):zoom(0.35) end,
+				UpdateDataCommand = function(self, params)
+					if not customWindowsConfig then self:settext(""); return end
+					local order = customWindowsConfig:get_data().customWindowOrder
+					local configName = order[i]
+					if not configName then self:settext(""); return end
+					local conf = customWindowsConfig:get_data().customWindowConfigs[configName]
+					local dispName = conf and conf.displayName or configName
+					if dispName:len() > 16 then dispName = dispName:sub(1,15).."." end
+					self:settext(dispName..":")
+				end
+			}
+			col[#col+1] = LoadFont("Common Normal") .. {
+				InitCommand = function(self) self:halign(1):valign(0):xy(130, yOff):zoom(0.35) end,
+				UpdateDataCommand = function(self, params)
+					if not customWindowsConfig then self:settext(""); return end
+					local order = customWindowsConfig:get_data().customWindowOrder
+					local configName = order[i]
+					if not configName then self:settext(""); return end
+					local pct = params.rst and calculateCustomWindowScore(configName, params.rst) or 0
+					self:settext(formatWifePercent(pct))
+				end
+			}
+		end
+		return col
+	end)()
+}
 
 return t

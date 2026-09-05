@@ -1,6 +1,6 @@
 --- Etternity: Tags Persistence
 -- Matches Til Death/Rebirth Tag Manager (Saves to tags.lua)
--- This allows tags to be shared across themes in the same Etternity install.
+-- This allows tags to be shared across themes in the same Etterna install.
 
 local defaultConfig = {
 	playerTags = {}

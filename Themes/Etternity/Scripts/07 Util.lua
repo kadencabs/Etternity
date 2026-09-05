@@ -1,4 +1,4 @@
---- Holographic Void: Utility Functions
+--- Etternity: Utility Functions
 -- Ported and adapted from Til Death for consistent engine-level interactions.
 
 -- ms fallback for notifications and judge scaling
@@ -112,4 +112,4 @@ function DeviceBtnToChar(btn, shifted)
 	return symMap[b]
 end
 
-Trace("Holographic Void: 07 Util.lua loaded.")
+Trace("Etternity: 07 Util.lua loaded.")
