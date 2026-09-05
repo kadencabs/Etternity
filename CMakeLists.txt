@@ -24,6 +24,15 @@ project(Etternity
         HOMEPAGE_URL https://github.com/kadencabs/etternity/
         LANGUAGES C CXX ASM)
 
+# stop passing GNU flags to MSVC i hope to god that thats the issue because if its not i swear im gonna die inside 
+# barbaric but should probably work? surgical equivalent of select and replace kekw -m
+if(MSVC)
+    foreach(lang C CXX)
+        string(REPLACE "-Wa,-mbig-obj" "" CMAKE_${lang}_FLAGS "${CMAKE_${lang}_FLAGS}")
+    endforeach()
+    add_compile_options(/bigobj)
+endif()
+
 ## CMake and Compiler Setup
 set(CMAKE_CXX_STANDARD 20)                                      # Minimum C++ Version
 set(CMAKE_CXX_EXTENSIONS OFF)                                   # True if compiler extensions are necessary. (Changes -std flag)
