@@ -631,8 +631,9 @@ t[#t + 1] = Def.ActorFrame {
 			local scoreMode = ThemePrefs.Get("HV_ScoreDisplayMode") or "Normal"
 			local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 			local isAutoplay = getAutoplay and getAutoplay() ~= 0
+			local isReplay = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerController() == "PlayerController_Replay"
 			
-			if isAutoplay and pss then
+			if isAutoplay and not isReplay and pss then
 				local notesPassed = pss:GetTapNoteScores("TapNoteScore_W1") +
 								   pss:GetTapNoteScores("TapNoteScore_W2") +
 								   pss:GetTapNoteScores("TapNoteScore_W3") +
@@ -1434,7 +1435,7 @@ t[#t + 1] = Def.ActorFrame {
 			for i, label in ipairs(judgmentLabels) do
 				g[#g+1] = Def.ActorFrame {
 					InitCommand = function(self)
-						self:y((i - 1) * 16)
+						self:y((i - 1) * 9)
 					end,
 
 					LoadFont("Common Normal") .. {
@@ -1477,7 +1478,7 @@ t[#t + 1] = Def.ActorFrame {
 		Def.ActorFrame {
 			Name = "OKNGDisplay",
 			InitCommand = function(self)
-				self:y(#judgmentLabels * 16 + 4)
+				self:y(#judgmentLabels * 9.0 + 0)
 			end,
 
 			LoadFont("Common Normal") .. {
@@ -1508,14 +1509,14 @@ t[#t + 1] = Def.ActorFrame {
 
 			LoadFont("Common Normal") .. {
 				InitCommand = function(self)
-					self:halign(0):valign(0):y(16):zoom(0.34):diffuse(HVColor.GetJudgmentColor("LetGo")):diffusealpha(0.8)
+					self:halign(0):valign(0):y(9):zoom(0.34):diffuse(HVColor.GetJudgmentColor("LetGo")):diffusealpha(0.8)
 					self:settext(THEME:GetString("HoldNoteScore", "NG"))
 				end
 			},
 			LoadFont("Common Normal") .. {
 				Name = "NGCount",
 				InitCommand = function(self)
-					self:halign(1):valign(0):x(60):y(16):zoom(0.34):diffuse(mainText):diffusealpha(0.8)
+					self:halign(1):valign(0):x(60):y(9):zoom(0.34):diffuse(mainText):diffusealpha(0.8)
 					self:settext("0")
 				end,
 				JudgmentMessageCommand = function(self)
@@ -1770,7 +1771,7 @@ t[#t + 1] = Def.ActorFrame {
 end
 
 -- ============================================================
--- SONG TITLE (BOTTOM of screen)
+-- SONG TITLE
 -- ============================================================
 if not isSync then
 t[#t + 1] = Def.ActorFrame {
@@ -1786,10 +1787,10 @@ t[#t + 1] = Def.ActorFrame {
 		setMovableActor({"DeviceButton_x", "DeviceButton_c"}, self, self:GetChild("Border"))
 		self:diffusealpha(0.6)
 	end,
-	LoadFont("Common Normal") .. {
+	LoadFont("Common Bold") .. {
 		Name = "Text",
 		InitCommand = function(self)
-			self:zoom(0.35):diffuse(subText):maxwidth(SCREEN_WIDTH / 0.35)
+			self:zoom(0.35):diffuse(mainText):maxwidth(SCREEN_WIDTH / 0.35)
 		end,
 		PlayingUpdateMessageCommand = function(self)
 			local song = GAMESTATE:GetCurrentSong()
@@ -1807,7 +1808,7 @@ t[#t + 1] = Def.ActorFrame {
 t[#t + 1] = Def.ActorFrame {
 	Name = "SongInfoHUD",
 	InitCommand = function(self)
-		self:xy(SCREEN_CENTER_X, SCREEN_BOTTOM - 14)
+		self:xy(SCREEN_CENTER_X, barY + 5)
 		self:visible(minimalisticHUDVisible(true))
 	end,
 	HV_MinimalisticModeChangedMessageCommand = function(self, params)
@@ -1817,7 +1818,7 @@ t[#t + 1] = Def.ActorFrame {
 		self:diffusealpha(0.6)
 	end,
 
-	LoadFont("Zpix Normal") .. {
+	LoadFont("Common Bold") .. {
 		InitCommand = function(self)
 			self:zoom(0.35):diffuse(mainText):maxwidth(SCREEN_WIDTH * 0.5 / 0.35)
 		end,
@@ -2072,7 +2073,6 @@ if not isSync then
 		MovableBorder(64, 64, 1, 32, 0)
 	}
 	t[#t + 1] = LoadActor("npscalc")
-	t[#t + 1] = LoadActor("multiplayer")
 	t[#t + 1] = LoadActor("leaderboard")
 	t[#t + 1] = LoadActor("avatar")
 end

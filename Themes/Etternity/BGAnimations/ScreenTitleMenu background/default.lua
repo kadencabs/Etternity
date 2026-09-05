@@ -637,25 +637,7 @@ t[#t + 1] = Def.Quad {
 t[#t + 1] = Def.ActorFrame {
 	Name = "LogoContainer",
 	InitCommand=function(self) self:xy(SCREEN_CENTER_X, SCREEN_TOP+50) end,
-	-- Selected gamemode
-	LoadFont("Common Normal") .. {
-		Name = "GamemodeLabel",
-		InitCommand = function(self)
-			self:y(-24):zoom(0.4):diffuse(subText)
-		end,
-		OnCommand = function(self)
-			self:playcommand("Set")
-		end,
-		CurrentGameChangedMessageCommand = function(self)
-			self:playcommand("Set")
-		end,
-		CurrentStyleChangedMessageCommand = function(self)
-			self:playcommand("Set")
-		end,
-		SetCommand = function(self)
-			self:settext(getSelectedGamemodeLabel())
-		end
-	},
+
 	-- Persistent Glow Layer
 	LoadFont("Common Large") .. { 
 		Text="ETTERNITY", 
@@ -676,11 +658,6 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Text="ETTERNITY",
 		InitCommand=function(self) self:zoom(0.75):diffuse(brightText) end
-	},
-	-- Author Text
-	LoadFont("Common Normal") .. {
-		Text="by " .. themeAuthor,
-		InitCommand=function(self) self:y(25):zoom(0.4):diffuse(subText) end
 	}
 }
 
@@ -693,11 +670,7 @@ t[#t + 1] = Def.ActorFrame {
 		af:GetChild("T"):settextf("%02d:%02d:%02d", Hour(), Minute(), Second())
 		
 		local srv = af:GetChild("S")
-		if false then
-			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. (GetServerName() or THEME:GetString("ScreenTitleMenu", "Connected"))):diffuse(color("0.65,1,0.72,1"))
-		else
-			srv:settext(THEME:GetString("ScreenTitleMenu", "Server") .. " · " .. THEME:GetString("ScreenTitleMenu", "Offline")):diffuse(dimText)
-		end
+		srv:settext("")
 
 		local alrm = af:GetChild("A")
 		local active = ThemePrefs.Get("HV_AlarmActive")
@@ -719,8 +692,8 @@ t[#t + 1] = Def.ActorFrame {
 	end) end,
 	LoadFont("Common Normal") .. { Name="D", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+14):halign(0):zoom(0.5):diffuse(subText) end },
 	LoadFont("Common Normal") .. { Name="T", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+30):halign(0):zoom(0.35):diffuse(subText) end },
-	LoadFont("Common Normal") .. { Name="S", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+44):halign(0):zoom(0.3):diffuse(dimText) end },
-	LoadFont("Common Normal") .. { Name="A", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+58):halign(0):zoom(0.3):diffuse(dimText) end },
+	LoadFont("Common Normal") .. { Name="S", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+44):halign(0):zoom(0.3):diffuse(dimText):visible(false) end },
+	LoadFont("Common Normal") .. { Name="A", InitCommand=function(self) self:xy(SCREEN_LEFT+16, SCREEN_TOP+44):halign(0):zoom(0.3):diffuse(dimText) end },
 	
 	-- Online Profile Display (Under Alarm)
 	Def.ActorFrame {

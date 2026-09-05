@@ -727,19 +727,46 @@ t[#t + 1] = Def.ActorFrame {
 	end,
 	InstantChartUpdateMessageCommand = function(self) self:playcommand("Set") end,
 
+	-- Rate (new row, sits just above the BPM/Length/NPS row, right on the top line)
+	LoadFont("Common Normal") .. {
+		Name = "RateLabel",
+		InitCommand = function(self)
+			self:halign(0):valign(0.5):y(-13.5):zoom(0.35):diffuse(brightText)
+			self:settext(THEME:GetString("ScreenSelectMusic", "Rate") .. ":")
+		end
+	},
+	LoadFont("Common Normal") .. {
+		Name = "RateValue",
+		InitCommand = function(self)
+			self:halign(0):valign(0.5):y(-13.5):zoom(0.4)
+			local label = self:GetParent():GetChild("RateLabel")
+			if label then
+				self:x(label:GetX() + label:GetZoomedWidth() + 2)
+			end
+		end,
+		SetCommand = function(self)
+			local rate = getCurRateValue() or 1
+			if math.abs(rate - 1.0) < 0.005 then
+				self:settext("1.0x"):diffuse(mainText)
+			else
+				self:settext(string.format("%.2fx", rate)):diffuse(accentColor)
+			end
+		end,
+		CurrentRateChangedMessageCommand = function(self) self:playcommand("Set") end
+	},
+
 	-- BPM Label
 	LoadFont("Common Normal") .. {
 		Name = "BPMLabel",
 		InitCommand = function(self)
-			self:halign(0):valign(0):zoom(0.35):diffuse(dimText)
-			self:settext(THEME:GetString("ScreenSelectMusic", "BPM"))
+			self:halign(0):valign(0.5):y(6):zoom(0.35):diffuse(brightText)
+			self:settext(THEME:GetString("ScreenSelectMusic", "BPM") .. ":")
 		end
 	},
-	-- BPM Value (positioned dynamically based on BPMLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "BPMValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0.5):y(6):zoom(0.4):diffuse(mainText)
 			local label = self:GetParent():GetChild("BPMLabel")
 			if label then
 				self:x(label:GetX() + label:GetZoomedWidth() + 2)
@@ -775,15 +802,14 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "LengthLabel",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.35):zoom(0.35):diffuse(dimText)
-			self:settext(THEME:GetString("ScreenSelectMusic", "Length"))
+			self:halign(0):valign(0.5):x(panelW * 0.35):y(6):zoom(0.35):diffuse(brightText)
+			self:settext(THEME:GetString("ScreenSelectMusic", "Length") .. ":")
 		end
 	},
-	-- Length Value (positioned dynamically based on LengthLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "LengthValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0.5):y(6):zoom(0.4):diffuse(mainText)
 			local label = self:GetParent():GetChild("LengthLabel")
 			if label then
 				self:x(label:GetX() + label:GetZoomedWidth() + 2)
@@ -800,26 +826,23 @@ t[#t + 1] = Def.ActorFrame {
 				local mins = math.floor(len / 60)
 				local secs = math.floor(len % 60)
 				self:settext(string.format("%d:%02d", mins, secs))
-				
-				-- Color gradient based on length
-				-- < 1:00 = white, 1:00-3:30 = green to yellow, 3:30-7:00 = yellow to red, 7:00-10:00 = red to purple, > 10:00 = purple
 				if len < 60 then
-					self:diffuse(color("1,1,1,1"))  -- White
-				elseif len < 210 then  
-					local t = (len - 60) / 150 
+					self:diffuse(color("1,1,1,1"))
+				elseif len < 210 then
+					local t = (len - 60) / 150
 					local g = 1 - t * 0.5
-					self:diffuse(color("0.5,"..g..",0.5,1"))  -- Green to Yellow
-				elseif len < 420 then  
-					local t = (len - 210) / 210 
-					local r = 0.5 + t * 0.5 
-					local g = 0.5 - t * 0.5 
-					self:diffuse(color(r..","..g..",0.5,1"))  -- Yellow to Red
-				elseif len < 600 then  
-					local t = (len - 420) / 180 
-					local b = 0.5 + t * 0.5 
-					self:diffuse(color("1,0,"..b..",1"))  -- Red to Purple
+					self:diffuse(color("0.5,"..g..",0.5,1"))
+				elseif len < 420 then
+					local t = (len - 210) / 210
+					local r = 0.5 + t * 0.5
+					local g = 0.5 - t * 0.5
+					self:diffuse(color(r..","..g..",0.5,1"))
+				elseif len < 600 then
+					local t = (len - 420) / 180
+					local b = 0.5 + t * 0.5
+					self:diffuse(color("1,0,"..b..",1"))
 				else
-					self:diffuse(color("0.7,0,1,1"))  -- Purple
+					self:diffuse(color("0.7,0,1,1"))
 				end
 			else
 				self:settext("--:--")
@@ -838,15 +861,14 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "NPSLabel",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.65):zoom(0.35):diffuse(dimText)
-			self:settext("NPS")
+			self:halign(0):valign(0.5):x(panelW * 0.65):y(6):zoom(0.35):diffuse(brightText)
+			self:settext("NPS:")
 		end
 	},
-	-- NPS Value (positioned dynamically based on NPSLabel's actual width)
 	LoadFont("Common Normal") .. {
 		Name = "NPSValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(-0.5):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0.5):y(6):zoom(0.4):diffuse(mainText)
 			local label = self:GetParent():GetChild("NPSLabel")
 			if label then
 				self:x(label:GetX() + label:GetZoomedWidth() + 2)
@@ -2137,32 +2159,7 @@ t[#t + 1] = Def.ActorFrame {
 }
 
 
--- ============================================================
--- MUSIC RATE DISPLAY
--- ============================================================
-t[#t + 1] = Def.ActorFrame {
-	Name = "RateDisplay",
-	InitCommand = function(self) 
-		self:xy(panelX + panelW - 40, panelY + 4) 
-	end,
-	LoadFont("Common Normal") .. {
-		Name = "RateLabel",
-		InitCommand = function(self) self:halign(1):valign(0):x(-2):zoom(0.35):diffuse(dimText):settext(THEME:GetString("ScreenSelectMusic", "Rate")) end
-	},
-	LoadFont("Common Normal") .. {
-		Name = "RateValue",
-		InitCommand = function(self) self:halign(0):valign(0):zoom(0.4):diffuse(accentColor):playcommand("Set") end,
-		SetCommand = function(self)
-			local rate = getCurRateValue() or 1
-			if math.abs(rate - 1.0) < 0.005 then
-				self:settext("1.0x"):diffuse(mainText)
-			else
-				self:settext(string.format("%.2fx", rate)):diffuse(accentColor)
-			end
-		end,
-		CurrentRateChangedMessageCommand = function(self) self:playcommand("Set") end
-	}
-}
+
 
 -- ============================================================
 -- RADAR INTEGRATION

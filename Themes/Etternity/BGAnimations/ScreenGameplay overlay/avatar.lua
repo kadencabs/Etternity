@@ -7,16 +7,19 @@ local profile = GetPlayerOrMachineProfile(pn)
 local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats()
 
 local avatarSize = 56
-local panelX = 10
-local panelY = SCREEN_HEIGHT - 66
+local panelX = 7
+local panelH = 84
+local panelY = SCREEN_HEIGHT - panelH + 11
 local panelW = 240
-local panelH = 60
 
 -- HV accent color
 local accentColor = HVColor.Accent or color("#00CFFF")
 local dimText = color("0.5,0.5,0.5,1")
 local fontZoom = 0.55
 local fontZoomSmall = 0.45
+
+-- Shared left margin for all text rows (name, MSD, difficulty, judge, mods, life)
+local groupX = avatarSize
 
 local function animateAvatarVisibility(self, visible)
 	self:stoptweening()
@@ -99,7 +102,7 @@ local t = Def.ActorFrame {
 	Def.Quad {
 		InitCommand = function(self)
 			self:halign(0):valign(0)
-			self:xy(-2, -2)
+			self:xy(-6, 10)
 			self:zoomto(avatarSize + 4, avatarSize + 4)
 			self:diffuse(accentColor)
 			self:diffusealpha(0.5)
@@ -109,7 +112,7 @@ local t = Def.ActorFrame {
 	-- Avatar sprite
 	Def.Sprite {
 		InitCommand = function(self)
-			self:halign(0):valign(0)
+			self:halign(0):valign(0):xy(-4, 12)
 		end,
 		BeginCommand = function(self)
 			self:finishtweening()
@@ -121,7 +124,7 @@ local t = Def.ActorFrame {
 	-- Profile name
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
-			self:xy(avatarSize + 6, 5):zoom(fontZoom):halign(0):maxwidth(130 / fontZoom)
+			self:xy(groupX, 15):zoom(fontZoom):halign(0):maxwidth(130 / fontZoom)
 			self:diffuse(color("1,1,1,1"))
 			self.cycleState = 0
 			self:playcommand("CycleName")
@@ -152,11 +155,33 @@ local t = Def.ActorFrame {
 			end
 		end
 	},
-	
-	-- Judge Display (Customized)
+
+	-- Difficulty name
 	LoadFont("Common Normal") .. {
+		Name = "DifficultyName",
 		InitCommand = function(self)
-			self:xy(panelW - 6, 22):zoom(fontZoomSmall):halign(1)
+			self:xy(groupX + 0.5, 47):zoom(fontZoomSmall):halign(0):maxwidth(150 / fontZoomSmall)
+		end,
+		BeginCommand = function(self) self:queuecommand("Set") end,
+		SetCommand = function(self)
+			local steps = GAMESTATE:GetCurrentSteps()
+			local diff = ToEnumShortString(steps:GetDifficulty())
+			self:settext(getDifficulty(steps:GetDifficulty()))
+			self:diffuse(HVColor.GetDifficultyColor(diff))
+			-- Reposition the Judge badge right after this text once width is known
+			local parent = self:GetParent()
+			local judge = parent and parent:GetChild("JudgeBadge")
+			if judge then
+				judge:xy(groupX + self:GetZoomedWidth() + 10, 47.5)
+			end
+		end,
+	},
+
+	-- Judge Display (Customized) -- sits right next to the difficulty name
+	LoadFont("Common Normal") .. {
+		Name = "JudgeBadge",
+		InitCommand = function(self)
+			self:xy(groupX + 70, 42):zoom(fontZoomSmall):halign(0)
 		end,
 
 		BeginCommand = function(self) self:queuecommand("Set") end,
@@ -182,7 +207,7 @@ local t = Def.ActorFrame {
 	-- MSD value
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
-			self:xy(avatarSize + 8, 22):zoom(fontZoom * 1.1):halign(0):maxwidth(65 / fontZoom)
+			self:xy(groupX - 0.5, 31.75):zoom(fontZoom * 2.25):halign(0):maxwidth(65 / fontZoom)
 		end,
 		BeginCommand = function(self) self:queuecommand("Set") end,
 		SetCommand = function(self)
@@ -198,24 +223,10 @@ local t = Def.ActorFrame {
 		CurrentRateChangedMessageCommand = function(self) self:queuecommand("Set") end,
 	},
 
-	-- Difficulty name
-	LoadFont("Common Normal") .. {
-		InitCommand = function(self)
-			self:xy(avatarSize + 60, 22):zoom(fontZoomSmall):halign(0):maxwidth(150 / fontZoomSmall)
-		end,
-		BeginCommand = function(self) self:queuecommand("Set") end,
-		SetCommand = function(self)
-			local steps = GAMESTATE:GetCurrentSteps()
-			local diff = ToEnumShortString(steps:GetDifficulty())
-			self:settext(getDifficulty(steps:GetDifficulty()))
-			self:diffuse(HVColor.GetDifficultyColor(diff))
-		end,
-	},
-
 	-- Mods string
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
-			self:xy(avatarSize + 8, 38):halign(0):zoom(fontZoomSmall * 0.9):maxwidth(panelW * 0.75 / (fontZoomSmall * 0.9))
+			self:xy(groupX, 56):halign(0):zoom(fontZoomSmall * 0.9):maxwidth(panelW * 0.9 / (fontZoomSmall * 0.9))
 			self:diffuse(dimText)
 		end,
 		BeginCommand = function(self)
@@ -228,7 +239,7 @@ local t = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "LifePct",
 		InitCommand = function(self)
-			self:xy(avatarSize + 6, 52):halign(0):zoom(fontZoomSmall * 1.1)
+			self:xy(groupX, 66):halign(0):zoom(fontZoomSmall * 1.1)
 		end,
 		BeginCommand = function(self)
 			self:playcommand("UpdateLife")
@@ -266,8 +277,8 @@ local t = Def.ActorFrame {
 	Def.Quad {
 		InitCommand = function(self)
 			self:halign(0)
-			self:xy(avatarSize + 40, 52)
-			self:zoomto(panelW - avatarSize - 44, 6)
+			self:xy(groupX + 34, 66)
+			self:zoomto(panelW - (groupX + 34) - 6, 6)
 			self:diffuse(0.15, 0.15, 0.15, 1)
 		end
 	},
@@ -276,7 +287,7 @@ local t = Def.ActorFrame {
 	Def.Quad {
 		InitCommand = function(self)
 			self:halign(0)
-			self:xy(avatarSize + 40, 52)
+			self:xy(groupX + 34, 66)
 			self:zoomto(0, 6)
 			self:diffuse(accentColor)
 			self:queuecommand("Set")
@@ -293,7 +304,7 @@ local t = Def.ActorFrame {
 			end
 			self:finishtweening()
 			self:smooth(0.1)
-			local barMaxW = panelW - avatarSize - 44
+			local barMaxW = panelW - (groupX + 34) - 6
 			self:zoomx(PLife() * barMaxW)
 			-- Color shift based on Life Difficulty and low life
 			local life = PLife()
@@ -340,7 +351,7 @@ local t = Def.ActorFrame {
 		LoadFont("Common Normal") .. {
 			Name = "DPPercent",
 			InitCommand = function(self)
-				self:y(-18):halign(0):zoom(0.5)
+				self:y(-15):halign(0):zoom(0.5)
 				self:settext("0.00%")
 				self:diffuse(color("#b3b3b3"))
 			end,

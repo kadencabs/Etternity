@@ -154,59 +154,17 @@ local t = Def.ActorFrame {
 		end
 	end,
 
-	-- Background panel
-	Def.Quad {
-		InitCommand = function(self)
-			self:zoomto(btnW + 10, (spacing * 5) + 60):diffuse(bgSubtle)
-		end
-	},
-	-- Accent border right
-	Def.Quad {
-		InitCommand = function(self)
-			self:halign(1):x((btnW + 10)/2):zoomto(2, (spacing * 5) + 60):diffuse(accentColor):diffusealpha(0.5)
-		end
-	},
 
 	-- Player Name Display
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:y(-(spacing * 2.5) - 15):zoom(0.35):diffuse(accentColor)
 				:maxwidth((btnW + 4)/0.35)
+				:visible(false)
 		end,
 		OnCommand = function(self) self:settext(playerName) end
 	},
-
-	-- Buttons Container
-	Def.ActorFrame {
-		Name = "Buttons",
-		InitCommand = function(self) self:y(10) end,
-		
-		makeButton("Rewind", -spacing * 2, "<< 5s", function()
-			local top = SCREENMAN:GetTopScreen()
-			if top then top:SetSongPosition(math.max(0, getSongPos() - 5)) end
-		end),
-		
-		makeButton("Pause", -spacing, "PAUSE", function()
-			local top = SCREENMAN:GetTopScreen()
-			if top then top:TogglePause() end
-		end),
-		
-		makeButton("Forward", 0, "5s >>", function()
-			local top = SCREENMAN:GetTopScreen()
-			if top then top:SetSongPosition(getSongPos() + 5) end
-		end),
-
-		makeButton("Results", spacing, "RESULTS", function()
-			local top = SCREENMAN:GetTopScreen()
-			if top then top:PostScreenMessage("SM_NotesEnded", 0) end
-		end),
-
-		makeButton("Exit", spacing * 2, "EXIT", function()
-			local top = SCREENMAN:GetTopScreen()
-			if top then top:Cancel() end
-		end),
-	},
-	MovableBorder(btnW + 10, (spacing * 5) + 60, 1, 0, 0)
 }
+
 
 return t

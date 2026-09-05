@@ -360,7 +360,7 @@ t[#t + 1] = Def.ActorFrame {
             else
                 replay = score:GetReplay()
             end
-            local rate = SCREENMAN:GetTopScreen():GetReplayRate()
+            local rate = (score and score.GetMusicRate and score:GetMusicRate()) or 1
             td = GAMESTATE:GetCurrentSteps():GetTimingData()
             dvt = replay:GetOffsetVector()
             ctt = replay:GetTrackVector()
