@@ -232,45 +232,16 @@ local t = Def.ActorFrame {
 			local viewLabel = currentView == VIEW_LOCAL and THEME:GetString("Scores", "Local") or THEME:GetString("Scores", "Online")
 			if song and steps then
 				local diff = ToEnumShortString(steps:GetDifficulty())
-				self:settextf(THEME:GetString("Scores", "TitleGeneric"), viewLabel, song:GetDisplayMainTitle(), diff)
+				self:settextf(THEME:GetString("Scores", "TitleGeneric"), song:GetDisplayMainTitle(), diff)
 			else
 				self:settextf(THEME:GetString("Scores", "TitleGenericNoChart"), viewLabel)
 			end
 		end
 	},
 
-	-- View toggle button (Merged LOCAL/ONLINE)
-	Def.ActorFrame {
-		InitCommand = function(self) self:xy(overlayW/2 - 55, -overlayH/2 + 18) end,
-		Def.Quad {
-			Name = "ToggleViewBg",
-			InitCommand = function(self) self:zoomto(100, 18):diffuse(accentColor):diffusealpha(0.4) end,
-			RefreshScoresCommand = function(self)
-				if not DLMAN:IsLoggedIn() and currentView == VIEW_LOCAL then
-					self:diffuse(color("#444444"))
-				else
-					self:diffuse(accentColor)
-				end
-			end,
-		},
-		LoadFont("Common Normal") .. {
-			Name = "ToggleViewText",
-			InitCommand = function(self) self:zoom(0.24):diffuse(brightText) end,
-			RefreshScoresCommand = function(self)
-				local viewName = currentView == VIEW_LOCAL and THEME:GetString("Scores", "Local") or THEME:GetString("Scores", "Online")
-				self:settextf(THEME:GetString("Scores", "ViewToggle"), viewName)
-				if currentView == VIEW_ONLINE and not DLMAN:IsLoggedIn() then
-					self:diffuse(dimText)
-				else
-					self:diffuse(brightText)
-				end
-			end,
-		},
-	},
-
 	-- Rate filter toggle button
 	Def.ActorFrame {
-		InitCommand = function(self) self:xy(overlayW/2 - 145, -overlayH/2 + 18) end,
+		InitCommand = function(self) self:xy(overlayW/2 - 40, -overlayH/2 + 18) end,
 		Def.Quad {
 			Name = "RateBtnBg",
 			InitCommand = function(self) self:zoomto(65, 18):diffuse(accentColor):diffusealpha(0.15) end,
@@ -289,7 +260,7 @@ local t = Def.ActorFrame {
 
 	-- Sort toggle button
 	Def.ActorFrame {
-		InitCommand = function(self) self:xy(overlayW/2 - 215, -overlayH/2 + 18) end,
+		InitCommand = function(self) self:xy(overlayW/2 - 110, -overlayH/2 + 18) end,
 		Def.Quad {
 			Name = "SortBtnBg",
 			InitCommand = function(self) self:zoomto(65, 18):diffuse(accentColor):diffusealpha(0.15) end,
@@ -307,7 +278,7 @@ local t = Def.ActorFrame {
 	-- J4 Display Toggle Button
 	Def.ActorFrame {
 		Name = "J4ToggleFrame",
-		InitCommand = function(self) self:xy(overlayW/2 - 285, -overlayH/2 + 18) end,
+		InitCommand = function(self) self:xy(overlayW/2 - 180, -overlayH/2 + 18) end,
 		RefreshScoresCommand = function(self)
 			local normPref = PREFSMAN:GetPreference("SortBySSRNormPercent")
 			self:visible(not normPref)
@@ -630,20 +601,6 @@ t[#t + 1] = Def.ActorFrame {
 				-- Close button
 				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 16, SCREEN_CENTER_Y - overlayH/2 + 16, 24, 24) then
 					MESSAGEMAN:Broadcast("SelectMusicTabChanged", {Tab = ""})
-					return true
-				end
-
-				-- Mode toggle
-				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 55, SCREEN_CENTER_Y - overlayH/2 + 18, 100, 18) then
-					if currentView == VIEW_LOCAL then
-						currentView = VIEW_ONLINE
-						FetchOnlineScores()
-					else
-						currentView = VIEW_LOCAL
-						GetLocalScores()
-					end
-					currentPage = 1
-					scoresActor:playcommand("RefreshScores")
 					return true
 				end
 

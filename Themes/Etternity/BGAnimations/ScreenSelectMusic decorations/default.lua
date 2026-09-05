@@ -1620,7 +1620,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "PBGrade",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(115):y(28):zoom(0.5)
+			self:halign(0.5):valign(0):x((panelW - 32) * 0.5):y(28):zoom(0.5)
 		end,
 		SetCommand = function(self)
 			local score = HV.CurrentSongData.pbScore
@@ -2014,7 +2014,7 @@ t[#t + 1] = Def.ActorFrame {
 		-- Progress Numbers
 		LoadFont("Common Normal") .. {
 			InitCommand = function(self)
-				self:halign(0):xy(0, 8):zoom(0.22):diffuse(subText)
+				self:halign(0):xy(-1, 10.5):zoom(0.40):diffuse(subText)
 			end,
 			SetCommand = function(self)
 				local profile = PROFILEMAN:GetProfile(PLAYER_1)
@@ -2078,7 +2078,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "Rating",
 		InitCommand = function(self)
-			self:halign(0):valign(1):x(55):y(46):zoom(0.35)
+			self:halign(0):valign(1):x(55):y(50):zoom(0.35)
 			self.transitionDuration = 0.25
 		end,
 		FadeOutCommand = function(self)
