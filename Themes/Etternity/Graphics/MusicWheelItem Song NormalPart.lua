@@ -102,7 +102,7 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 	Name = "MSDDisplay",
 	InitCommand = function(self)
 		self:halign(0):valign(0.5):x(-wheelItemW/2 + 6):y(0)
-			:zoom(0.40):diffuse(color("0.65,0.65,0.65,1")) -- Increased from 0.32
+			:zoom(0.85):diffuse(color("0.65,0.65,0.65,1"))
 	end,
 	SetMessageCommand = function(self, params)
 		local song = (params and params.Song) or self.hv_lastSong
@@ -151,8 +151,8 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 t[#t + 1] = LoadFont("Common Normal") .. {
 	Name = "GradeDisplay",
 	InitCommand = function(self)
-		self:halign(0):x(-wheelItemW/2 + 6):y(7)
-			:zoom(0.30):diffuse(color("0.45,0.45,0.45,1")) -- Increased from 0.22
+		self:halign(1):valign(0.5):x(wheelItemW/2 - 6):y(0)
+			:zoom(0.60):diffuse(color("0.45,0.45,0.45,1"))
 	end,
 	SetMessageCommand = function(self, params)
 		local song = (params and params.Song) or self.hv_lastSong
