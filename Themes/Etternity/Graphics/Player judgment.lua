@@ -1,17 +1,25 @@
--- Fetch user configuration at the top level for global scope
-local keymode = tostring(GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()) .. "K"
-local coords = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode]
-local sizes  = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode]
-
 local DOT_COUNT = 20
 local dotHistory = {}
+local judgmentThresholds = {W1=0, W2=1, W3=2, W4=3, W5=4}
 
--- Create the Recent Judgment display dots statically
+local function shouldShowLowerJudgementOffset(tns)
+	if not (HV.DisplayLowerJudgementOffset and HV.DisplayLowerJudgementOffset()) then return false end
+	if tns == "Miss" then return false end
+
+	local threshold = HV.GetOffsetDisplayJudgement and HV.GetOffsetDisplayJudgement() or "W3"
+	local currentIndex = judgmentThresholds[tns]
+	local thresholdIndex = judgmentThresholds[threshold] or judgmentThresholds.W3
+	return currentIndex ~= nil and currentIndex >= thresholdIndex
+end
+
+-- Create the Recent Judgment display dots statically first
 local recentJudgmentDisplay = Def.ActorFrame {
 	Name = "RecentJudgmentDisplay",
 	InitCommand = function(self)
-		self:x(-160)
-		self:y(50)
+		self:xy((MovableValues and MovableValues.RecentJudgmentDisplayX) or getDefaultGameplayCoordinate("RecentJudgmentDisplayX") or -160, (MovableValues and MovableValues.RecentJudgmentDisplayY) or getDefaultGameplayCoordinate("RecentJudgmentDisplayY") or 50):zoom((MovableValues and MovableValues.RecentJudgmentDisplayZoom) or getDefaultGameplaySize("RecentJudgmentDisplayZoom") or 1)
+	end,
+	OnCommand = function(self)
+		setMovableActor({"DeviceButton_v", "DeviceButton_b"}, self, self:GetChild("Border"))
 	end,
 	UpdateRowsMessageCommand = function(self)
 		self:visible(HV.RecentJudgmentDisplay() and not HV.MinimalisticMode())
@@ -27,23 +35,20 @@ for i = 1, DOT_COUNT do
 	}
 end
 
+recentJudgmentDisplay[#recentJudgmentDisplay + 1] = MovableBorder(12, ((DOT_COUNT - 1) * 8) + 6, 1, 0, (((DOT_COUNT - 1) * 8) + 6) / 2)
+
 local t = Def.ActorFrame {
-    Name = "PlayerJudgment",
-	InitCommand = function(self)
-		self:xy(coords.JudgeX, coords.JudgeY)
-		self:zoom(sizes.JudgeZoom)
-		self:visible(false)
-		self.lockedUntil = 0
-		self.lockedIndex = -1
-	end,
 	JudgmentMessageCommand = function(self, params)
 		if params.Player ~= PLAYER_1 then return end
 		if not params.TapNoteScore then return end
-		if params.HoldNoteScore then return end 
+		if params.HoldNoteScore then return end -- Skip hold/roll end events
 		
+		local judgment = self:GetChild("PlayerJudgment")
+		if not judgment then return end
 		local tns = ToEnumShortString(params.TapNoteScore)
-		local container = self:GetChild("JudgmentContainer")
+		local container = judgment:GetChild("JudgmentContainer")
 		local sprite = container:GetChild("JudgmentSprite")
+		local offsetText = container:GetChild("OffsetText")
 		if not sprite then return end
 		
 		-- Judgment index: W1=0, W2=1, W3=2, W4=3, W5=4, Miss=5
@@ -55,17 +60,20 @@ local t = Def.ActorFrame {
 		if HV.RecentJudgmentDisplay and HV.RecentJudgmentDisplay() and not HV.MinimalisticMode() then
 			local dotFrame = self:GetChild("RecentJudgmentDisplay")
 			if dotFrame then
+				-- Push history
 				for i = DOT_COUNT, 2, -1 do
 					dotHistory[i] = dotHistory[i-1]
 				end
 				dotHistory[1] = HVColor.GetJudgmentColor(tns)
 				
+				-- Update dots
 				for i = 1, DOT_COUNT do
 					local dot = dotFrame:GetChild("Dot"..i)
 					if dot then
 						if dotHistory[i] then
 							dot:stoptweening()
 							dot:diffuse(dotHistory[i])
+							-- Fade older dots: instant update
 							dot:diffusealpha(math.max(0.1, 1 - (i-1)/DOT_COUNT))
 							dot:visible(true)
 						else
@@ -76,21 +84,47 @@ local t = Def.ActorFrame {
 			end
 		end
 
+		-- Ridiculous Emulation Logic
+		local isRidiculous = false
+		if (ThemePrefs.Get("HV_EmulateRidiculous") == true or ThemePrefs.Get("HV_EmulateRidiculous") == "true") and tns == "W1" and params.TapNoteOffset then
+			-- Ridiculous window = 22.5 / 2 = 11.25ms (0.01125s)
+			if math.abs(params.TapNoteOffset) <= 0.01125 then
+				isRidiculous = true
+			end
+		end
+
+		local emulateRidiculous = (ThemePrefs.Get("HV_EmulateRidiculous") == true or ThemePrefs.Get("HV_EmulateRidiculous") == "true")
 		local numStates = sprite:GetNumStates()
 		local state
-		if numStates == 12 then
-			local offset = params.TapNoteOffset
-			local isLate = (offset and offset >= 0) and 1 or 0
+		local offset = params.TapNoteOffset
+		local isLate = (offset and offset >= 0) and 1 or 0
+
+		if numStates == 14 then
+			-- 2x7 sprite: Row 0 is Ridiculous only if emulation is enabled
+			local baseIdx = jdgIdx
+			if emulateRidiculous then
+				baseIdx = isRidiculous and 0 or (jdgIdx + 1)
+			end
+			state = baseIdx * 2 + isLate
+		elseif numStates == 7 then
+			-- 1x7 sprite
+			local baseIdx = jdgIdx
+			if emulateRidiculous then
+				baseIdx = isRidiculous and 0 or (jdgIdx + 1)
+			end
+			state = baseIdx
+		elseif numStates == 12 then
+			-- 2x6 sprite: Standard mapping
 			state = jdgIdx * 2 + isLate
 		else
+			-- Standard 1x6 sprite
 			state = jdgIdx
 		end
 
 		local curTime = GetTimeSinceStart()
 		local displayDuration = 0.5
-		
 		if HV.PrioritizeLowerJudgements and HV.PrioritizeLowerJudgements() then
-			if curTime < self.lockedUntil and jdgIdx <= self.lockedIndex then
+			if curTime < judgment.lockedUntil and jdgIdx <= judgment.lockedIndex then
 				return
 			end
 
@@ -100,10 +134,9 @@ local t = Def.ActorFrame {
 			else
 				local pss = STATSMAN:GetCurStageStats():GetPlayerStageStats(params.Player or PLAYER_1)
 				if pss then
-					-- FIX: Added 'or 0' to prevent nil comparison errors
-					local w1 = pss:GetTapNoteScores("TapNoteScore_W1") or 0
-					local w2 = pss:GetTapNoteScores("TapNoteScore_W2") or 0
-					local w3 = pss:GetTapNoteScores("TapNoteScore_W3") or 0
+					local w1 = pss:GetTapNoteScores("TapNoteScore_W1")
+					local w2 = pss:GetTapNoteScores("TapNoteScore_W2")
+					local w3 = pss:GetTapNoteScores("TapNoteScore_W3")
 					
 					if jdgIdx == 1 then
 						if w1 > (w2 * 2.5) then isLower = true end
@@ -115,25 +148,48 @@ local t = Def.ActorFrame {
 
 			if isLower then
 				displayDuration = 0.3
-				self.lockedUntil = curTime + displayDuration
-				self.lockedIndex = jdgIdx
+				judgment.lockedUntil = curTime + displayDuration
+				judgment.lockedIndex = jdgIdx
 			else
-				self.lockedUntil = 0
-				self.lockedIndex = -1
+				judgment.lockedUntil = 0
+				judgment.lockedIndex = -1
 			end
 		else
-			self.lockedUntil = 0
-			self.lockedIndex = -1
+			judgment.lockedUntil = 0
+			judgment.lockedIndex = -1
 		end
 
 		-- Apply state and show the judgment container
-		self:visible(true)
+		judgment:visible(true)
 		container:stoptweening():visible(true):diffusealpha(1)
 		sprite:setstate(state)
+
+		local ridiculousIndicator = container:GetChild("RidiculousIndicator")
+		if ridiculousIndicator then
+			-- Only show text indicator for 6-row sprites
+			if isRidiculous and numStates ~= 7 and numStates ~= 14 then
+				ridiculousIndicator:stoptweening():visible(true):diffusealpha(1)
+				if HV.JudgmentAnimation and HV.JudgmentAnimation() then
+					ridiculousIndicator:glow(color("1,1,1,0.5")):linear(0.05):glow(color("1,1,1,0"))
+				end
+			else
+				ridiculousIndicator:visible(false)
+			end
+		end
+
+		if offsetText then
+			if shouldShowLowerJudgementOffset(tns) and params.TapNoteOffset ~= nil then
+				offsetText:settext(string.format("%+.2fms", params.TapNoteOffset * 1000))
+				offsetText:diffuse(HVColor.GetJudgmentColor(tns))
+				offsetText:visible(true):diffusealpha(1)
+			else
+				offsetText:visible(false)
+			end
+		end
 		
-		-- Apply Animation if enabled
+		-- Apply Animation if enabled (only to the judgment container)
 		if HV.JudgmentAnimation and HV.JudgmentAnimation() then
-			container:zoom(0.81) 
+			container:zoom(0.81) -- Start slightly larger for the pulse
 			container:linear(0.05):zoom(0.65)
 			container:glow(color("1,1,1,0.5")):linear(0.05):glow(color("1,1,1,0"))
 		else
@@ -142,22 +198,49 @@ local t = Def.ActorFrame {
 		
 		container:sleep(displayDuration):linear(0.1):diffusealpha(0)
 	end,
-
 	Def.ActorFrame {
-		Name = "JudgmentContainer",
-		Def.Sprite {
-			Name = "JudgmentSprite",
-			InitCommand = function(self)
-				local path = getAssetPath("judgment")
-				if path and path ~= "" then
-					self:Load(path)
-					if self.pause then self:pause() end
-					self:setstate(0)
-				end
-			end
-		}
-	},
+		Name = "PlayerJudgment",
+		InitCommand = function(self)
+			self:addx((MovableValues and MovableValues.JudgeX) or getDefaultGameplayCoordinate("JudgeX") or 0):addy((MovableValues and MovableValues.JudgeY) or getDefaultGameplayCoordinate("JudgeY") or 0):zoom((MovableValues and MovableValues.JudgeZoom) or getDefaultGameplaySize("JudgeZoom") or 1)
+			self:visible(false)
+			self.lockedUntil = 0
+			self.lockedIndex = -1
+		end,
+		OnCommand = function(self)
+			setMovableActor({"DeviceButton_1", "DeviceButton_2"}, self, self:GetChild("Border"))
+		end,
 
+		Def.ActorFrame {
+			Name = "JudgmentContainer",
+			Def.Sprite {
+				Name = "JudgmentSprite",
+				InitCommand = function(self)
+					local path = getAssetPath("judgment")
+					if path and path ~= "" then
+						self:Load(path)
+						if self.pause then self:pause() end
+						self:setstate(0)
+					end
+				end
+			},
+			LoadFont("Common Normal") .. {
+				Name = "OffsetText",
+				InitCommand = function(self)
+					self:y(18):zoom(0.455):visible(false):diffusealpha(0):maxwidth(180)
+				end
+			},
+			LoadFont("Common Normal") .. {
+				Name = "RidiculousIndicator",
+				InitCommand = function(self)
+					self:y(-22):zoom(0.4):visible(false):maxwidth(200)
+					self:settext("RIDICULOUS")
+					self:diffuse(color("#E6FFFF")) -- Very light cyan
+					self:strokecolor(color("#1A2B2B"))
+				end
+			}
+		},
+		MovableBorder(120, 40, 1, 0, 0)
+	},
 	recentJudgmentDisplay
 }
 

@@ -66,6 +66,19 @@ local function GetOnlineStatus()
 	return false, "", "Offline"
 end
 
+local function GetPlayableChartSeconds(song, steps)
+	if steps then
+		local ok, len = pcall(function() return steps:GetLengthSeconds() end)
+		if ok and len and len > 0 then return len end
+	end
+	if song then
+		local ok, len = pcall(function() return song:GetStepsSeconds() end)
+		if ok and len and len > 0 then return len end
+		ok, len = pcall(function() return song:MusicLengthSeconds() end)
+		if ok and len and len > 0 then return len end
+	end
+	return 0
+end
 
 
 -- ============================================================
@@ -232,21 +245,20 @@ t[#t + 1] = Def.Actor {
 		HV.CurrentSongData.chartOffset = 0
 		self:playcommand("UpdateData")
 		-- Throttle InstantChartUpdate to avoid CPU spikes during fast scrolling
-		-- 0.04s is roughly 1-2 frames at high refresh rates, enough to skip redundant zips
-		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
+		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
 		
 		-- Deferred update for heavy elements
-		self:sleep(0.25):queuecommand("TriggerDelayedUpdate")
+		self:sleep(0.08):queuecommand("TriggerDelayedUpdate")
 	end,
 	CurrentStepsChangedMessageCommand = function(self)
 		self:playcommand("UpdateData")
-		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
-		self:sleep(0.15):queuecommand("TriggerDelayedUpdate")
+		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
+		self:sleep(0.05):queuecommand("TriggerDelayedUpdate")
 	end,
 	CurrentRateChangedMessageCommand = function(self)
 		self:playcommand("UpdateData")
-		self:stoptweening():sleep(0.04):queuecommand("TriggerInstantUpdate")
-		self:sleep(0.15):queuecommand("TriggerDelayedUpdate")
+		self:stoptweening():sleep(0.01):queuecommand("TriggerInstantUpdate")
+		self:sleep(0.05):queuecommand("TriggerDelayedUpdate")
 	end,
 	TriggerInstantUpdateCommand = function(self)
 		MESSAGEMAN:Broadcast("InstantChartUpdate")
@@ -254,7 +266,44 @@ t[#t + 1] = Def.Actor {
 	TriggerDelayedUpdateCommand = function(self)
 		self:playcommand("UpdateHeavyData")
 		MESSAGEMAN:Broadcast("DelayedChartUpdate")
-	end
+	end,
+
+	-- Permamirror Sync Logic
+	SyncPermamirrorCommand = function(self)
+		local st = GAMESTATE:GetCurrentSteps()
+		local isPM = false
+		if st and st.IsPermaMirror then
+			isPM = st:IsPermaMirror()
+		else
+			local prof = (GetPlayerOrMachineProfile and GetPlayerOrMachineProfile(PLAYER_1)) or PROFILEMAN:GetProfile(PLAYER_1)
+			isPM = prof and prof:IsCurrentChartPermamirror() or false
+		end
+
+		local po = GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptions("ModsLevel_Preferred")
+
+		if isPM then
+			-- If Permamirror is ON, the engine mirrors the chart data.
+			-- We MUST set the Mirror mod to false to avoid a "double-flip" that cancels it out.
+			po:Mirror(false)
+		end
+	end,
+
+	ReportPermamirrorCommand = function(self)
+		local st = GAMESTATE:GetCurrentSteps()
+		local isPM = false
+		if st and st.IsPermaMirror then
+			isPM = st:IsPermaMirror()
+		else
+			local prof = (GetPlayerOrMachineProfile and GetPlayerOrMachineProfile(PLAYER_1)) or PROFILEMAN:GetProfile(PLAYER_1)
+			isPM = prof and prof:IsCurrentChartPermamirror() or false
+		end
+		ms.ok("Permamirror: " .. (isPM and "ON" or "OFF"))
+	end,
+
+	PermamirrorChangedMessageCommand = function(self) 
+		self:stoptweening():sleep(0.05):queuecommand("SyncPermamirror"):queuecommand("ReportPermamirror")
+	end,
+	DelayedChartUpdateMessageCommand = function(self) self:playcommand("SyncPermamirror") end
 }
 
 -- ============================================================
@@ -326,14 +375,14 @@ local infoY = panelY + 12 + bannerH + 16
 t[#t + 1] = Def.ActorFrame {
 	Name = "SongInfoFrame",
 	InitCommand = function(self)
-		self:xy(panelX + 16, infoY)
+		self:xy(panelX + 16, infoY - 4)
 	end,
 
 	-- Song Title
 	LoadFont("_open sans 48px") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
-			self:halign(0):valign(0):zoom(0.7)
+			self:halign(0):valign(0):zoom(0.7):y(-7)
 				:maxwidth((panelW - 32) / 0.7)
 				:diffuse(brightText)
 		end,
@@ -399,7 +448,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "GroupName",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(40):zoom(0.35)
+			self:halign(0):valign(0):y(37):zoom(0.35)
 				:maxwidth((panelW - 32 - 50) / 0.35) -- Leave space for CDTitle
 				:diffuse(dimText)
 		end,
@@ -545,7 +594,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "BPMValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(40):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):x(17):y(-0.5):zoom(0.4):diffuse(mainText)
 		end,
 		SetCommand = function(self)
 			local song = HV.CurrentSongData.song
@@ -575,19 +624,19 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "LengthLabel",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.35):zoom(0.35):diffuse(dimText)
+			self:halign(0):valign(0):x(panelW * 0.35):y(0.5):zoom(0.35):diffuse(dimText)
 			self:settext(THEME:GetString("ScreenSelectMusic", "Length"))
 		end
 	},
 	LoadFont("Common Normal") .. {
 		Name = "LengthValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.35 + 56):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):x(panelW * 0.35 + 30):zoom(0.4):diffuse(mainText)
 		end,
 		SetCommand = function(self)
 			local song = HV.CurrentSongData.song
 			if song then
-				local len = song:MusicLengthSeconds()
+				local len = GetPlayableChartSeconds(song, HV.CurrentSongData.steps)
 				local rate = HV.CurrentSongData.rate
 				if rate > 0 then len = len / rate end
 				local mins = math.floor(len / 60)
@@ -632,13 +681,13 @@ t[#t + 1] = Def.ActorFrame {
 		Name = "NPSLabel",
 		InitCommand = function(self)
 			self:halign(0):valign(0):x(panelW * 0.65):zoom(0.35):diffuse(dimText)
-			self:settext("NPS")
+			self:settext("NPS:")
 		end
 	},
 	LoadFont("Common Normal") .. {
 		Name = "NPSValue",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(panelW * 0.65 + 28):zoom(0.4):diffuse(mainText)
+			self:halign(0):valign(0):x(panelW * 0.65 + 17):y(-0.5):zoom(0.4):diffuse(mainText)
 		end,
 		SetCommand = function(self)
 			local data = HV.CurrentSongData
@@ -721,7 +770,7 @@ t[#t + 1] = Def.ActorFrame {
 t[#t + 1] = Def.ActorFrame {
 	Name = "MSDRow_Overall",
 	InitCommand = function(self)
-		self:xy(panelX + 16, msdY + 18)
+		self:xy(panelX + 13, msdY + 18)
 		local show = ThemePrefs.Get("HV_ShowMSD")
 		self:visible(show == "true" or show == true)
 	end,
@@ -1158,69 +1207,6 @@ t[#t + 1] = Def.ActorFrame {
 	end
 }
 
-local function getRescoreElementsFromScore(score)
-	local o = {}
-	if not score or not score:HasReplayData() then return nil end
-	local replay = score:GetReplay()
-	local ok = pcall(function() replay:LoadAllData() end)
-	if not ok then return nil end
-	
-	local dvtTmp = replay:GetOffsetVector()
-	local tvt = replay:GetTapNoteTypeVector()
-	local dvt = {}
-	if tvt ~= nil and #tvt > 0 then
-		for i, d in ipairs(dvtTmp) do
-			local ty = tvt[i]
-			if ty == "TapNoteType_Tap" or ty == "TapNoteType_HoldHead" or ty == "TapNoteType_Lift" then
-				dvt[#dvt+1] = d
-			end
-		end
-	else
-		dvt = dvtTmp
-	end
-	o["dvt"] = dvt
-	
-	o["misses"] = score:GetTapNoteScore("TapNoteScore_Miss")
-	o["holdsMissed"] = score:GetHoldNoteScore("HoldNoteScore_LetGo")
-	o["rollsMissed"] = 0
-	o["minesHit"] = score:GetTapNoteScore("TapNoteScore_HitMine")
-	
-	local hits = 0
-	for _, name in ipairs({"W1","W2","W3","W4","W5"}) do
-		hits = hits + score:GetTapNoteScore("TapNoteScore_"..name)
-	end
-	o["tapsHit"] = hits
-	o["notesPassed"] = hits + o["misses"]
-	
-	local steps = GAMESTATE:GetCurrentSteps()
-	local radar = steps and steps:GetRadarValues(PLAYER_1)
-	o["totalHolds"] = (radar and radar:GetValue("RadarCategory_Holds")) or score:GetHoldNoteScore("HoldNoteScore_Held") + o["holdsMissed"]
-	o["totalRolls"] = (radar and radar:GetValue("RadarCategory_Rolls")) or 0
-	o["totalMines"] = (radar and radar:GetValue("RadarCategory_Mines")) or score:GetTapNoteScore("TapNoteScore_AvoidMine") + o["minesHit"]
-	o["totalNotes"] = (radar and radar:GetValue("RadarCategory_Notes")) or o["notesPassed"]
-	
-	return o
-end
-
-local function getJ4NormalizedPercentage(score)
-	if not score then return 0 end
-	
-	-- 1. Engine method (Fastest, most reliable for newer Etternity)
-	if type(score.GetRescoredWifeScore) == "function" then
-		return score:GetRescoredWifeScore(4) * 100
-	end
-	
-	-- 2. Manual rescore if replay exists
-	if score:HasReplayData() then
-		local rst = getRescoreElementsFromScore(score)
-		if rst and rst.dvt then
-			return getRescoredWife3Judge(3, 4, rst)
-		end
-	end
-	
-	-- 3. Fallback to raw wife score (If used on J4 or no replay available)
-	return score:GetWifeScore() * 100
-end
 
 local function GetDisplayScore()
 	local pn = PLAYER_1
@@ -1425,11 +1411,8 @@ t[#t + 1] = Def.ActorFrame {
 			local score = HV.CurrentSongData.pbScore
 			if score then
 				local wifePct = score:GetWifeScore() * 100
-				if self:GetParent().isHovering and score:HasReplayData() then
-					local rst = getRescoreElementsFromScore(score)
-					wifePct = rst and getRescoredWife3Judge(3, 4, rst) or wifePct
-				elseif self:GetParent().isHovering and type(score.GetRescoredWifeScore) == "function" then
-					wifePct = score:GetRescoredWifeScore(4) * 100
+				if self:GetParent().isHovering then
+					wifePct = getJ4NormalizedPercentage(score)
 				end
 				if wifePct >= 99 then
 					self:settext(string.format("%.4f%%", wifePct))
@@ -1448,7 +1431,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "PBGrade",
 		InitCommand = function(self)
-			self:halign(0):valign(0):x(115):y(28):zoom(0.5)
+			self:halign(0):valign(0):x(125):y(28):zoom(0.5)
 		end,
 		SetCommand = function(self)
 			local score = HV.CurrentSongData.pbScore
@@ -1487,7 +1470,7 @@ t[#t + 1] = Def.ActorFrame {
 			if score then
 				local ct = getDetailedClearType(score)
 				
-				if self:GetParent().isHovering and score:HasReplayData() then
+				if self:GetParent().isHovering then
 					local rst = getRescoreElementsFromScore(score)
 					if rst then
 						local w1 = getRescoredJudge(rst.dvt, 4, 1)
@@ -1500,6 +1483,8 @@ t[#t + 1] = Def.ActorFrame {
 						local pct = getRescoredWife3Judge(3, 4, rst) or 0
 						if pct <= 0 then
 							ct = "Failed"
+						elseif pct < 83 then
+							ct = "SoftInvalid"
 						else
 							local cb = miss + w5 + w4
 							if cb > 0 then
@@ -1519,8 +1504,6 @@ t[#t + 1] = Def.ActorFrame {
 							end
 						end
 					end
-				elseif self:GetParent().isHovering and type(score.GetRescoredWifeScore) == "function" then
-					-- Cannot easily construct ClearType without vectors safely, fallback
 				end
 				
 				local ctStr = THEME:GetString("ClearTypes", ct)
@@ -1591,7 +1574,7 @@ t[#t + 1] = Def.ActorFrame {
 				{name = "Miss", label = "MISS", val = score:GetTapNoteScore("TapNoteScore_Miss")}
 			}
 			
-			if self:GetParent().isHovering and score:HasReplayData() then
+			if self:GetParent().isHovering then
 				local rst = getRescoreElementsFromScore(score)
 				if rst then
 					for i=1, 6 do
@@ -1721,18 +1704,9 @@ t[#t + 1] = Def.ActorFrame {
 			self:halign(0):valign(0):x(56):y(-4):zoom(0.40):diffuse(mainText)
 		end,
 		SetCommand = function(self)
-			local profile = PROFILEMAN:GetProfile(PLAYER_1)
-			if profile then
-				local name = profile:GetDisplayName()
-				if name == "" then name = "Player" end
-				self:settext(name)
-			else
-				self:settext("No Profile"):diffuse(dimText)
-			end
-		end,
+			self:settext(HV.GetPlayerName())
 		--LoginMessageCommand = function(self) self:playcommand("Set") end,
 		--LogOutMessageCommand = function(self) self:playcommand("Set") end,
-		CurrentSongChangedMessageCommand = function(self) self:playcommand("Set") end,
 		OnCommand = function(self) self:playcommand("Set") end
 	},
 
@@ -1867,7 +1841,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Name = "Rating",
 		InitCommand = function(self)
-			self:halign(0):valign(1):x(56):y(53):zoom(0.35)
+			self:halign(0):valign(1):x(55):y(47):zoom(0.3)
 		end,
 		SetCommand = function(self)
 			local showProfileStats = HV.ShowProfileStats()
@@ -1982,11 +1956,11 @@ t[#t + 1] = Def.ActorFrame {
 	end,
 	LoadFont("Common Normal") .. {
 		Name = "RateLabel",
-		InitCommand = function(self) self:halign(1):valign(0):x(-2):zoom(0.35):diffuse(dimText):settext(THEME:GetString("ScreenSelectMusic", "Rate")) end
+		InitCommand = function(self) self:halign(1):valign(0):x(-232):y(160):zoom(0.35):diffuse(dimText):settext(THEME:GetString("ScreenSelectMusic", "Rate")) end
 	},
 	LoadFont("Common Normal") .. {
 		Name = "RateValue",
-		InitCommand = function(self) self:halign(0):valign(0):zoom(0.4):diffuse(accentColor):playcommand("Set") end,
+		InitCommand = function(self) self:halign(0):valign(0):x(-232):y(159.4):zoom(0.4):diffuse(accentColor):playcommand("Set") end,
 		SetCommand = function(self)
 			local rate = getCurRateValue() or 1
 			if math.abs(rate - 1.0) < 0.005 then

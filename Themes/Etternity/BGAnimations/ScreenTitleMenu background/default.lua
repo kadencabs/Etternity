@@ -148,27 +148,29 @@ local t = Def.ActorFrame {
 				end
 			end
 
-			-- Selection Glow
-			local selGlow = af:GetChild("SelectionGlow")
-			if selGlow then
-				if hovered then
-					local selY = (SCREEN_CENTER_Y + 20) + 44 * (hovered - 2.5)
-					selGlow:stoptweening():linear(0.05):y(selY):diffusealpha(isGlowEnabled and 0.4 or 0)
-				else
-					selGlow:stoptweening():linear(0.1):diffusealpha(0)
-				end
-			end
-
 			if hovered ~= HV.TitleState.mouse.lastHovered then
 				HV.TitleState.mouse.lastHovered = hovered
 				local screen = SCREENMAN:GetTopScreen()
-				if screen and hovered then
-					-- 1. Sync scroller (visual)
-					if screen:GetChild("Scroller") then
-						screen:GetChild("Scroller"):SetDestinationItem(hovered - 1)
+				if screen then
+					local scroller = screen:GetChild("Scroller")
+					if scroller then
+						if hovered then
+							scroller:SetDestinationItem(hovered - 1)
+						end
+						-- Fire GainFocus/LoseFocus on each item so text zooms/whitens like keyboard
+						for i = 0, 3 do
+							local item = scroller:GetChild(tostring(i))
+							if item then
+								if hovered and i == hovered - 1 then
+									item:playcommand("GainFocus")
+								else
+									item:playcommand("LoseFocus")
+								end
+							end
+						end
 					end
-					-- 2. Sync selection (engine)
-					if screen.SetCurrentChoice then
+					-- Sync engine selection
+					if screen.SetCurrentChoice and hovered then
 						local choiceNames = {"Start", "ColorTheme", "Options", "Exit"}
 						screen:SetCurrentChoice(choiceNames[hovered])
 					end
@@ -336,22 +338,12 @@ local bgEffectsFrame = Def.ActorFrame {
 		if bgEffect == "None" then alpha = 0 end
 		self:finishtweening():diffusealpha(alpha)
 		
-		local selGlow = self:GetChild("SelectionGlow")
-		if selGlow then
-			selGlow:glow(accentColor):diffuse(accentColor)
-		end
-
 		self:playcommand("UpdateAlpha")
 		self:playcommand("UpdateSpeed")
 	end,
 	UpdateAlphaCommand = function(self)
 		-- Alpha is handled by parent AF and individual children
 	end,
-}
-
-t[#t + 1] = Def.Quad {
-	Name = "SelectionGlow",
-	InitCommand = function(self) self:xy(SCREEN_CENTER_X, SCREEN_CENTER_Y):zoomto(300, 40):diffusealpha(0):fadetop(0.2):fadebottom(0.2) end
 }
 
 -- GRID EFFECT

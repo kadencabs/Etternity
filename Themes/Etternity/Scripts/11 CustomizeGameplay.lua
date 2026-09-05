@@ -1,75 +1,83 @@
 local keymode
 local allowedCustomization
 local usingReverse
+local WIDESCREENWHY = -5
+local WIDESCREENWHX = -5
 
 MovableValues = {}
 
 local function loadValuesTable()
 	allowedCustomization = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).CustomizeGameplay
 	usingReverse = GAMESTATE:GetPlayerState():GetCurrentPlayerOptions():UsingReverse()
-	MovableValues.JudgeX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].JudgeX
-	MovableValues.JudgeY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].JudgeY
-	MovableValues.JudgeZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].JudgeZoom
-	MovableValues.ComboX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ComboX
-	MovableValues.ComboY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ComboY
-	MovableValues.ComboZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].ComboZoom
-	MovableValues.ErrorBarX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ErrorBarX
-	MovableValues.ErrorBarY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ErrorBarY
-	MovableValues.ErrorBarWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].ErrorBarWidth
-	MovableValues.ErrorBarHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].ErrorBarHeight
-	MovableValues.TargetTrackerX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].TargetTrackerX
-	MovableValues.TargetTrackerY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].TargetTrackerY
-	MovableValues.TargetTrackerZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].TargetTrackerZoom
-	MovableValues.FullProgressBarX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].FullProgressBarX
-	MovableValues.FullProgressBarY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].FullProgressBarY
-	MovableValues.FullProgressBarWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].FullProgressBarWidth
-	MovableValues.FullProgressBarHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].FullProgressBarHeight
-	MovableValues.MiniProgressBarX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].MiniProgressBarX
-	MovableValues.MiniProgressBarY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].MiniProgressBarY
-	MovableValues.DisplayPercentX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].DisplayPercentX
-	MovableValues.DisplayPercentY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].DisplayPercentY
-	MovableValues.DisplayPercentZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].DisplayPercentZoom
-	MovableValues.DisplayMeanX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].DisplayMeanX
-	MovableValues.DisplayMeanY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].DisplayMeanY
-	MovableValues.DisplayMeanZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].DisplayMeanZoom
-	MovableValues.NotefieldX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NotefieldX
-	MovableValues.NotefieldY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NotefieldY
-	MovableValues.NotefieldWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NotefieldWidth
-	MovableValues.NotefieldHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NotefieldHeight
-	MovableValues.NotefieldSpacing = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NotefieldSpacing
-	MovableValues.JudgeCounterX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].JudgeCounterX
-	MovableValues.JudgeCounterY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].JudgeCounterY
-	MovableValues.ReplayButtonsX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ReplayButtonsX
-	MovableValues.ReplayButtonsY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].ReplayButtonsY
-	MovableValues.ReplayButtonsSpacing = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].ReplayButtonsSpacing
-	MovableValues.ReplayButtonsZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].ReplayButtonsZoom
-	MovableValues.NPSGraphX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NPSGraphX
-	MovableValues.NPSGraphY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NPSGraphY
-	MovableValues.NPSGraphWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NPSGraphWidth
-	MovableValues.NPSGraphHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NPSGraphHeight
-	MovableValues.NPSDisplayX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NPSDisplayX
-	MovableValues.NPSDisplayY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].NPSDisplayY
-	MovableValues.NPSDisplayZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].NPSDisplayZoom
-	MovableValues.LeaderboardX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].LeaderboardX
-	MovableValues.LeaderboardY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].LeaderboardY
-	MovableValues.LeaderboardSpacing = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].LeaderboardSpacing
-	MovableValues.LeaderboardWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].LeaderboardWidth
-	MovableValues.LeaderboardHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].LeaderboardHeight
-	MovableValues.LifeP1X = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].LifeP1X
-	MovableValues.LifeP1Y = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].LifeP1Y
-	MovableValues.LifeP1Rotation = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].LifeP1Rotation
-	MovableValues.LifeP1Width = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].LifeP1Width
-	MovableValues.LifeP1Height = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].LifeP1Height
-	MovableValues.PracticeCDGraphX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].PracticeCDGraphX
-	MovableValues.PracticeCDGraphY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].PracticeCDGraphY
-	MovableValues.PracticeCDGraphHeight = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].PracticeCDGraphHeight
-	MovableValues.PracticeCDGraphWidth = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].PracticeCDGraphWidth
-	MovableValues.BPMTextX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].BPMTextX
-	MovableValues.BPMTextY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].BPMTextY
-	MovableValues.BPMTextZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].BPMTextZoom
-	MovableValues.MusicRateX = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].MusicRateX
-	MovableValues.MusicRateY = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplayXYCoordinates[keymode].MusicRateY
-	MovableValues.MusicRateZoom = playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).GameplaySizes[keymode].MusicRateZoom
+
+	-- Cache player data to reduce repeated lookups
+	local playerData = playerConfig:get_data(pn_to_profile_slot(PLAYER_1))
+	local gameplayCoords = playerData.GameplayXYCoordinates[keymode] or {}
+	local gameplaySizes = playerData.GameplaySizes[keymode] or {}
+	local function coord(name)
+		return gameplayCoords[name] or getDefaultGameplayCoordinate(name) or 0
+	end
+	local function size(name)
+		return gameplaySizes[name] or getDefaultGameplaySize(name) or 1
+	end
+
+	MovableValues = {}
+
+	-- Batch assign values to reduce table lookups
+	MovableValues.JudgeX = coord("JudgeX")
+	MovableValues.JudgeY = coord("JudgeY")
+	MovableValues.JudgeZoom = size("JudgeZoom")
+	MovableValues.ComboX = coord("ComboX")
+	MovableValues.ComboY = coord("ComboY")
+	MovableValues.ComboZoom = size("ComboZoom")
+	MovableValues.ErrorBarX = coord("ErrorBarX")
+	MovableValues.ErrorBarY = coord("ErrorBarY")
+	MovableValues.TargetTrackerX = coord("TargetTrackerX")
+	MovableValues.TargetTrackerY = coord("TargetTrackerY")
+	MovableValues.TargetTrackerZoom = size("TargetTrackerZoom")
+	MovableValues.FullProgressBarX = coord("FullProgressBarX")
+	MovableValues.FullProgressBarY = coord("FullProgressBarY")
+	MovableValues.DisplayPercentX = coord("DisplayPercentX")
+	MovableValues.DisplayPercentY = coord("DisplayPercentY")
+	MovableValues.DisplayPercentZoom = size("DisplayPercentZoom")
+	MovableValues.DisplayMeanX = coord("DisplayMeanX")
+	MovableValues.DisplayMeanY = coord("DisplayMeanY")
+	MovableValues.DisplayMeanZoom = size("DisplayMeanZoom")
+	MovableValues.JudgeCounterX = coord("JudgeCounterX")
+	MovableValues.JudgeCounterY = coord("JudgeCounterY")
+	MovableValues.ReplayButtonsX = coord("ReplayButtonsX")
+	MovableValues.ReplayButtonsY = coord("ReplayButtonsY")
+	MovableValues.NPSGraphX = coord("NPSGraphX")
+	MovableValues.NPSGraphY = coord("NPSGraphY")
+	MovableValues.NPSGraphWidth = size("NPSGraphWidth")
+	MovableValues.NPSGraphHeight = size("NPSGraphHeight")
+	MovableValues.NPSDisplayX = coord("NPSDisplayX")
+	MovableValues.NPSDisplayY = coord("NPSDisplayY")
+	MovableValues.NPSDisplayZoom = size("NPSDisplayZoom")
+	MovableValues.LeaderboardX = coord("LeaderboardX")
+	MovableValues.LeaderboardY = coord("LeaderboardY")
+	MovableValues.LeaderboardWidth = size("LeaderboardWidth")
+	MovableValues.LeaderboardHeight = size("LeaderboardHeight")
+	MovableValues.LifeP1X = coord("LifeP1X")
+	MovableValues.LifeP1Y = coord("LifeP1Y")
+	MovableValues.LifeP1Rotation = coord("LifeP1Rotation")
+	MovableValues.PracticeCDGraphX = coord("PracticeCDGraphX")
+	MovableValues.PracticeCDGraphY = coord("PracticeCDGraphY")
+	MovableValues.BPMTextX = coord("BPMTextX")
+	MovableValues.BPMTextY = coord("BPMTextY")
+	MovableValues.BPMTextZoom = size("BPMTextZoom")
+	MovableValues.RecentJudgmentDisplayX = coord("RecentJudgmentDisplayX")
+	MovableValues.RecentJudgmentDisplayY = coord("RecentJudgmentDisplayY")
+	MovableValues.RecentJudgmentDisplayZoom = size("RecentJudgmentDisplayZoom")
+	MovableValues.DPDisplayX = coord("DPDisplayX")
+	MovableValues.DPDisplayY = coord("DPDisplayY")
+	MovableValues.DPDisplayZoom = size("DPDisplayZoom")
+
+	-- Apply widescreen offsets
+	if GetScreenAspectRatio() > 1.7 then
+		MovableValues.TargetTrackerY = MovableValues.TargetTrackerY + WIDESCREENWHY
+		MovableValues.TargetTrackerX = MovableValues.TargetTrackerX - WIDESCREENWHX
+	end
 end
 
 function unsetMovableKeymode()
@@ -86,6 +94,26 @@ local Floor = notShit.floor
 local queuecommand = Actor.queuecommand
 local playcommand = Actor.queuecommand
 local settext = BitmapText.settext
+
+local function isCustomizeAutoplayActive()
+	if getAutoplay and getAutoplay() ~= 0 then return true end
+	local ps = GAMESTATE:GetPlayerState(PLAYER_1)
+	return ps and ps.GetPlayerController and ps:GetPlayerController() == "PlayerController_Autoplay"
+end
+
+function setMovableActor(buttons, actor, border)
+	if not allowedCustomization then return end
+	for _, button in ipairs(buttons) do
+		if Movable[button] then
+			Movable[button].actor = actor
+			Movable[button].element = actor
+			Movable[button].condition = true
+			if border then
+				Movable[button].Border = border
+			end
+		end
+	end
+end
 
 local propsFunctions = {
 	X = Actor.x,
@@ -108,22 +136,24 @@ Movable = {
 		element = {},
 		children = {"Judgment", "Border"},
 		properties = {"X", "Y"},
+		mouseRelativeToCenter = true,
+		actorUsesAbsolutePosition = true,
 		propertyOffsets = nil,	-- manual offsets for stuff hardcoded to be relative to center and maybe other things (init in wifejudgmentspotting)
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -150,22 +180,24 @@ Movable = {
 		element = {},
 		children = {"Label", "Number", "Border"},
 		properties = {"X", "Y"},
+		mouseRelativeToCenter = true,
+		actorUsesAbsolutePosition = true,
 		propertyOffsets = nil,
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -194,44 +226,20 @@ Movable = {
 		children = {"Center", "WeightedBar", "Border"},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
-		}
-	},
-	DeviceButton_6 = {
-		name = "ErrorBar",
-		textHeader = "Error Bar Size:",
-		element = {},
-		properties = {"Width", "Height"},
-		children = {"Center", "WeightedBar"},
-		elementTree = "GameplaySizes",
-		DeviceButton_up = {
-			property = "Height",
-			inc = 1
-		},
-		DeviceButton_down = {
-			property = "Height",
-			inc = -1
-		},
-		DeviceButton_left = {
-			property = "Width",
-			inc = -10
-		},
-		DeviceButton_right = {
-			property = "Width",
-			inc = 10
 		}
 	},
 	DeviceButton_7 = {
@@ -242,19 +250,19 @@ Movable = {
 		-- no children so the changes are applied to the element itself
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -280,66 +288,19 @@ Movable = {
 		properties = {"X", "Y"},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -3
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 3
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
-			inc = 5
-		}
-	},
-	DeviceButton_0 = {
-		name = "FullProgressBar",
-		textHeader = "Full Progress Bar Size:",
-		element = {},
-		properties = {"Width", "Height"},
-		elementTree = "GameplaySizes",
-		noBorder = true,
-		DeviceButton_up = {
-			property = "Height",
-			inc = 0.1
-		},
-		DeviceButton_down = {
-			property = "Height",
-			inc = -0.1
-		},
-		DeviceButton_left = {
-			property = "Width",
-			inc = -0.01
-		},
-		DeviceButton_right = {
-			property = "Width",
-			inc = 0.01
-		}
-	},
-	DeviceButton_q = {
-		name = "MiniProgressBar",
-		textHeader = "Mini Progress Bar Position:",
-		element = {},
-		properties = {"X", "Y"},
-		elementTree = "GameplayXYCoordinates",
-		DeviceButton_up = {
-			property = "Y",
-			inc = -5
-		},
-		DeviceButton_down = {
-			property = "Y",
-			inc = 5
-		},
-		DeviceButton_left = {
-			property = "X",
-			inc = -5
-		},
-		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -350,19 +311,19 @@ Movable = {
 		properties = {"X", "Y"},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -381,77 +342,27 @@ Movable = {
 			inc = -0.01
 		}
 	},
-	DeviceButton_r = {
-		name = "Notefield",
-		textHeader = "Notefield Position:",
-		element = {},
-		properties = {"X", "Y"},
-		elementTree = "GameplayXYCoordinates",
-		noBorder = true,
-		DeviceButton_up = {
-			notefieldY = true,
-			property = "AddY",
-			inc = -3
-		},
-		DeviceButton_down = {
-			notefieldY = true,
-			property = "AddY",
-			inc = 3
-		},
-		DeviceButton_left = {
-			property = "AddX",
-			inc = -3
-		},
-		DeviceButton_right = {
-			property = "AddX",
-			inc = 3
-		}
-	},
-	DeviceButton_t = {
-		name = "Notefield",
-		textHeader = "Notefield Size:",
-		element = {},
-		elementList = true, -- god bless the notefield
-		properties = {"Width", "Height"},
-		elementTree = "GameplaySizes",
-		noBorder = true,
-		DeviceButton_up = {
-			property = "Height",
-			inc = 0.01
-		},
-		DeviceButton_down = {
-			property = "Height",
-			inc = -0.01
-		},
-		DeviceButton_left = {
-			property = "Width",
-			inc = -0.01
-		},
-		DeviceButton_right = {
-			property = "Width",
-			inc = 0.01
-		}
-	},
 	DeviceButton_y = {
 		name = "NPSDisplay",
 		textHeader = "NPS Display Position:",
 		element = {},
 		properties = {"X", "Y"},
+		propertyOffsets = {55, -9},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -475,21 +386,22 @@ Movable = {
 		textHeader = "NPS Graph Position:",
 		element = {},
 		properties = {"X", "Y"},
+		propertyOffsets = {70, 25},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -522,21 +434,22 @@ Movable = {
 		textHeader = "Judge Counter Position:",
 		element = {},
 		properties = {"X", "Y"},
+		propertyOffsets = {70, 50},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -3
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 3
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -3
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 3
 		}
 	},
@@ -545,21 +458,22 @@ Movable = {
 		textHeader = "Leaderboard Position:",
 		properties = {"X", "Y"},
 		element = {},
+		propertyOffsets = {77.5, 123},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -3
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 3
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -3
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 3
 		}
 	},
@@ -587,22 +501,6 @@ Movable = {
 			inc = 0.01
 		}
 	},
-	DeviceButton_d = {
-		name = "Leaderboard",
-		textHeader = "Leaderboard Spacing:",
-		properties = {"Spacing"},
-		elementTree = "GameplaySizes",
-		DeviceButton_up = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = -0.3
-		},
-		DeviceButton_down = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = 0.3
-		},
-	},
 	DeviceButton_f = {
 		name = "ReplayButtons",
 		textHeader = "Replay Buttons Position:",
@@ -611,118 +509,21 @@ Movable = {
 		elementTree = "GameplayXYCoordinates",
 		condition = false,
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -3
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 3
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -3
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 3
 		}
-	},--[[
-	DeviceButton_g = {
-		name = "ReplayButtons",
-		textHeader = "Replay Buttons Size:",
-		element = {},
-		noBorder = true,
-		properties = {"Zoom"},
-		elementTree = "GameplaySizes",
-		condition = false,
-		DeviceButton_up = {
-			property = "Zoom",
-			inc = 0.01
-		},
-		DeviceButton_down = {
-			property = "Zoom",
-			inc = -0.01
-		}
-	},]]
-	DeviceButton_h = {
-		name = "ReplayButtons",
-		textHeader = "Replay Buttons Spacing:",
-		properties = {"Spacing"},
-		elementTree = "GameplaySizes",
-		condition = false,
-		DeviceButton_up = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = -0.5
-		},
-		DeviceButton_down = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = 0.5
-		},
-	},
-	DeviceButton_j = {
-		name = "LifeP1",
-		textHeader = "Lifebar Position:",
-		element = {},
-		properties = {"X", "Y"},
-		-- propertyOffsets = {"178", "10"},
-		elementTree = "GameplayXYCoordinates",
-		DeviceButton_up = {
-			property = "Y",
-			inc = -3
-		},
-		DeviceButton_down = {
-			property = "Y",
-			inc = 3
-		},
-		DeviceButton_left = {
-			property = "X",
-			inc = -3
-		},
-		DeviceButton_right = {
-			property = "X",
-			inc = 3
-		}
-	},
-	DeviceButton_k = {
-		name = "LifeP1",
-		textHeader = "Lifebar Size:",
-		properties = {"Width", "Height"},
-		element = {},
-		elementTree = "GameplaySizes",
-		noBorder = true,
-		DeviceButton_up = {
-			property = "Height",
-			inc = 0.1
-		},
-		DeviceButton_down = {
-			property = "Height",
-			inc = -0.1
-		},
-		DeviceButton_left = {
-			property = "Width",
-			inc = -0.01
-		},
-		DeviceButton_right = {
-			property = "Width",
-			inc = 0.01
-		}
-	},
-	DeviceButton_l = {
-		name = "LifeP1",
-		textHeader = "Lifebar Rotation:",
-		properties = {"Rotation"},
-		element = {},
-		elementTree = "GameplayXYCoordinates",
-		DeviceButton_up = {
-			property = "Rotation",
-			inc = -1
-		},
-		DeviceButton_down = {
-			property = "Rotation",
-			inc = 1
-		},
 	},
 	DeviceButton_z = {
 		name = "PracticeCDGraph",
@@ -732,72 +533,48 @@ Movable = {
 		elementTree = "GameplayXYCoordinates",
 		propertyOffsets = nil,
 		DeviceButton_up = {
-			property = "Y",
-			inc = -3
+			property = "AddY",
+			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
-			inc = 3
+			property = "AddY",
+			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
-			inc = -3
+			property = "AddX",
+			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
-			inc = 3
+			property = "AddX",
+			inc = 5
 		}
 	},
-	--[[DeviceButton_x = {
-		name = "PracticeCDGraph",
-		textHeader = "Chord Density Graph Size:",
-		properties = {"Width", "Height"},
-		element = {},
-		elementTree = "GameplaySizes",
-		propertyOffsets = nil,
-		DeviceButton_up = {
-			property = "Height",
-			inc = 0.1
-		},
-		DeviceButton_down = {
-			property = "Height",
-			inc = -0.1
-		},
-		DeviceButton_left = {
-			property = "Width",
-			inc = -0.01
-		},
-		DeviceButton_right = {
-			property = "Width",
-			inc = 0.01
-		}
-	},]]
 	DeviceButton_x = {
 		name = "BPMText",
-		textHeader = "BPM Text Position:",
+		textHeader = "BPM / Rate Position:",
 		element = {},
 		properties = {"X", "Y"},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
 	DeviceButton_c = {
 		name = "BPMText",
-		textHeader = "BPM Text Size:",
+		textHeader = "BPM / Rate Size:",
 		element = {},
 		properties = {"Zoom"},
 		elementTree = "GameplaySizes",
@@ -811,31 +588,32 @@ Movable = {
 		}
 	},
 	DeviceButton_v = {
-		name = "MusicRate",
-		textHeader = "Music Rate Position:",
+		name = "RecentJudgmentDisplay",
+		textHeader = "Recent Judgment Display Position:",
 		element = {},
 		properties = {"X", "Y"},
 		elementTree = "GameplayXYCoordinates",
+		propertyOffsets = {0, 76},
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
 	DeviceButton_b = {
-		name = "MusicRate",
-		textHeader = "Music Rate Size:",
+		name = "RecentJudgmentDisplay",
+		textHeader = "Recent Judgment Display Size:",
 		element = {},
 		properties = {"Zoom"},
 		elementTree = "GameplaySizes",
@@ -848,23 +626,6 @@ Movable = {
 			inc = -0.01
 		}
 	},
-	DeviceButton_n = {
-		name = "Notefield",
-		textHeader = "Notefield Columns:",
-		properties = {"Spacing"},
-		elementTree = "GameplaySizes",
-		noBorder = true,
-		DeviceButton_up = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = 1
-		},
-		DeviceButton_down = {
-			arbitraryInc = true,
-			property = "Spacing",
-			inc = -1
-		},
-	},
 	DeviceButton_m = {
 		name = "DisplayMean",
 		textHeader = "Current Mean Position:",
@@ -872,19 +633,19 @@ Movable = {
 		properties = {"X", "Y"},
 		elementTree = "GameplayXYCoordinates",
 		DeviceButton_up = {
-			property = "Y",
+			property = "AddY",
 			inc = -5
 		},
 		DeviceButton_down = {
-			property = "Y",
+			property = "AddY",
 			inc = 5
 		},
 		DeviceButton_left = {
-			property = "X",
+			property = "AddX",
 			inc = -5
 		},
 		DeviceButton_right = {
-			property = "X",
+			property = "AddX",
 			inc = 5
 		}
 	},
@@ -902,6 +663,44 @@ Movable = {
 			property = "Zoom",
 			inc = -0.01
 		}
+	},
+	DeviceButton_period = {
+		name = "DPDisplay",
+		textHeader = "DP Display Position:",
+		element = {},
+		properties = {"X", "Y"},
+		elementTree = "GameplayXYCoordinates",
+		DeviceButton_up = {
+			property = "AddY",
+			inc = -3
+		},
+		DeviceButton_down = {
+			property = "AddY",
+			inc = 3
+		},
+		DeviceButton_left = {
+			property = "AddX",
+			inc = -3
+		},
+		DeviceButton_right = {
+			property = "AddX",
+			inc = 3
+		}
+	},
+	DeviceButton_slash = {
+		name = "DPDisplay",
+		textHeader = "DP Display Size:",
+		properties = {"Zoom"},
+		element = {},
+		elementTree = "GameplaySizes",
+		DeviceButton_up = {
+			property = "Zoom",
+			inc = 0.01
+		},
+		DeviceButton_down = {
+			property = "Zoom",
+			inc = -0.01
+		}
 	}
 	
 }
@@ -910,18 +709,69 @@ local function updatetext(button)
 	local text = {Movable[button].textHeader}
 	for _, prop in ipairs(Movable[button].properties) do
 		local fullProp = Movable[button].name .. prop
-		text[#text + 1] = prop .. ": " .. MovableValues[fullProp]
+		text[#text + 1] = prop .. ": " .. tostring(MovableValues[fullProp])
 	end
 	Movable.message:settext(table.concat(text, "\n"))
 	Movable.message:visible(Movable.pressed)
 end
 
+local function charToDeviceButton(ch)
+	if not ch then return nil end
+	if ch:match("^[a-z0-9]$") then return "DeviceButton_" .. ch end
+	local symbolMap = {
+		[","] = "DeviceButton_comma",
+		["."] = "DeviceButton_period",
+		["/"] = "DeviceButton_slash",
+		["\\"] = "DeviceButton_backslash",
+		["-"] = "DeviceButton_minus",
+		["="] = "DeviceButton_equals",
+		[";"] = "DeviceButton_semicolon",
+		["'"] = "DeviceButton_apostrophe",
+		["["] = "DeviceButton_left bracket",
+		["]"] = "DeviceButton_right bracket",
+		["`"] = "DeviceButton_grave",
+		[" "] = "DeviceButton_space",
+	}
+	return symbolMap[ch]
+end
+
+local function normalizeMovableButton(event)
+	if not event then return nil end
+	local deviceButton = event.DeviceInput and event.DeviceInput.button or nil
+	if deviceButton and Movable[deviceButton] then
+		return deviceButton
+	end
+
+	local shifted = INPUTFILTER:IsBeingPressed("left shift") or INPUTFILTER:IsBeingPressed("right shift")
+	if DeviceBtnToChar and deviceButton then
+		local asChar = DeviceBtnToChar(deviceButton, shifted)
+		local mapped = charToDeviceButton(asChar and asChar:lower() or nil)
+		if mapped and Movable[mapped] then
+			return mapped
+		end
+	end
+
+	local logicalButton = event.button
+	if type(logicalButton) == "string" then
+		local key = logicalButton:match("^Key%s+(.+)$")
+		if key then
+			local mapped = charToDeviceButton(key:lower())
+			if mapped and Movable[mapped] then
+				return mapped
+			end
+		end
+	end
+
+	return deviceButton
+end
+
 function MovableInput(event)
 	if SCREENMAN:GetTopScreen():GetName() == "ScreenGameplaySyncMachine" then return end
-	if getAutoplay() ~= 0 then
+	if not allowedCustomization then return false end
+	if isCustomizeAutoplayActive() then
 		-- this will eat any other mouse input than a right click (toggle)
 		-- so we don't have to worry about anything weird happening with the ersatz inputs -mina
-		if event.DeviceInput.is_mouse then	
+		if event.DeviceInput and event.DeviceInput.is_mouse then	
 			if event.DeviceInput.button == "DeviceButton_right mouse button" then
 				Movable.current = "None"
 				Movable.pressed = false
@@ -930,13 +780,13 @@ function MovableInput(event)
 			return 
 		end
 
-		local button = event.DeviceInput.button	
+		local button = normalizeMovableButton(event)	
 		event.hellothisismouse = event.hellothisismouse and true or false -- so that's why bools kept getting set to nil -mina
 		local notReleased = not (event.type == "InputEventType_Release")
 		-- changed to toggle rather than hold down -mina
 		if (Movable[button] and Movable[button].condition and notReleased) or event.hellothisismouse then
 			Movable.pressed = not Movable.pressed or event.hellothisismouse	-- this stuff is getting pretty hacky now -mina
-			if Movable.current ~= event.DeviceInput.button and not event.hellothisismouse then
+			if Movable.current ~= button and not event.hellothisismouse then
 				Movable.pressed = true	-- allow toggling using the kb to directly move to a different key rather than forcing an untoggle first -mina
 			end
 			Movable.current = button
@@ -994,7 +844,7 @@ function MovableInput(event)
 						elseif sizevals[keyProperty] then
 							newVal = getDefaultGameplaySize(prop)
 						end
-						local diff = newVal - MovableValues[prop]
+						local diff = newVal - (MovableValues[prop] or 0)
 						MovableValues[prop] = newVal
 						if curKey.arbitraryFunction then
 							if curKey.arbitraryInc then
@@ -1005,6 +855,13 @@ function MovableInput(event)
 							else
 								curKey.arbitraryFunction(newVal)
 							end
+						elseif keyProperty == "AddX" or keyProperty == "AddY" then
+							if keyProperty == "AddY" then
+								diff = -diff -- sigh
+							end
+							propsFunctions[keyProperty](current.element, diff)
+						elseif current.actor then
+							propsFunctions[keyProperty](current.actor, newVal)
 						elseif current.children then
 							for _, attribute in ipairs(current.children) do
 								propsFunctions[keyProperty](current.element[attribute], newVal)
@@ -1013,11 +870,6 @@ function MovableInput(event)
 							for _, elem in ipairs(current.element) do
 								propsFunctions[keyProperty](elem, newVal)
 							end
-						elseif keyProperty == "AddX" or keyProperty == "AddY" then
-							if keyProperty == "AddY" then
-								diff = -diff -- sigh
-							end
-							propsFunctions[keyProperty](current.element, diff)
 						else
 							propsFunctions[keyProperty](current.element, newVal)
 						end
@@ -1029,7 +881,9 @@ function MovableInput(event)
 							end
 						end
 						updatetext(Movable.current)
-						playerConfig:get_data(pn_to_profile_slot(PLAYER_1))[current.elementTree][keymode][prop] = MovableValues[prop]
+						local playerData = playerConfig:get_data(pn_to_profile_slot(PLAYER_1))
+						playerData[current.elementTree][keymode] = playerData[current.elementTree][keymode] or {}
+						playerData[current.elementTree][keymode][prop] = MovableValues[prop]
 						playerConfig:set_dirty(pn_to_profile_slot(PLAYER_1))
 					end
 				end
@@ -1037,7 +891,7 @@ function MovableInput(event)
 			end
 		end
 		
-		if Movable.pressed and current[button] and current.condition and notReleased and current.external == nil then
+		if current and Movable.pressed and current[button] and current.condition and notReleased and current.external == nil then
 			local curKey = current[button]
 			local keyProperty = curKey.property
 			local prop = current.name .. string.gsub(keyProperty, "Add", "")
@@ -1045,9 +899,19 @@ function MovableInput(event)
 
 			-- directly set newval if we're using the mouse -mina
 			if event.hellothisismouse then
-				newVal = event.val
+				if current.mouseRelativeToCenter and keyProperty == "AddX" then
+					newVal = event.val - SCREEN_CENTER_X
+				elseif current.mouseRelativeToCenter and keyProperty == "AddY" then
+					newVal = event.val - SCREEN_CENTER_Y
+				elseif keyProperty == "AddX" and current.element and current.element.GetTrueX and current.element.GetX then
+					newVal = event.val - (current.element:GetTrueX() - current.element:GetX())
+				elseif keyProperty == "AddY" and current.element and current.element.GetTrueY and current.element.GetY then
+					newVal = event.val - (current.element:GetTrueY() - current.element:GetY())
+				else
+					newVal = event.val
+				end
 			else
-				newVal = MovableValues[prop] + (curKey.inc * ((curKey.notefieldY and not usingReverse) and -1 or 1))
+				newVal = (MovableValues[prop] or 0) + (curKey.inc * ((curKey.notefieldY and not usingReverse) and -1 or 1))
 			end
 			
 			MovableValues[prop] = newVal
@@ -1057,6 +921,20 @@ function MovableInput(event)
 				else
 					curKey.arbitraryFunction(newVal)
 				end
+			elseif keyProperty == "AddX" or keyProperty == "AddY" then
+				if event.hellothisismouse then
+					local axisProp = string.gsub(keyProperty, "Add", "")
+					if current.actorUsesAbsolutePosition and current.mouseRelativeToCenter then
+						local appliedVal = newVal + (axisProp == "X" and SCREEN_CENTER_X or SCREEN_CENTER_Y)
+						propsFunctions[axisProp](current.element, appliedVal)
+					else
+						propsFunctions[axisProp](current.element, newVal)
+					end
+				else
+					propsFunctions[keyProperty](current.element, curKey.inc)
+				end
+			elseif current.actor then
+				propsFunctions[keyProperty](current.actor, newVal)
 			elseif current.children then
 				for _, attribute in ipairs(current.children) do
 					propsFunctions[curKey.property](current.element[attribute], newVal)
@@ -1065,8 +943,6 @@ function MovableInput(event)
 				for _, elem in ipairs(current.element) do
 					propsFunctions[keyProperty](elem, newVal)
 				end
-			elseif keyProperty == "AddX" or keyProperty == "AddY" then
-				propsFunctions[keyProperty](current.element, curKey.inc)
 			else
 				propsFunctions[keyProperty](current.element, newVal)
 			end
@@ -1081,7 +957,9 @@ function MovableInput(event)
 			if not event.hellothisismouse then
 				updatetext(Movable.current)	-- updates text when keyboard movements are made (mouse already updated)
 			end
-			playerConfig:get_data(pn_to_profile_slot(PLAYER_1))[current.elementTree][keymode][prop] = newVal
+			local playerData = playerConfig:get_data(pn_to_profile_slot(PLAYER_1))
+			playerData[current.elementTree][keymode] = playerData[current.elementTree][keymode] or {}
+			playerData[current.elementTree][keymode][prop] = newVal
 			playerConfig:set_dirty(pn_to_profile_slot(PLAYER_1))
 			-- commented this to save I/O time and reduce lag
 			-- just make sure to call this somewhere else to make sure stuff saves.
@@ -1110,6 +988,21 @@ end
 
 -- this is supreme lazy -mina
 local function elementtobutton(name)
+	local aliases = {
+		PlayerJudgment = "Judge",
+		ComboDisplay = "Combo",
+		CenteredScore = "DisplayPercent",
+		TextPacemaker = "TargetTracker",
+		ProgressBarContainer = "FullProgressBar",
+		VerticalLifeBar = "LifeP1",
+		TallyAndMetrics = "JudgeCounter",
+		NotefieldMean = "DisplayMean",
+		NPSCalcContainer = "NPSDisplay",
+		NPSGraph = "NPSGraph",
+		InGameLeaderboard = "Leaderboard",
+		ReplayControls = "ReplayButtons",
+	}
+	name = aliases[name] or name
 	name = name == "Judgment" and "Judge" or name
 	for k,v in pairs(Movable) do
 		if type(v) == 'table' and v.name == name and v.properties[1] == "X" then
@@ -1122,9 +1015,25 @@ local function bordermousereact(self)
 	self:queuecommand("mousereact")
 end
 
+local function getMovableButtonForActor(actor)
+	local current = actor
+	while current do
+		local name = current.GetName and current:GetName() or nil
+		local button = name and elementtobutton(name) or nil
+		if button and Movable[button] then
+			return button
+		end
+		current = current.GetParent and current:GetParent() or nil
+	end
+	return nil
+end
+
 local function movewhendragged(self)
-	-- this is a somewhat dangerous hierarchical assumption but it should help us get organied in the short term -mina
-	local b = elementtobutton(self:GetParent():GetParent():GetName())
+	local b = getMovableButtonForActor(self)
+	if not b or not Movable[b] then
+		self:GetParent():diffusealpha(0.1)
+		return
+	end
 	if isOver(self) or (Movable.pressed and Movable.current == b) then
 		if Movable.pressed and Movable.current == b then
 			self:GetParent():diffusealpha(0.75)	-- this is active
@@ -1136,7 +1045,7 @@ local function movewhendragged(self)
 		if INPUTFILTER:IsBeingPressed("Mouse 0", "Mouse") and (Movable.current == b or Movable.current == "None") then
 			local nx = Round(INPUTFILTER:GetMouseX())
 			local ny = Round(INPUTFILTER:GetMouseY())
-			if Movable[b].propertyOffsets ~= nil then
+			if Movable[b] and Movable[b].propertyOffsets ~= nil then
 				nx = nx - Movable[b].propertyOffsets[1]
 				ny = ny - Movable[b].propertyOffsets[2]
 			end

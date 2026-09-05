@@ -36,6 +36,22 @@ end
 local actual_dp = 0
 local total_max = 0
 
+local function updateDPFromJudgment(msg)
+	if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
+		if msg.TapNoteOffset then
+			local ts = ms.JudgeScalers[GetTimingDifficulty()] or PREFSMAN:GetPreference("TimingWindowScale") or 1.0
+			actual_dp = actual_dp + wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
+		elseif msg.TapNoteScore == "TapNoteScore_Miss" then
+			actual_dp = actual_dp - 5.5
+		elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
+			actual_dp = actual_dp - 7.0
+		end
+	elseif msg.HoldNoteScore == "HoldNoteScore_MissedHold" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
+		actual_dp = actual_dp - 4.5
+	end
+end
+
+
 local t = Def.ActorFrame {
 	Name = "AvatarDisplay",
 	InitCommand = function(self)
@@ -86,9 +102,8 @@ local t = Def.ActorFrame {
 	-- Profile name
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
-			local name = profile:GetDisplayName()
 			self:xy(avatarSize + 6, 5):zoom(fontZoom):halign(0):maxwidth(130 / fontZoom)
-			self:settext(name)
+			self:settext(HV.GetPlayerName())
 			self:diffuse(color("1,1,1,1"))
 		end
 	},
@@ -256,36 +271,75 @@ local t = Def.ActorFrame {
 		end
 	},
 
-	-- Fatigue DP & Incremental Wife% Tracker
-	LoadFont("Common Normal") .. {
+	-- DP Display Frame
+	Def.ActorFrame {
+		Name = "DPDisplay",
 		InitCommand = function(self)
-			self:xy(avatarSize + 4, -12):halign(0):zoom(0.45)
-			self:settext("0.00 DP (0.00%)")
-			self:diffuse(color("#b3b3b3"))
+			self:xy(-panelX, -12):halign(0)
+			self:xy((MovableValues and MovableValues.DPDisplayX) or getDefaultGameplayCoordinate("DPDisplayX") or (-panelX), (MovableValues and MovableValues.DPDisplayY) or getDefaultGameplayCoordinate("DPDisplayY") or -12):zoom((MovableValues and MovableValues.DPDisplayZoom) or getDefaultGameplaySize("DPDisplayZoom") or 1)
 		end,
 		JudgmentMessageCommand = function(self, msg)
-			self:stoptweening()
-			
-			if msg.TapNoteScore and msg.TapNoteScore ~= "TapNoteScore_AvoidMine" and msg.TapNoteScore ~= "TapNoteScore_CheckpointHit" then
-				if msg.TapNoteOffset then
-					local ts = ms.JudgeScalers[GetTimingDifficulty()] or PREFSMAN:GetPreference("TimingWindowScale") or 1.0
-					actual_dp = actual_dp + wife3(math.abs(msg.TapNoteOffset) * 1000, ts, "Wife3")
-				elseif msg.TapNoteScore == "TapNoteScore_Miss" then
-					actual_dp = actual_dp - 5.5
-				elseif msg.TapNoteScore == "TapNoteScore_HitMine" then
-					actual_dp = actual_dp - 7.0
+			updateDPFromJudgment(msg)
+		end,
+		OnCommand = function(self)
+			setMovableActor({"DeviceButton_period", "DeviceButton_slash"}, self, self:GetChild("Border"))
+		end,
+
+		-- DP% (above, larger font)
+		LoadFont("Common Normal") .. {
+			Name = "DPPercent",
+			InitCommand = function(self)
+				self:y(-18):halign(0):zoom(0.5)
+				self:settext("0.00%")
+				self:diffuse(color("#b3b3b3"))
+			end,
+			JudgmentMessageCommand = function(self, msg)
+				self:stoptweening()
+
+				local current_perc = pss:GetWifeScore() * 100
+				if total_max > 0 then
+					current_perc = math.max(0, (actual_dp / total_max) * 100)
 				end
-			elseif msg.HoldNoteScore == "HoldNoteScore_MissedHold" or msg.RollNoteScore == "RollNoteScore_MissedRoll" then
-				actual_dp = actual_dp - 4.5
+				self:settextf("%.2f%%", current_perc)
 			end
 			
-			local current_perc = pss:GetWifeScore() * 100
-			if total_max > 0 then
-				current_perc = math.max(0, (actual_dp / total_max) * 100)
+		},
+
+		-- Current DP score (larger font)
+		LoadFont("Common Normal") .. {
+			Name = "DPScore",
+			InitCommand = function(self)
+				self:y(0):halign(0):zoom(0.6)
+				self:settext("0.00")
+				self:diffuse(color("#ffffff"))
+			end,
+			JudgmentMessageCommand = function(self, msg)
+				self:stoptweening()
+				self:settextf("%.2f", actual_dp)
 			end
 			
-			self:settextf("%.2f DP (%.2f%%)", actual_dp, current_perc)
-		end
+		},
+
+		-- Max score (smaller font, to the right of DP score)
+		LoadFont("Common Normal") .. {
+			Name = "MaxScore",
+			InitCommand = function(self)
+				self:y(0):x(42):halign(0):zoom(0.35)
+				self:settextf("/ %d", total_max)
+				self:diffuse(color("#888888"))
+			end,
+			JudgmentMessageCommand = function(self)
+				self:stoptweening()
+				local score = self:GetParent():GetChild("DPScore")
+				if score then
+					self:x(score:GetZoomedWidth() + 6)
+				end
+				self:settextf("/ %d", total_max)
+			end
+		},
+
+		-- Movable border
+		MovableBorder(120, 40, 1, 0, 0)
 	},
 }
 

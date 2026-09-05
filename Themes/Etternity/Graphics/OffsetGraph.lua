@@ -1,4 +1,4 @@
---- Etternity: Offset Plot Graph
+--- Holographic Void: Offset Plot Graph
 -- Ported from spawncamping-wallhack OffsetGraph.lua
 -- Shows timing offsets as colored dots on a time axis with judgment threshold lines.
 -- Supports judge rescoring via OffsetPlotModification messages.
@@ -8,7 +8,9 @@
 local tst = ms.JudgeScalers
 local judge = (PREFSMAN:GetPreference("SortBySSRNormPercent") and 4 or GetTimingDifficulty())
 local tso = tst[judge]
+local plotScale = 100
 local maxOffset = math.max(180, 180 * (tso or 1))
+local dvt = {}
 
 local function clampJudge()
 	if judge < 4 then judge = 4 end
@@ -16,10 +18,31 @@ local function clampJudge()
 end
 clampJudge()
 
+local function updateMaxOffset()
+	maxOffset = math.max(180, 180 * (tso or 1)) * plotScale / 100
+end
+
+local function setPlotScale(scale)
+	plotScale = math.max(5, math.min(100, scale))
+	updateMaxOffset()
+	MESSAGEMAN:Broadcast("JudgeDisplayChanged")
+end
+
+local function setPlotScaleToWorstHit()
+	local worst = 0
+	for i = 1, #dvt do
+		local offset = math.abs(dvt[i] or 0)
+		-- Ignore misses (offset >= 1000ms) when scaling to worst hit
+		if offset < 1000 and offset > worst then worst = offset end
+	end
+	if worst > 0 then
+		setPlotScale(math.ceil(worst / math.max(180, 180 * (tso or 1)) * 100))
+	end
+end
+
 local dotWidth = 2
 local dotHeight = 2
 
-local dvt = {}
 local nrv = {}
 local ctt = {}
 local ntt = {}
@@ -99,6 +122,31 @@ local t = Def.ActorFrame{
 			end
 		end
 	end,
+	BeginCommand = function(self)
+		local screen = SCREENMAN:GetTopScreen()
+		if not screen then return end
+		screen:AddInputCallback(function(event)
+			if not event or not event.DeviceInput or event.type ~= "InputEventType_FirstPress" then return false end
+			local bg = self:GetChild("Background")
+			if not bg or not isOver(bg) then return false end
+
+			local btn = event.DeviceInput.button
+			if btn == "DeviceButton_mousewheel up" then
+				setPlotScale(plotScale - 5)
+				return true
+			elseif btn == "DeviceButton_mousewheel down" then
+				setPlotScale(plotScale + 5)
+				return true
+			elseif btn == "DeviceButton_left mouse button" then
+				setPlotScaleToWorstHit()
+				return true
+			elseif btn == "DeviceButton_right mouse button" then
+				setPlotScale(100)
+				return true
+			end
+			return false
+		end)
+	end,
 	OffsetPlotModificationMessageCommand = function(self, params)
 		if params.Name == "PrevJudge" and judge > 1 then
 			judge = judge - 1
@@ -128,7 +176,7 @@ local t = Def.ActorFrame{
 		end
 		if params.Name ~= "ResetJudge" and params.Name ~= "PrevJudge"
 			and params.Name ~= "NextJudge" and params.Name ~= "ToggleHands" then return end
-		maxOffset = math.max(180, 180 * (tso or 1))
+		updateMaxOffset()
 		MESSAGEMAN:Broadcast("JudgeDisplayChanged")
 	end,
 	ScoreChangedMessageCommand = function(self)
@@ -485,7 +533,7 @@ t[#t+1] = Def.ActorMultiVertex{
 				end
 
 				if math.abs(rawOffset) >= 1000 then
-					-- Misses: vertical line (Etternity recorded misses as 1000ms)
+					-- Misses: vertical line (Etterna recorded misses as 1000ms)
 					local a = alpha == 1 and 0.3 or 0.1
 					c[4] = a
 					verts[#verts+1] = {{x - dotWidth/4, params.height, 0}, c}

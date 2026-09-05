@@ -1,4 +1,4 @@
---- Etternity: ScreenColorTheme Overlay
+--- Holographic Void: ScreenColorTheme Overlay
 -- Custom Lua UI for selecting the theme's accent color.
 -- Features clickable swatches with a live preview panel that updates in real time.
 -- We use color presets for now. the proper color config screen will be here at some point.
@@ -307,7 +307,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		InitCommand = function(self)
 			self:y(24):zoom(0.28):diffuse(color("0.45,0.45,0.45,1"))
-			self:settext("Select an accent color for the Etternity experience")
+			self:settext("Select an accent color for the Holographic Void experience")
 		end
 	},
 	Def.Quad {
@@ -654,12 +654,12 @@ t[#t+1] = Def.ActorFrame {
 	Def.ActorFrame {
 		InitCommand = function(self) self:xy(-chunkW/2 + 38, 9) end,
 		(function()
-			local cts = {"MFC", "WF", "SDP", "PFC", "BF", "SDG", "FC", "MF", "SDCB", "Clear", "Failed", "NoPlay"}
-			local labels = {"MFC", "WF", "SDP", "PFC", "BF", "SDG", "FC", "MF", "SDCB", "CLR", "FAIL", "NOP"}
+			local cts = {"MFC", "WF", "SDP", "PFC", "BF", "SDG", "FC", "MF", "SDCB", "Clear", "Failed", "SoftInvalid", "NoPlay"}
+			local labels = {"MFC", "WF", "SDP", "PFC", "BF", "SDG", "FC", "MF", "SDCB", "CLR", "FAIL", "SINV", "NOP"}
 			local am = Def.ActorFrame {}
 			for i, ct in ipairs(cts) do
 				am[#am+1] = LoadFont("Common Normal") .. {
-					InitCommand = function(self) self:x((i-1)*19):zoom(0.18):halign(0) end,
+					InitCommand = function(self) self:x((i-1)*18):zoom(0.18):halign(0) end,
 					BeginCommand = function(self) self:playcommand("Set") end,
 					CTStyleChangedMessageCommand = function(self) self:playcommand("Set") end,
 					SetCommand = function(self) self:settext(labels[i]):diffuse(HVColor.GetClearTypeColor(ct)) end

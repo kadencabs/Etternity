@@ -1,4 +1,4 @@
---- Etternity: Custom Mouse Cursor
+--- Holographic Void: Custom Mouse Cursor
 -- Adapted from Til Death's _cursor.lua pattern.
 -- Should be loaded from screen overlays via LoadActor("_cursor").
 -- Integrates with the _fallback BUTTON system for UIElements click support.
@@ -27,6 +27,7 @@ end
 
 local t = Def.ActorFrame {
 	OnCommand = function(self)
+		self:draworder(10000)
 		self:SetUpdateFunction(UpdateLoop)
 		-- Match display refresh rate for smooth cursor tracking
 		local refreshRate = DISPLAY:GetDisplayRefreshRate()

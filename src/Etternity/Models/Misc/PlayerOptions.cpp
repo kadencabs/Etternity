@@ -250,7 +250,7 @@ PlayerOptions::GetMods(std::vector<std::string>& AddTo, bool bForceNoteSkin) con
 	AddPart(AddTo, m_fAppearances[APPEARANCE_BLINK], "Blink");
 	AddPart(AddTo, m_fAppearances[APPEARANCE_RANDOMVANISH], "RandomVanish");
 
-	AddPart(AddTo, m_fScrolls[SCROLL_REVERSE], "Reverse");
+/*	AddPart(AddTo, m_fScrolls[SCROLL_REVERSE], "Reverse"); */
 	AddPart(AddTo, m_fScrolls[SCROLL_SPLIT], "Split");
 	AddPart(AddTo, m_fScrolls[SCROLL_ALTERNATE], "Alternate");
 	AddPart(AddTo, m_fScrolls[SCROLL_CROSS], "Cross");
@@ -350,24 +350,28 @@ PlayerOptions::GetMods(std::vector<std::string>& AddTo, bool bForceNoteSkin) con
 			AddTo.push_back("FailImmediateContinue");
 			break;
 		case FailType_Off:
-			AddTo.push_back("FailOff");
+/*			AddTo.push_back("FailOff");  */
 			break;
 		default:
 			FAIL_M(ssprintf("Invalid FailType: %i", m_FailType));
 	}
 
 	if (m_fSkew == 0 && m_fPerspectiveTilt == 0) {
-		AddTo.push_back("Overhead");
-	} else if (m_fSkew == 0) {
+		// Default case: do nothing (no "Overhead" in mod list)
+	}
+	else if (m_fSkew == 0) {
 		if (m_fPerspectiveTilt > 0)
 			AddPart(AddTo, m_fPerspectiveTilt, "Distant");
 		else
 			AddPart(AddTo, -m_fPerspectiveTilt, "Hallway");
-	} else if (fabsf(m_fSkew - m_fPerspectiveTilt) < 0.0001f) {
+	}
+	else if (fabsf(m_fSkew - m_fPerspectiveTilt) < 0.0001f) {
 		AddPart(AddTo, m_fSkew, "Space");
-	} else if (fabsf(m_fSkew + m_fPerspectiveTilt) < 0.0001f) {
+	}
+	else if (fabsf(m_fSkew + m_fPerspectiveTilt) < 0.0001f) {
 		AddPart(AddTo, m_fSkew, "Incoming");
-	} else {
+	}
+	else {
 		AddPart(AddTo, m_fSkew, "Skew");
 		AddPart(AddTo, m_fPerspectiveTilt, "Tilt");
 	}

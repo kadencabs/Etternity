@@ -1,4 +1,6 @@
 ﻿Etternity is a cross-platform rhythm game similar to [Dance Dance Revolution](https://en.wikipedia.org/wiki/Dance_Dance_Revolution). It started as a fork of [Etterna](https://github.com/etternagame/etterna) (v0.74.4), with a focus on offline keyboard players.
+Btw im a noob at coding
+And I kinda lost motivation
 ## Table of Contents
 
 
@@ -158,4 +160,4 @@ For Linux, there should be no extra steps. If it does not work, try to install t
 
 - All original SM devs/contributors
 - All original Etterna devs/contributors
-- Icycle
+- Icycle (You are basically how this is entirely possibly for me)

@@ -1,4 +1,4 @@
---- Etternity: Screen Transitions
+--- Holographic Void: Screen Transitions
 -- @module 05_Transitions.lua
 -- Provides smooth linear screen transitions used by all screens.
 
@@ -26,6 +26,38 @@ function HV.ScreenTransitionOut()
 		OffCommand = function(self)
 			self:linear(0.2):diffusealpha(1)
 		end
+	}
+end
+
+-- Circular "Iris" transitions
+function HV.CircleTransitionIn()
+	return Def.ActorFrame {
+		Def.Sprite {
+			Texture = THEME:GetPathG("", "_thick circle"),
+			InitCommand = function(self)
+				-- Ensure circle covers the whole screen at zoom=10
+				-- 100px * 10 = 1000px, might need more for 1080p (diagonal ~2200)
+				-- Let's use zoom=24 to be safe for 4K too.
+				self:Center():diffuse(color("0,0,0,1")):zoom(24)
+			end,
+			OnCommand = function(self)
+				self:decelerate(0.25):zoom(0)
+			end
+		}
+	}
+end
+
+function HV.CircleTransitionOut()
+	return Def.ActorFrame {
+		Def.Sprite {
+			Texture = THEME:GetPathG("", "_thick circle"),
+			InitCommand = function(self)
+				self:Center():diffuse(color("0,0,0,1")):zoom(0)
+			end,
+			OffCommand = function(self)
+				self:accelerate(0.25):zoom(24)
+			end
+		}
 	}
 end
 
@@ -76,4 +108,4 @@ function HV.PulseGlow()
 	end
 end
 
-Trace("Etternity: 05 Transitions.lua loaded.")
+Trace("Holographic Void: 05 Transitions.lua loaded.")
