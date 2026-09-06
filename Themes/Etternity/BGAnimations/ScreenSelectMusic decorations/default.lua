@@ -512,7 +512,7 @@ t[#t + 1] = Def.ActorFrame {
 }
 
 local bannerH = (panelW - 24) / 3.2
-local infoY = panelY + 12 + bannerH + 16
+local infoY = panelY + 12 + bannerH + 4
 
 -- ============================================================
 -- SONG INFO TEXT
