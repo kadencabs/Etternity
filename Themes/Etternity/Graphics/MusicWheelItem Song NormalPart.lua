@@ -51,30 +51,6 @@ t[#t + 1] = Def.Quad {
 	end
 }
 
--- Left accent bar (difficulty color, OLED glow) - uses GAMESTATE for current selected diff
-t[#t + 1] = Def.Quad {
-	InitCommand = function(self)
-		self:x(-wheelItemW/2 + 1):zoomto(2, 30)
-			:diffuse(color("0.15,0.15,0.15,1"))
-	end,
-	SetMessageCommand = function(self, params)
-		local curSteps = GAMESTATE:GetCurrentSteps()
-		if curSteps then
-			local diff = ToEnumShortString(curSteps:GetDifficulty())
-			local dc = (HVColor and HVColor.GetDifficultyColor and HVColor.GetDifficultyColor(diff))
-				or (HVColor and HVColor.Difficulty and HVColor.Difficulty[diff])
-			if dc then
-				self:diffuse(dc):diffusealpha(0.6) -- Constant alpha for uniform look
-				return
-			end
-		end
-		self:diffuse(color("0.15,0.15,0.15,1"))
-	end,
-	CurrentStepsChangedMessageCommand = function(self)
-		self:playcommand("Set")
-	end
-}
-
 -- Favorite indicator
 t[#t + 1] = Def.Sprite {
 	Name = "FavoriteStar",
@@ -99,9 +75,8 @@ t[#t + 1] = Def.Sprite {
 -- MSD rating text (right side) - shows MSD for selected difficulty, falls back
 -- to the song's only/first available difficulty if there's no exact match.
 t[#t + 1] = LoadFont("Common Normal") .. {
-	Name = "MSDDisplay",
 	InitCommand = function(self)
-		self:halign(0):valign(0.5):x(-wheelItemW/2 + 6):y(0)
+		self:halign(0):valign(0.5):x(-wheelItemW/2 + 1)
 			:zoom(0.85):diffuse(color("0.65,0.65,0.65,1"))
 	end,
 	SetMessageCommand = function(self, params)
@@ -210,9 +185,8 @@ t[#t + 1] = LoadFont("Common Normal") .. {
 
 -- Artist / Subtitle line - uses params.Song
 t[#t + 1] = LoadFont("Common Normal") .. {
-	Name = "ArtistSubtitle",
 	InitCommand = function(self)
-		self:halign(0.5):x(0):y(11)
+		self:halign(0.5):x(0):y(12)
 			:zoom(0.30):diffuse(color("0.5,0.5,0.5,1"))
 			:maxwidth((wheelItemW - 40) / 0.30)
 	end,

@@ -473,22 +473,7 @@ main_af[#main_af + 1] = Def.ActorFrame {
 
 				local virtualX = INPUTFILTER:GetMouseX()
 				local virtualY = INPUTFILTER:GetMouseY()
-				
-				-- Check Login Button logic (btnCX/btnCY defined above)
-				local loginOver = virtualX >= btnCX - btnW/2 and virtualX <= btnCX + btnW/2
-						 and virtualY >= btnCY - btnH/2 and virtualY <= btnCY + btnH/2
-				if loginOver then
-					if DLMAN:IsLoggedIn() then
-						ThemePrefs.Set("HV_Username", "")
-						ThemePrefs.Set("HV_PasswordToken", "")
-						ThemePrefs.Save()
-						DLMAN:Logout()
-						ms.ok("Logged Out")
-					else
-						MESSAGEMAN:Broadcast("TriggerLoginFlow")
-					end
-					return true
-				end
+			
 
 				-- Check Avatar Button
 				if virtualX >= compactProfileX - 8 and virtualX <= compactProfileX + 50
