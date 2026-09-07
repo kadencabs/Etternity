@@ -223,10 +223,7 @@ local t = Def.ActorFrame {
 				if event.type == "InputEventType_FirstPress" then
 					local b = event.button
 					local db = event.DeviceInput and event.DeviceInput.button or ""
-					if db == "DeviceButton_tab" and INPUTFILTER and INPUTFILTER:IsControlPressed() then
-						toggleMinimalisticModePreference()
-						return true
-					elseif db == "DeviceButton_tab" then
+					if db == "DeviceButton_tab" then
 						toggleInGameLeaderboardPreference()
 						return true
 					end
@@ -1939,6 +1936,7 @@ if suddenHeight > 0 or hiddenHeight > 0 then
 		}
 	end
 
+--[[]
 	local t_cover = Def.ActorFrame {
 		Name = "LaneCoverLayer",
 		InitCommand = function(self)
@@ -1946,6 +1944,15 @@ if suddenHeight > 0 or hiddenHeight > 0 then
 			self:visible(not isSync)
 		end,
 	}
+	]]
+local t_cover = Def.ActorFrame {
+	Name = "LaneCoverLayer",
+	InitCommand = function(self)
+		self:Center()
+		self:visible(not isSync)
+		self:draworder(-100)
+	end,
+}
 
 	-- Sudden: spawn side (Top for Standard, Bottom for Reverse)
 	if suddenHeight > 0 then
