@@ -569,38 +569,17 @@ t[#t + 1] = Def.ActorFrame {
 	},
 
 	-- Artist
-	LoadFont("Common Normal") .. {
+	LoadFont("Zpix Norma") .. {
 		Name = "SongArtist",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(22):zoom(0.45)
-				:maxwidth((panelW - 32) / 0.45)
+			self:halign(0):valign(0):x(-2):y(22):zoom(0.55)
+				:maxwidth((panelW - 32) / 0.55)
 				:diffuse(subText)
 		end,
 		SetCommand = function(self)
 			local song = HV.CurrentSongData.song
 			if song then
 				self:settext(song:GetDisplayArtist())
-			else
-				self:settext("")
-			end
-		end,
-		InstantChartUpdateMessageCommand = function(self)
-			self:playcommand("Set")
-		end
-	},
-
-	-- Pack / Group Name
-	LoadFont("Common Normal") .. {
-		Name = "GroupName",
-		InitCommand = function(self)
-			self:halign(0):valign(0):y(40):zoom(0.35)
-				:maxwidth((panelW - 32 - 50) / 0.35) -- Leave space for CDTitle
-				:diffuse(dimText)
-		end,
-		SetCommand = function(self)
-			local song = HV.CurrentSongData.song
-			if song then
-				self:settext(song:GetGroupName())
 			else
 				self:settext("")
 			end
@@ -1301,11 +1280,10 @@ for i = 1, maxVisibleCharts do
 		},
 
 		LoadFont("Common Normal") .. {
-			Name = "MSDVal",
 			InitCommand = function(self)
 				self:halign(1):valign(0.5)
 					:xy(diffTabW - 5, diffTabH / 2)
-					:zoom(0.30):diffuse(dimText)
+					:zoom(0.38):diffuse(dimText)
 			end,
 			SetCommand = function(self)
 				local data = HV.CurrentSongData
