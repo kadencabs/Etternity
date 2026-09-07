@@ -527,7 +527,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Zpix Normal") .. {
 		Name = "SongTitle",
 		InitCommand = function(self)
-			self:halign(0):valign(0):zoom(0.7)
+			self:halign(0):valign(0):x(-2):zoom(0.7)
 				:maxwidth((panelW - 32) / 0.7)
 				:diffuse(brightText)
 		end,
@@ -1675,7 +1675,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "PBSSR",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(52):zoom(0.30):diffuse(mainText)
+			self:halign(0):valign(0):y(52):zoom(0.42):diffuse(mainText)
 		end,
 		SetCommand = function(self)
 			local showMSD = (ThemePrefs.Get("HV_ShowMSD") == "true" or ThemePrefs.Get("HV_ShowMSD") == true) or ThemePrefs.Get("HV_ShowMSD") == true
