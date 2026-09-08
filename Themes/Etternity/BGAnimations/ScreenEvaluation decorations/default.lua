@@ -2293,4 +2293,11 @@ t[#t + 1] = Def.ActorFrame {
 	end)()
 }
 
+t[#t + 1] = Def.Actor {
+	BeginCommand = function(self)
+		updateDiscordStatus(true)
+    end
+}
+
+
 return t

@@ -452,6 +452,13 @@ local barY = progressBarPosition == "Top" and 12 or (progressBarPosition == "Bot
 
 local showProgressBar = progressBarPosition ~= "Off" and not isSync
 
+-- Cache song length
+local progSongLen = 0
+
+local function setProgSongLen()
+    progSongLen = getChartLastSecond(GAMESTATE:GetCurrentSong(), GAMESTATE:GetCurrentSteps())
+end
+
 -- Load cursor system for mouse button support (required for practice_input.lua QuadButton)
 t[#t + 1] = LoadActor("../_cursor")
 t[#t + 1] = LoadActor("practice_input.lua")
@@ -470,9 +477,13 @@ t[#t + 1] = Def.ActorFrame {
 		setMovableActor({"DeviceButton_9"}, self, self:GetChild("Border"))
 	end,
 	BeginCommand = function(self)
+		setProgSongLen()
 		self:SetUpdateFunction(function(self)
 			self:playcommand("UpdateBars")
 		end)
+	end,
+	CurrentSongChangedMessageCommand = function(self)
+		setProgSongLen()
 	end,
 	Def.Quad {
 		Name = "ProgressBarBG",
@@ -488,16 +499,12 @@ t[#t + 1] = Def.ActorFrame {
 				:zoomto(0, barH):diffuse(accentColor):diffusealpha(0.7)
 		end,
 		UpdateBarsCommand = function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps()
-				local len = getChartLastSecond(song, steps)
-				if len > 0 then
-					local cur = GAMESTATE:GetSongPosition():GetMusicSeconds()
-					local pct = math.max(0, math.min(cur / len, 1))
-					self:zoomto(barW * pct, barH)
+			if progSongLen > 0 then
+				local cur = GAMESTATE:GetSongPosition():GetMusicSeconds()
+				local pct = math.max(0, math.min(cur / progSongLen, 1))
+				self:zoomto(barW * pct, barH)
 				end
-			end
+		--	end
 		end
 	},
 
@@ -508,17 +515,18 @@ t[#t + 1] = Def.ActorFrame {
 			self:x(barW / 2 + 8):zoom(0.35):halign(0):diffuse(dimText)
 		end,
 		UpdateBarsCommand = function(self)
-			local song = GAMESTATE:GetCurrentSong()
-			if song then
-				local steps = GAMESTATE:GetCurrentSteps()
-				local songLen = getChartLastSecond(song, steps)
+	--		local song = GAMESTATE:GetCurrentSong()
+	--		if song then
+	--			local steps = GAMESTATE:GetCurrentSteps()
+	--			local songLen = getChartLastSecond(song, steps)
 				local curTime = GAMESTATE:GetSongPosition():GetMusicSeconds()
-				local remaining = math.max(0, songLen - curTime) / getCurRateValue()
+	--			local remaining = math.max(0, songLen - curTime) / getCurRateValue()
+				local remaining = math.max(0, progSongLen - curTime) / getCurRateValue()
 				local mins = math.floor(remaining / 60)
 				local secs = math.floor(remaining % 60)
 				local ms = math.floor((remaining - math.floor(remaining)) * 100)
 				self:settext(string.format("-%d:%02d.%02d", mins, secs, ms))
-			end
+	--		end
 		end
 	},
 
@@ -2424,6 +2432,13 @@ t[#t + 1] = Def.Actor {
 			end
 		end
 	end
+}
+
+t[#t + 1] = Def.Actor {
+	BeginCommand = function(self)
+		updateDiscordStatus(false)
+        updateNowPlaying()
+    end
 }
 
 return t
