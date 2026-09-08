@@ -1320,28 +1320,18 @@ local profileOverlay = Def.ActorFrame {
 					end
 				end
 			},
-			-- Toggle Online/Local Button
+			-- Recalculate Scores Button
 			Def.ActorFrame {
-				Name = "SourceToggle",
+				Name = "RecalcBtn",
 				InitCommand = function(self) self:x(mainPartW/2 - 140) end,
 				Def.Quad {
 					Name = "Bg",
-					InitCommand = function(self) 
-						self:zoomto(100, 24):diffuse(accentColor):diffusealpha(0.15)
+					InitCommand = function(self)
+						self:zoomto(100, 24):diffuse(color("0.4,0.2,0.1,0.5"))
 					end
 				},
 				LoadFont("Common Normal") .. {
-					Name = "Txt",
-					InitCommand = function(self) self:zoom(0.32) end,
-					UpdateOverlayUIMessageCommand = function(self)
-						local p = profileOverlayActor
-						if p.isRecentMode then
-							self:settext("ONLINE/LOCAL"):diffuse(dimText)
-						else
-							local active = p.isOnlineMode and DLMAN:IsLoggedIn()
-							self:settext(active and "ONLINE" or "LOCAL"):diffuse(brightText)
-						end
-					end
+					InitCommand = function(self) self:zoom(0.32):diffuse(brightText):settext("RECALC SCORES") end
 				},
 				SetUpdateFunction = function(af)
 					local mouseX = INPUTFILTER:GetMouseX()
@@ -1351,15 +1341,9 @@ local profileOverlay = Def.ActorFrame {
 					local rx = mouseX - (SCREEN_CENTER_X - overlayW/2)
 					local ry = mouseY - (SCREEN_CENTER_Y - overlayH/2)
 					local over = rx >= sidebarW + mainPartW - 190 and rx <= sidebarW + mainPartW - 90
-					         and ry >= 23 and ry <= 47
+						and ry >= 23 and ry <= 47
 					local bg = af:GetChild("Bg")
-					if parent.isRecentMode then
-						bg:diffuse(dimText):diffusealpha(0.1)
-					elseif (parent.isOnlineMode and DLMAN:IsLoggedIn()) or over then
-						bg:diffuse(accentColor):diffusealpha(0.4)
-					else
-						bg:diffuse(accentColor):diffusealpha(0.15)
-					end
+					bg:diffusealpha(over and 0.8 or 0.5)
 				end
 			},
 			-- Upload All Button

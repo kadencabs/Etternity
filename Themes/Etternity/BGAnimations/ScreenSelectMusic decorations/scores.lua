@@ -605,7 +605,7 @@ t[#t + 1] = Def.ActorFrame {
 				end
 
 				-- Rate button
-				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 80, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
+				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 40, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
 					filterCurrentRate = not filterCurrentRate
 					currentPage = 1
 					if currentView == VIEW_LOCAL then
@@ -616,7 +616,7 @@ t[#t + 1] = Def.ActorFrame {
 				end
 
 				-- Sort button
-				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 150, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
+				if IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 110, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
 					currentSort = (currentSort == SORT_SSR) and SORT_WIFE or SORT_SSR
 					currentPage = 1
 					SortScores(localScores)
@@ -627,7 +627,7 @@ t[#t + 1] = Def.ActorFrame {
 
 				-- J4 Display button
 				local normPref = PREFSMAN:GetPreference("SortBySSRNormPercent")
-				if not normPref and IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 285, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
+				if not normPref and IsMouseOverCentered(SCREEN_CENTER_X + overlayW/2 - 180, SCREEN_CENTER_Y - overlayH/2 + 18, 65, 18) then
 					displayAsJ4 = not displayAsJ4
 					currentPage = 1
 					SortScores(localScores)

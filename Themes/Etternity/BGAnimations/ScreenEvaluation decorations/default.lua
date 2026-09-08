@@ -1754,11 +1754,10 @@ local function scoreBoard(pn)
 	local ratioLabels = {"LA", "RA", "MA", "PA"}
 	local ratioColors = {color("#FF69B4"), color("#FFD700"), color("#FFFFFF"), color("#E0E0A0")}
 	for ri, rlabel in ipairs(ratioLabels) do
-		local col = (ri - 1) % 2
-		local row = math.floor((ri - 1) / 2)
-		local rx = col1X + col * 75
-		if col == 1 then rx = rx + 35 end
-		local ry = ratioStartY + row * 26
+		local col = 0
+		local row = ri - 1
+		local rx = col1X
+		local ry = ratioStartY + row * 18
 		
 		board[#board + 1] = LoadFont("Common Normal") .. {
 			InitCommand = function(self) self:halign(col == 1 and 1 or 0):xy(col == 1 and rx + 30 or rx, ry):zoom(0.48):diffuse(ratioColors[ri]):settext(rlabel .. ":"):diffusealpha(0) end,

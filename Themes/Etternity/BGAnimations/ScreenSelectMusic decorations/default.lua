@@ -1653,7 +1653,7 @@ t[#t + 1] = Def.ActorFrame {
 	LoadFont("Common Normal") .. {
 		Name = "PBSSR",
 		InitCommand = function(self)
-			self:halign(0):valign(0):y(52):zoom(0.42):diffuse(mainText)
+			self:halign(0):valign(0):y(52):zoom(0.55):diffuse(mainText)
 		end,
 		SetCommand = function(self)
 			local showMSD = (ThemePrefs.Get("HV_ShowMSD") == "true" or ThemePrefs.Get("HV_ShowMSD") == true) or ThemePrefs.Get("HV_ShowMSD") == true

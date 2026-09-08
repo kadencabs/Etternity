@@ -31,7 +31,7 @@ local function changeMusicRate(delta)
 	pcall(function()
 		GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(newRate)
 		GAMESTATE:GetSongOptionsObject("ModsLevel_Stage"):MusicRate(newRate)
-		GAMESTATE:GetSongOptionsObject("ModsLevel_Preferred"):MusicRate(newRate)
+		GAMESTATE:GetSongOptionsObject("ModsLevel_Current"):MusicRate(newRate)
 	end)
 	MESSAGEMAN:Broadcast("CurrentRateChanged")
 end
