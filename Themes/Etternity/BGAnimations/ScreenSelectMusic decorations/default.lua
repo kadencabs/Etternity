@@ -2146,13 +2146,14 @@ t[#t + 1] = Def.ActorFrame {
 -- ============================================================
 -- RADAR INTEGRATION
 -- ============================================================
-t[#t + 1] = Def.ActorFrame {
-	InitCommand = function(self)
-		self:xy(compactProfileX + 85, compactProfileY - 80)
-		self:zoom(1.0)
-	end,
-	LoadActor("radar.lua")
-}
+
+--t[#t + 1] = Def.ActorFrame {
+--	InitCommand = function(self)
+--		self:xy(compactProfileX + 85, compactProfileY - 80)
+--		self:zoom(1.0)
+--	end,
+--	LoadActor("radar.lua")
+-- }
 
 -- ============================================================
 -- CREDIT TOOLTIP (Mouse-following)

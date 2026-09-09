@@ -1153,7 +1153,7 @@ local function scoreBoard(pn)
 			-- Shorthand (colored by difficulty type)
 			LoadFont("Common Normal") .. {
 				InitCommand = function(self)
-					self:halign(1):valign(1):xy(-51, 14):zoom(0.55)
+					self:halign(1):valign(1):xy(-94, 14):zoom(0.55)
 				end,
 				OnCommand = function(self)
 					if steps then
@@ -1261,7 +1261,7 @@ local function scoreBoard(pn)
 		},
 		-- SSR
 		LoadFont("Common Normal") .. {
-			InitCommand = function(self) self:halign(0):valign(0):xy(10, 45):zoom(0.8):diffuse(subText):diffusealpha(0) end,
+			InitCommand = function(self) self:halign(0):valign(0):xy(0, 45):zoom(1):diffuse(subText):diffusealpha(0) end,
 			OnCommand = function(self)
 				if HV.ShowMSD() then
 					local ssr = curScore:GetSkillsetSSR("Overall")
@@ -1305,7 +1305,7 @@ local function scoreBoard(pn)
 				
 				-- Incremental counting
 				local val = math.max(0, wife)
-				local duration = 0.8 -- Return to fast fixed duration, well under 2s limit
+				local duration = 0.1 -- Return to fast fixed duration, well under 2s limit
 				local curTime = 0
 				local targetWife = wife
 				self:SetUpdateFunction(function(self, delta)
@@ -1455,7 +1455,7 @@ local function scoreBoard(pn)
 				local dp = (displayPct / 100) * songMaxPoints
 				local targetDP = dp
 				
-				local duration = 0.8
+				local duration = 0.1
 				local curTime = 0
 
 				self:stoptweening():sleep(0.4):linear(0.15):diffusealpha(1)
